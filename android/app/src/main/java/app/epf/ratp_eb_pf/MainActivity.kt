@@ -1,12 +1,20 @@
 package app.epf.ratp_eb_pf
 
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import app.epf.ratp_eb_pf.data.LineDao
+import app.epf.ratp_eb_pf.model.Line
+import app.epf.ratp_eb_pf.service.LinesService
+import app.epf.ratp_eb_pf.ui.dashboard.dao
+import app.epf.ratp_eb_pf.ui.dashboard.retrofit
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,5 +30,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
     }
+
 }
