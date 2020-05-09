@@ -5,15 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.listeLines.DetailsLigne">
 
-
-
-
-    <Button
-        android:id="@+id/buttonSearch"
+    <TextView
+        android:id="@+id/testEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Search" />
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        tools:text="Test"
+        android:layout_gravity="center"/>
+
 </LinearLayout>

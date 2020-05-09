@@ -1,17 +1,24 @@
-package app.epf.ratp_eb_pf.ui.dashboard
+package app.epf.ratp_eb_pf
 
 import android.content.Context
 import androidx.room.Room
 import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.LineDao
+import app.epf.ratp_eb_pf.data.StationsDao
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-fun dao(context: Context): LineDao {
-    val database = Room.databaseBuilder(context, AppDatabase::class.java, "gestionlines").build()
+fun daoSta(context: Context): StationsDao {
+    val database = Room.databaseBuilder(context, AppDatabase::class.java, "gestionStations").build()
+
+    return database.getStationsDao()
+}
+
+fun daoLi(context: Context): LineDao {
+    val database = Room.databaseBuilder(context, AppDatabase::class.java, "gestionLines").build()
 
     return database.getLineDao()
 }

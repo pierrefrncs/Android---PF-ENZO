@@ -4,22 +4,19 @@ import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.android.parcel.Parcelize
-import java.io.Serializable
 
-@Entity(tableName = "lines")
-data class Line(
+@Parcelize
+@Entity(tableName = "stations")
+data class Stations(
     @PrimaryKey(autoGenerate = true) val id: Int,
-    val code: String,
     val name: String,
-    val directions: String,
-    val idRatp: Int,
-    var favoris: Boolean
-) : Serializable {
+    val slug: String
+) : Parcelable {
     companion object {
         val all = (1..20)
             .map {
-                Line(
-                    it, "Code$it", "Nom$it", "Directions$it", it + 10, false
+                Stations(
+                    it, "Nom$it", "Slug$it"
                 )
             }.toMutableList()
     }
