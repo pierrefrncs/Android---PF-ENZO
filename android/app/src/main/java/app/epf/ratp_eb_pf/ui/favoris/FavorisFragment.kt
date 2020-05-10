@@ -10,20 +10,23 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import androidx.viewpager.widget.ViewPager
 import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.LineDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.ui.listeLines.LinesAdapter
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_favoris.view.*
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 class FavorisFragment : Fragment() {
 
     private lateinit var favorisViewModel: FavorisViewModel
-    private var lineDaoSaved: LineDao? = null
-    private lateinit var linesRecyclerView: RecyclerView
-    private var lines: MutableList<Line>? = null
+
+    private lateinit var viewpager: ViewPager
+    private lateinit var tabLayout: TabLayout
+    private var bundle = Bundle()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,39 +37,31 @@ class FavorisFragment : Fragment() {
             ViewModelProviders.of(this).get(FavorisViewModel::class.java)
         val view = inflater.inflate(R.layout.fragment_favoris, container, false)
 
-        linesRecyclerView = view.findViewById(R.id.savedLines_recyclerview)
-        linesRecyclerView.layoutManager = LinearLayoutManager(activity)
-
-        view.noLinesImage.setOnClickListener {
-            val navController = activity?.findNavController(R.id.nav_host_fragment)
-            navController?.navigate(R.id.navigation_list_lignes)
-        }
-
-        val database =
-            Room.databaseBuilder(requireContext(), AppDatabase::class.java, "savedDatabase")
-                .build()
-
-        lineDaoSaved = database.getLineDao()
-
-        runBlocking {
-            lines = lineDaoSaved?.getLines()
-        }
-
-        runBlocking {
-            if (!lines.isNullOrEmpty()) {
-                view.layoutNoSavedLine.visibility = View.GONE
-            } else {
-                view.layoutNoSavedLine.visibility = View.VISIBLE
-            }
-        }
-        linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), view)
+        viewpager = view.findViewById(R.id.fragment_rechercheinterneFavoris)
+        setupViewPager(viewpager)
+        viewpager.offscreenPageLimit = 1
+        tabLayout = view.findViewById(R.id.tablayout_favoris)
+        tabLayout.setupWithViewPager(viewpager)
 
         return view
     }
 
-    override fun onResume() {
-        super.onResume()
 
-        linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), requireView())
+    private fun setupViewPager(viewPager: ViewPager) {
+        val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+        //https://stackoverflow.com/a/18847195/13289762
+
+        scope.launch {
+            val adapter =
+                FavorisTabAdapter(childFragmentManager, bundle)
+            adapter.addFragment(FavorisLinesFragment(), "Lignes")
+            adapter.addFragment(FavorisStationsFragment(), "Stations")
+            withContext(Dispatchers.Main) {
+                viewPager.adapter = adapter
+            }
+        }
+
     }
+
 }

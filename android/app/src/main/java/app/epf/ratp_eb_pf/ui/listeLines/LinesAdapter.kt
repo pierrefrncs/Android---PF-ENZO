@@ -15,7 +15,7 @@ import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.LineDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.ui.listeLines.details.DetailsLineActivity
-import kotlinx.android.synthetic.main.fragment_favoris.view.*
+import kotlinx.android.synthetic.main.fragment_favoris_lines.view.*
 import kotlinx.android.synthetic.main.lines_view.view.*
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
@@ -27,6 +27,7 @@ class LinesAdapter(private val linesList: MutableList<Line>, private val viewFra
     private var listLinesBdd: MutableList<Line>? = null
     private var lineDaoSaved: LineDao? = null
     private lateinit var context: Context
+    private var toastMessage: Toast? = null
 
     class LinesViewHolder(val linesView: View) : RecyclerView.ViewHolder(linesView)
 
@@ -96,8 +97,9 @@ class LinesAdapter(private val linesList: MutableList<Line>, private val viewFra
 
 
         view.fab_favLine.setOnClickListener {
-            if (!favoris) {
+            toastMessage?.cancel()
 
+            if (!favoris) {
                 val row = listLinesBdd?.size
                 val id =
                     if (!listLinesBdd.isNullOrEmpty()) listLinesBdd!![row!! - 1].id + 1 else 1
@@ -112,11 +114,12 @@ class LinesAdapter(private val linesList: MutableList<Line>, private val viewFra
 
                 favoris = true
                 view.fab_favLine.setImageResource(R.drawable.ic_star_black_24dp)
-                Toast.makeText(
+                toastMessage = Toast.makeText(
                     context,
                     "La ligne a bien été ajoutée aux favoris",
                     Toast.LENGTH_SHORT
-                ).show()
+                )
+                toastMessage?.show()
 
             } else if (favoris) {
 
@@ -124,12 +127,16 @@ class LinesAdapter(private val linesList: MutableList<Line>, private val viewFra
                     lineDaoSaved?.deleteLine(line.idRatp)
                 }
 
-                // https://stackoverflow.com/a/54829516/13289762
-                val fragmentFavoris =
+                val fragmentFavoris = try {
+                    // https://stackoverflow.com/a/54829516/13289762
                     (context as MainActivity).supportFragmentManager.fragments.last()?.childFragmentManager?.fragments
+                        ?.get(0)?.childFragmentManager?.fragments
                         ?.get(0)?.javaClass?.simpleName
+                } catch (ex: Exception) {
+                    ""
+                }
 
-                if (fragmentFavoris == "FavorisFragment") {
+                if (fragmentFavoris == "FavorisLinesFragment") {
                     linesList.remove(line)
 
                     notifyItemRemoved(position)
@@ -143,11 +150,12 @@ class LinesAdapter(private val linesList: MutableList<Line>, private val viewFra
                 favoris = false
 
                 view.fab_favLine.setImageResource(R.drawable.ic_star_border_black_24dp)
-                Toast.makeText(
+                toastMessage = Toast.makeText(
                     context,
                     "La ligne a bien été supprimée des favoris",
                     Toast.LENGTH_SHORT
-                ).show()
+                )
+                toastMessage?.show()
             }
             runBlocking {
                 listLinesBdd = lineDaoSaved?.getLines()

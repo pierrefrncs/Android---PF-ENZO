@@ -16,7 +16,7 @@ import app.epf.ratp_eb_pf.retrofit
 import app.epf.ratp_eb_pf.service.StationsService
 import kotlinx.coroutines.runBlocking
 
-class StationsDetailsFragment : Fragment() {
+class StationsListFragment : Fragment() {
 
     private var stationsDao: StationsDao? = null
     private var stations: MutableList<Stations>? = null
@@ -36,7 +36,7 @@ class StationsDetailsFragment : Fragment() {
 
         val side = arguments?.getSerializable("line") as Line
 
-        synchroServerStations(side.code)
+        synchroServerStations(view, side.code)
 
         return view
     }
@@ -45,22 +45,22 @@ class StationsDetailsFragment : Fragment() {
         super.onResume()
 
         stationsRecyclerView.adapter =
-            StationsAdapter(stations ?: mutableListOf())
+            StationsAdapter(stations ?: mutableListOf(), requireView())
     }
 
-    private fun synchroServerStations(code: String) {
+    private fun synchroServerStations(view: View, code: String) {
         val service = retrofit().create(StationsService::class.java)
         runBlocking {
             stationsDao?.deleteStations()
             val result = service.getStationsService("metros", code)
             result.result.stations.map {
 
-                val station = Stations(0, it.name, it.slug)
+                val station = Stations(0, it.name, it.slug, code, false)
                 stationsDao?.addStation(station)
             }
             stations = stationsDao?.getStations()
             stationsRecyclerView.adapter =
-                StationsAdapter(stations ?: mutableListOf())
+                StationsAdapter(stations ?: mutableListOf(), view)
         }
     }
 }

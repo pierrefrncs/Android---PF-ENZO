@@ -8,5 +8,8 @@ import java.io.Serializable
 data class Stations(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val name: String,
-    val slug: String
+    val slug: String,
+    val line: String,
+    var favoris: Boolean,
+    val uuid: String = slug + line
 ) : Serializable

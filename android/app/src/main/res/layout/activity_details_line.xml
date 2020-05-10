@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tablayout_details"
-        android:id="@+id/fragment_rechercheinterne"
+        android:id="@+id/fragment_rechercheinterneDetails"
         android:layout_alignParentBottom="true" />
 
 

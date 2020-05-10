@@ -5,65 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_margin="10dp"
     tools:context=".ui.favoris.FavorisFragment">
 
-    <RelativeLayout
-        android:id="@+id/layoutNoSavedLine"
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabMode="fixed"
+        android:id="@+id/tablayout_favoris"
+        android:background="@color/colorPrimary"
+        app:tabTextColor="#fff"/>
+
+    <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize"
-        android:gravity="center"
-        android:visibility="visible">
+        android:layout_below="@+id/tablayout_favoris"
+        android:id="@+id/fragment_rechercheinterneFavoris"
+        android:layout_alignParentBottom="true" />
 
-        <TextView
-            android:id="@+id/noSavedLineAvailable"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="Aucune ligne favorite"
-            android:textSize="26sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/noSavedLineDetail"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/noSavedLineAvailable"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="Pour en ajouter, cliquez sur l\'image ci-dessous"
-            android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/noLinesImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/noSavedLineDetail"
-            android:layout_marginTop="30dp"
-            android:contentDescription="Aucune ligne favorite"
-            android:gravity="center"
-            android:src="@drawable/nosavedlines" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/savedLines_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="?attr/actionBarSize"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/lines_view" />
-
-    </RelativeLayout>
 </LinearLayout>

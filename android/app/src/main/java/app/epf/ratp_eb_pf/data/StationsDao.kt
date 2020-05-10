@@ -14,14 +14,14 @@ interface StationsDao {
     suspend fun getStations() : MutableList<Stations>
 
     @Insert
-    suspend fun addStation(line: Stations)
+    suspend fun addStation(station: Stations)
 
-    @Delete
-    suspend fun deleteStation(line: Stations)
+    @Query("delete from stations where uuid = :uuid")
+    suspend fun deleteStation(uuid: String)
 
     @Query("delete from stations")
     suspend fun deleteStations()
 
-    @Query("select * from stations where id = :idStation")
-    suspend fun getStation(idStation: Int) : Stations
+    @Query("select * from stations where uuid = :uuid")
+    suspend fun getStation(uuid: String) : Stations
 }

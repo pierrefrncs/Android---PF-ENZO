@@ -45,7 +45,7 @@ class DetailsLineActivity : AppCompatActivity() {
         LineDirectionsDetail.text = line?.directions
 
         bundle.putSerializable("line", line)
-        viewpager = findViewById(R.id.fragment_rechercheinterne)
+        viewpager = findViewById(R.id.fragment_rechercheinterneDetails)
         setupViewPager(viewpager)
         viewpager.offscreenPageLimit = 1
         tabLayout = findViewById(R.id.tablayout_details)
@@ -69,11 +69,8 @@ class DetailsLineActivity : AppCompatActivity() {
 
         scope.launch {
             val adapter =
-                DetailsTabAdapter(
-                    supportFragmentManager,
-                    bundle
-                )
-            adapter.addFragment(StationsDetailsFragment(), "Ligne")
+                DetailsTabAdapter(supportFragmentManager, bundle)
+            adapter.addFragment(StationsListFragment(), "Ligne")
             adapter.addFragment(TrafficDetailsFragment(), "Etat du trafic")
             withContext(Dispatchers.Main) {
                 viewPager.adapter = adapter

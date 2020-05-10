@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ui.listeLines.details.stations.StationDetailsActivity"
+            android:label="Horaires station" />
+        <activity
             android:name=".SplashActivity"
             android:theme="@style/SlashTheme">
             <intent-filter>
