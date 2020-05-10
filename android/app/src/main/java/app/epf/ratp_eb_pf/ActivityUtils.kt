@@ -23,6 +23,12 @@ fun daoLi(context: Context): LineDao {
     return database.getLineDao()
 }
 
+//fun daoTra(context: Context): TrafficDao {
+//    val database = Room.databaseBuilder(context, AppDatabase::class.java, "gestionTraffics").build()
+//
+//    return database.getTrafficDao()
+//}
+
 /**
  * Retourne l'accès à l'API Rest
  *
@@ -32,14 +38,14 @@ fun retrofit(): Retrofit {
         level = HttpLoggingInterceptor.Level.BODY
     }
     val client = OkHttpClient.Builder()
-            .addInterceptor(httpLoggingInterceptor)
-            .addNetworkInterceptor(StethoInterceptor())
-            .build()
+        .addInterceptor(httpLoggingInterceptor)
+        .addNetworkInterceptor(StethoInterceptor())
+        .build()
 
     return Retrofit.Builder()
-            .baseUrl("https://api-ratp.pierre-grimaud.fr/v4/")
-            .addConverterFactory(MoshiConverterFactory.create())
-            .client(client)
-            .build()
+        .baseUrl("https://api-ratp.pierre-grimaud.fr/v4/")
+        .addConverterFactory(MoshiConverterFactory.create())
+        .client(client)
+        .build()
 
 }

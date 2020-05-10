@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_list_lignes"
-        android:name="app.epf.ratp_eb_pf.ui.listeLines.ListLinesFragment"
+        android:name="app.epf.ratp_eb_pf.ui.listeLines.ListLinesAccueil"
         android:label="@string/title_liste_lignes"
         tools:layout="@layout/fragment_liste_lines" />
 

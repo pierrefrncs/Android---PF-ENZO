@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -14,24 +13,23 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ListAdapter
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import android.view.View.OnFocusChangeListener
+import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.epf.ratp_eb_pf.*
 import app.epf.ratp_eb_pf.data.StationsDao
-import app.epf.ratp_eb_pf.model.Stations
-import app.epf.ratp_eb_pf.service.StationsService
 import app.epf.ratp_eb_pf.data.LineDao
 import app.epf.ratp_eb_pf.model.Line
-import app.epf.ratp_eb_pf.service.AllLines
+import app.epf.ratp_eb_pf.service.LinesService
+import app.epf.ratp_eb_pf.ui.listeLines.details.DetailsLineActivity
 import kotlinx.android.synthetic.main.fragment_liste_lines.view.*
 import kotlinx.coroutines.runBlocking
 
-class ListLinesFragment : Fragment() {
+class ListLinesAccueil : Fragment() {
 
     private lateinit var listLinesViewModel: ListLinesViewModel
     private var stationsDao: StationsDao? = null
@@ -53,12 +51,12 @@ class ListLinesFragment : Fragment() {
         linesRecyclerView = view.findViewById(R.id.lines_recyclerview)
         val rechercherList = view.findViewById<AutoCompleteTextView>(R.id.rechercherList)
         val qrCode = view.findViewById<ImageView>(R.id.qr_code)
-        val savedTopLevel_layout = view.findViewById<LinearLayout>(R.id.savedTopLevel_layout)
+        //       val savedTopLevel_layout = view.findViewById<LinearLayout>(R.id.savedTopLevel_layout)
         linesRecyclerView.layoutManager = LinearLayoutManager(activity)
 
         view.buttonSearch.setOnClickListener {
             if (rechercherList != null) {
-                val intent = Intent(requireContext(), DetailsLigne::class.java)
+                val intent = Intent(requireContext(), DetailsLineActivity::class.java)
                 lines?.map {
                     if (rechercherList.text.toString() == it.name) {
                         intent.putExtra("line", it)
@@ -66,15 +64,24 @@ class ListLinesFragment : Fragment() {
                         return@setOnClickListener
                     }
                 }
-
             }
         }
 
-//        savedTopLevel_layout.setOnClickListener {
-//            hideKeyboard()
-//            //         activity?.currentFocus?.clearFocus()
-//            savedTopLevel_layout.requestFocus()
-//        }
+        view.rechercherList.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                if (rechercherList != null) {
+                    val intent = Intent(requireContext(), DetailsLineActivity::class.java)
+                    lines?.map {
+                        if (rechercherList.text.toString() == it.name) {
+                            intent.putExtra("line", it)
+                            hideKeyboard()
+                            startActivity(intent)
+                        }
+                    }
+                }
+            }
+            false
+        }
 
         qrCode.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -97,18 +104,16 @@ class ListLinesFragment : Fragment() {
             rechercherList.setAdapter(adapterMetro)
 
             clearFocusAutoTextView(rechercherList)
-
         }
 
         rechercherList.setOnTouchListener { v, event ->
             when (event?.action) {
                 MotionEvent.ACTION_DOWN -> rechercherList.showDropDown()
             }
-
             v?.onTouchEvent(event) ?: true
         }
 
-        synchroServerAllLines()
+        synchroServerAllLines(view)
 
         return view
     }
@@ -120,25 +125,9 @@ class ListLinesFragment : Fragment() {
     }
 
 
-    private fun synchroServerStations() {
-        val service = retrofit().create(StationsService::class.java)
-        runBlocking {
-            stationsDao?.deleteStations()
-            val result = service.getStationsService("metros", "1")
-            result.result.stations.map {
-
-                val station = Stations(0, it.name, it.slug)
-                stationsDao?.addStations(station)
-
-            }
-            val stations = stationsDao?.getStations()
-        }
-    }
-
-
-    private fun synchroServerAllLines() {
+    private fun synchroServerAllLines(view: View) {
         if (lines.isNullOrEmpty()) {
-            val service = retrofit().create(AllLines::class.java)
+            val service = retrofit().create(LinesService::class.java)
             runBlocking {
                 lineDao?.deleteLines()
                 val result = service.getLinesService("metros")
@@ -148,10 +137,9 @@ class ListLinesFragment : Fragment() {
                     if (it.id != "79" && it.id != "455") {
                         lineDao?.addLine(line)
                     }
-
                 }
                 lines = lineDao?.getLines()
-                linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), requireView())
+                linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), view)
             }
         }
     }

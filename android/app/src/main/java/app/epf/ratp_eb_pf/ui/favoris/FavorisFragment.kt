@@ -1,8 +1,6 @@
 package app.epf.ratp_eb_pf.ui.favoris
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +10,11 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import app.epf.ratp_eb_pf.MainActivity
 import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.LineDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.ui.listeLines.LinesAdapter
-import app.epf.ratp_eb_pf.ui.listeLines.ListLinesFragment
 import kotlinx.android.synthetic.main.fragment_favoris.view.*
 import kotlinx.coroutines.runBlocking
 

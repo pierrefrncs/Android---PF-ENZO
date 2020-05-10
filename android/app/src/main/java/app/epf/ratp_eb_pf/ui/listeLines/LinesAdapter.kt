@@ -3,7 +3,6 @@ package app.epf.ratp_eb_pf.ui.listeLines
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +14,7 @@ import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.LineDao
 import app.epf.ratp_eb_pf.model.Line
+import app.epf.ratp_eb_pf.ui.listeLines.details.DetailsLineActivity
 import kotlinx.android.synthetic.main.fragment_favoris.view.*
 import kotlinx.android.synthetic.main.lines_view.view.*
 import kotlinx.coroutines.runBlocking
@@ -72,7 +72,7 @@ class LinesAdapter(private val linesList: MutableList<Line>, private val viewFra
         }
 
         view.setOnClickListener { itView ->
-            val intent = Intent(itView.context, DetailsLigne::class.java)
+            val intent = Intent(itView.context, DetailsLineActivity::class.java)
             intent.putExtra("line", line)
             itView.context.startActivity(intent)
         }
@@ -133,7 +133,7 @@ class LinesAdapter(private val linesList: MutableList<Line>, private val viewFra
                     linesList.remove(line)
 
                     notifyItemRemoved(position)
-                    notifyItemRangeChanged(position, itemCount);
+                    notifyItemRangeChanged(position, itemCount)
 
                     if (linesList.isNullOrEmpty()) {
                         viewFragment.layoutNoSavedLine.visibility = View.VISIBLE

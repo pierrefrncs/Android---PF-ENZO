@@ -1,7 +1,6 @@
 package app.epf.ratp_eb_pf.data
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import app.epf.ratp_eb_pf.model.Line

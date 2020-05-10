@@ -11,10 +11,10 @@ import app.epf.ratp_eb_pf.model.Stations
 interface StationsDao {
 
     @Query("select * from stations")
-    suspend fun getStations() : List<Stations>
+    suspend fun getStations() : MutableList<Stations>
 
     @Insert
-    suspend fun addStations(line: Stations)
+    suspend fun addStation(line: Stations)
 
     @Delete
     suspend fun deleteStation(line: Stations)
@@ -23,5 +23,5 @@ interface StationsDao {
     suspend fun deleteStations()
 
     @Query("select * from stations where id = :idStation")
-    suspend fun getStations(idStation: Int) : Stations
+    suspend fun getStation(idStation: Int) : Stations
 }
