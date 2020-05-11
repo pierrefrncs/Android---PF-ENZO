@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ui.listeLines.details.stations.StationDetailsActivity"
+            android:name="app.epf.ratp_eb_pf.ui.detailStation.StationDetailsActivity"
             android:label="Horaires station" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.LoadingActivity"
             android:theme="@style/SlashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.listeLines.details.DetailsLineActivity"
+            android:name="app.epf.ratp_eb_pf.ui.detailLine.DetailsLineActivity"
             android:label="Détails ligne" />
         <activity
             android:name=".MainActivity"

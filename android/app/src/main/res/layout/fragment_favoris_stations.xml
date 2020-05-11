@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".ui.favoris.FavorisStationsFragment">
+    tools:context=".ui.listeFavoris.FavorisStationsFragment">
 
     <RelativeLayout
         android:id="@+id/layoutNoSavedStation"
@@ -63,7 +63,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/stations_view" />
+            tools:listitem="@layout/carde_stations_view" />
 
     </RelativeLayout>
 

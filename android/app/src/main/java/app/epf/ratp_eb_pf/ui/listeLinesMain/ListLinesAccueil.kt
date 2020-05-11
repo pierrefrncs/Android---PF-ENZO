@@ -1,33 +1,36 @@
-package app.epf.ratp_eb_pf.ui.listeLines
+package app.epf.ratp_eb_pf.ui.listeLinesMain
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.ListAdapter
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import android.view.View.OnFocusChangeListener
-import android.view.inputmethod.EditorInfo
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.epf.ratp_eb_pf.*
-import app.epf.ratp_eb_pf.data.StationsDao
 import app.epf.ratp_eb_pf.data.LineDao
+import app.epf.ratp_eb_pf.data.StationsDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.service.LinesService
-import app.epf.ratp_eb_pf.ui.listeLines.details.DetailsLineActivity
+import app.epf.ratp_eb_pf.ui.detailLine.DetailsLineActivity
+import app.epf.ratp_eb_pf.ui.detailStation.StationDetailsActivity
+import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.fragment_liste_lines.view.*
 import kotlinx.coroutines.runBlocking
+
 
 // Fragment d'accueil contenant la liste des lines
 
@@ -88,8 +91,10 @@ class ListLinesAccueil : Fragment() {
 
         // Si click sur le bouton qrCode --> affiche la caméra
         qrCode.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, 100)
+            IntentIntegrator.forSupportFragment(this)
+                .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+                .setBeepEnabled(false)
+                .initiateScan()
         }
 
         // Configure les BDD
@@ -154,6 +159,23 @@ class ListLinesAccueil : Fragment() {
         }
     }
 
+    // Récup valeur du QR code et lande l'activité liée
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result =
+            IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (result != null) {
+            if (result.contents == null) {
+                Toast.makeText(activity, "Cancelled", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(activity, "Scanned: " + result.contents, Toast.LENGTH_LONG).show()
+                val intent = Intent(this@ListLinesAccueil.context, StationDetailsActivity::class.java)
+                startActivity(intent)
+
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
     // vide input si valeur non choisie dans la liste
     private fun clearFocusAutoTextView(autoCompleteTextView: AutoCompleteTextView) {
         autoCompleteTextView.onFocusChangeListener = OnFocusChangeListener { _, b ->
@@ -177,9 +199,6 @@ class ListLinesAccueil : Fragment() {
         view?.let { activity?.hideKeyboard(it) }
     }
 
-//    private fun Activity.hideKeyboard() {
-//        hideKeyboard(currentFocus ?: View(this))
-//    }
     // Pour cacher le keyboard avec uniquement un context
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager =

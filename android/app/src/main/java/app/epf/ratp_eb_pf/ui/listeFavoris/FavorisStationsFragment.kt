@@ -1,4 +1,4 @@
-package app.epf.ratp_eb_pf.ui.favoris
+package app.epf.ratp_eb_pf.ui.listeFavoris
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,7 +13,7 @@ import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.StationsDao
 import app.epf.ratp_eb_pf.model.Stations
-import app.epf.ratp_eb_pf.ui.listeLines.details.StationsAdapter
+import app.epf.ratp_eb_pf.ui.detailLine.StationsAdapter
 import kotlinx.android.synthetic.main.fragment_favoris_stations.view.*
 import kotlinx.coroutines.runBlocking
 

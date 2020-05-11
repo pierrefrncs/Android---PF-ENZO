@@ -1,4 +1,4 @@
-package app.epf.ratp_eb_pf.ui.listeLines
+package app.epf.ratp_eb_pf.ui.listeLinesMain
 
 import android.content.Context
 import android.content.Intent
@@ -14,9 +14,9 @@ import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.LineDao
 import app.epf.ratp_eb_pf.model.Line
-import app.epf.ratp_eb_pf.ui.listeLines.details.DetailsLineActivity
+import app.epf.ratp_eb_pf.ui.detailLine.DetailsLineActivity
 import kotlinx.android.synthetic.main.fragment_favoris_lines.view.*
-import kotlinx.android.synthetic.main.lines_view.view.*
+import kotlinx.android.synthetic.main.card_lines_view.view.*
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
 import java.io.InputStream
@@ -36,7 +36,7 @@ class LinesAdapter(private val linesList: MutableList<Line>, private val viewFra
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinesViewHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
-        val view: View = layoutInflater.inflate(R.layout.lines_view, parent, false)
+        val view: View = layoutInflater.inflate(R.layout.card_lines_view, parent, false)
 
         context = parent.context
 

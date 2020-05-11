@@ -1,4 +1,4 @@
-package app.epf.ratp_eb_pf.ui.listeLines.details
+package app.epf.ratp_eb_pf.ui.detailLine
 
 import android.content.Context
 import android.content.Intent
@@ -14,9 +14,9 @@ import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.StationsDao
 import app.epf.ratp_eb_pf.model.Stations
-import app.epf.ratp_eb_pf.ui.listeLines.details.stations.StationDetailsActivity
+import app.epf.ratp_eb_pf.ui.detailStation.StationDetailsActivity
 import kotlinx.android.synthetic.main.fragment_favoris_stations.view.*
-import kotlinx.android.synthetic.main.stations_view.view.*
+import kotlinx.android.synthetic.main.carde_stations_view.view.*
 import kotlinx.coroutines.runBlocking
 import java.io.IOException
 import java.io.InputStream
@@ -38,7 +38,7 @@ class StationsAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationsViewHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
-        val view: View = layoutInflater.inflate(R.layout.stations_view, parent, false)
+        val view: View = layoutInflater.inflate(R.layout.carde_stations_view, parent, false)
 
         context = parent.context
 

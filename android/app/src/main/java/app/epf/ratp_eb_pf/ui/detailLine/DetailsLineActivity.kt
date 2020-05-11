@@ -1,4 +1,4 @@
-package app.epf.ratp_eb_pf.ui.listeLines.details
+package app.epf.ratp_eb_pf.ui.detailLine
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle

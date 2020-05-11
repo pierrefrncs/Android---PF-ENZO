@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_list_lignes"
-        android:name="app.epf.ratp_eb_pf.ui.listeLines.ListLinesAccueil"
+        android:name="app.epf.ratp_eb_pf.ui.listeLinesMain.ListLinesAccueil"
         android:label="@string/title_liste_lignes"
         tools:layout="@layout/fragment_liste_lines" />
 
     <fragment
         android:id="@+id/navigation_favoris"
-        android:name="app.epf.ratp_eb_pf.ui.favoris.FavorisFragment"
+        android:name="app.epf.ratp_eb_pf.ui.listeFavoris.FavorisFragment"
         android:label="@string/title_favoris"
         tools:layout="@layout/fragment_favoris" />
 

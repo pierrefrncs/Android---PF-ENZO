@@ -9,7 +9,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    tools:context=".ui.listeLines.ListLinesAccueil">
+    tools:context=".ui.listeLinesMain.ListLinesAccueil">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,7 +76,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/lines_view" />
+            tools:listitem="@layout/card_lines_view" />
 
     </RelativeLayout>
 </LinearLayout>
