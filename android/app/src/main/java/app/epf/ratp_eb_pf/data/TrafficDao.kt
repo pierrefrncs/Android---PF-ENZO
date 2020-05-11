@@ -7,6 +7,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import app.epf.ratp_eb_pf.model.Traffic
 
+// Dao du traffic
+
 @Dao
 interface TrafficDao {
 

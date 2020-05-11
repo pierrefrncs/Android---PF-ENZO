@@ -17,6 +17,8 @@ import app.epf.ratp_eb_pf.ui.listeLines.details.StationsAdapter
 import kotlinx.android.synthetic.main.fragment_favoris_stations.view.*
 import kotlinx.coroutines.runBlocking
 
+// Sous-fragment des favoris pour les stations
+
 class FavorisStationsFragment : Fragment() {
 
     private var stationDaoSaved: StationsDao? = null
@@ -35,6 +37,7 @@ class FavorisStationsFragment : Fragment() {
         stationsRecyclerView = view.findViewById(R.id.savedStations_recyclerview)
         stationsRecyclerView.layoutManager = LinearLayoutManager(activity)
 
+        // En cas de click sur l'image "Aucune station favorite", envoie vers la liste des stations
         view.noStationsImage.setOnClickListener {
             val navController = activity?.findNavController(R.id.nav_host_fragment)
             navController?.navigate(R.id.navigation_list_lignes)
@@ -50,6 +53,7 @@ class FavorisStationsFragment : Fragment() {
             stations = stationDaoSaved?.getStations()
         }
 
+        // Si aucune station favorite, affiche l'image "Aucune station favorite", sinon cachée
         runBlocking {
             if (!stations.isNullOrEmpty()) {
                 view.layoutNoSavedStation.visibility = View.GONE
@@ -57,6 +61,8 @@ class FavorisStationsFragment : Fragment() {
                 view.layoutNoSavedStation.visibility = View.VISIBLE
             }
         }
+
+        // Ajoute l'adapter des stations (liste déroulante des stations favorites)
         stationsRecyclerView.adapter = StationsAdapter(stations ?: mutableListOf(), view)
 
 

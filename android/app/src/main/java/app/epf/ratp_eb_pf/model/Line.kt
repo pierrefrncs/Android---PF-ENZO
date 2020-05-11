@@ -4,9 +4,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
+// Model d'une ligne. Ex : Metro 1
+
 @Entity(tableName = "lines")
 data class Line(
-    @PrimaryKey(autoGenerate = true) val id: Int,
+    @PrimaryKey(autoGenerate = false) val id: Int,
     val code: String,
     val name: String,
     val directions: String,

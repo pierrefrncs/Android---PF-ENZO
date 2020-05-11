@@ -8,12 +8,15 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AutoCompleteTextView
+import android.widget.EditText
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+
+// Activity principale contenant les fragments de la page d'accueil
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
+        // Configure la barre de navigation
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -35,11 +39,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
+    // Clear focus et hide keyboard automatiquement en quittant un input
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         if (event.action == MotionEvent.ACTION_DOWN) {
             val v: View? = currentFocus
-            if (v is AutoCompleteTextView) {
+            if (v is AutoCompleteTextView || v is EditText) {
                 val outRect = Rect()
                 v.getGlobalVisibleRect(outRect)
                 if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
@@ -52,24 +56,15 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    // Pour cacher le keyboard d'une activité
     private fun Activity.hideKeyboard() {
         hideKeyboard(currentFocus ?: View(this))
     }
 
+    // Pour cacher le keyboard avec uniquement un context
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager =
             getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-
-//        val inputMethodManager =
-//            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//
-//        // Check if no view has focus
-//        val currentFocusedView = currentFocus
-//        currentFocusedView?.let {
-//            inputMethodManager.hideSoftInputFromWindow(
-//                currentFocusedView.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
-//        }
     }
-
 }

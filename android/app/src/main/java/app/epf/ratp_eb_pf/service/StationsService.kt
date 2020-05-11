@@ -3,12 +3,14 @@ package app.epf.ratp_eb_pf.service
 import retrofit2.http.GET
 import retrofit2.http.Path
 
+// Basé sur le JSON des stations d'une ligne en particulier
+
 interface StationsService {
 
     @GET("stations/{type}/{code}")
     suspend fun getStationsService(
-        @Path("type") type: String,
-        @Path("code") code: String
+        @Path("type") type: String, // Type de ligne. Ex : metro
+        @Path("code") code: String // Code de la ligne. Ex : 1 pour metro 1
     ): GetStationsResult
 }
 

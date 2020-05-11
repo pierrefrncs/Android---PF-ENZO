@@ -16,6 +16,8 @@ import app.epf.ratp_eb_pf.retrofit
 import app.epf.ratp_eb_pf.service.StationsService
 import kotlinx.coroutines.runBlocking
 
+// Sous-fragment (de DetailsLineActivity) qui contient la liste des stations d'une ligne
+
 class StationsListFragment : Fragment() {
 
     private var stationsDao: StationsDao? = null
@@ -32,11 +34,12 @@ class StationsListFragment : Fragment() {
         stationsRecyclerView = view.findViewById(R.id.stations_recyclerview)
         stationsRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-        stationsDao = daoSta(requireContext())
+        stationsDao = daoSta(requireContext()) // Récupère la database des stations
 
-        val side = arguments?.getSerializable("line") as Line
+        // Recupère les infos de la ligne du fragment/activity parent
+        val lineFromParent = arguments?.getSerializable("line") as Line
 
-        synchroServerStations(view, side.code)
+        synchroServerStations(view, lineFromParent.code)
 
         return view
     }
@@ -44,23 +47,23 @@ class StationsListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        stationsRecyclerView.adapter =
-            StationsAdapter(stations ?: mutableListOf(), requireView())
+        stationsRecyclerView.adapter = StationsAdapter(stations ?: mutableListOf(), requireView())
     }
 
+    // Synchro de la liste des stations
     private fun synchroServerStations(view: View, code: String) {
-        val service = retrofit().create(StationsService::class.java)
+        val service = retrofit().create(StationsService::class.java) // Fonction retrofit d'ActivityUtils
         runBlocking {
-            stationsDao?.deleteStations()
-            val result = service.getStationsService("metros", code)
+            stationsDao?.deleteStations() // Supprime les anciennes stations
+            val result = service.getStationsService("metros", code) // Obtient les stations de la ligne correspondante
+            var id = 1 // Pour toujours avoir le premier id à 1
             result.result.stations.map {
-
-                val station = Stations(0, it.name, it.slug, code, false)
-                stationsDao?.addStation(station)
+                val station = Stations(id, it.name, it.slug, code, false)
+                stationsDao?.addStation(station) // Ajoute la station dans la bdd
+                id += 1
             }
-            stations = stationsDao?.getStations()
-            stationsRecyclerView.adapter =
-                StationsAdapter(stations ?: mutableListOf(), view)
+            stations = stationsDao?.getStations() // Recupère la liste des stations depuis la bdd
+            stationsRecyclerView.adapter = StationsAdapter(stations ?: mutableListOf(), view)
         }
     }
 }

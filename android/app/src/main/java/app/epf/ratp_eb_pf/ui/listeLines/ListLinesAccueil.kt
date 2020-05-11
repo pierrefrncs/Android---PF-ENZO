@@ -29,6 +29,8 @@ import app.epf.ratp_eb_pf.ui.listeLines.details.DetailsLineActivity
 import kotlinx.android.synthetic.main.fragment_liste_lines.view.*
 import kotlinx.coroutines.runBlocking
 
+// Fragment d'accueil contenant la liste des lines
+
 class ListLinesAccueil : Fragment() {
 
     private lateinit var listLinesViewModel: ListLinesViewModel
@@ -51,9 +53,9 @@ class ListLinesAccueil : Fragment() {
         linesRecyclerView = view.findViewById(R.id.lines_recyclerview)
         val rechercherList = view.findViewById<AutoCompleteTextView>(R.id.rechercherList)
         val qrCode = view.findViewById<ImageView>(R.id.qr_code)
-        //       val savedTopLevel_layout = view.findViewById<LinearLayout>(R.id.savedTopLevel_layout)
         linesRecyclerView.layoutManager = LinearLayoutManager(activity)
 
+        // Si click sur le bouton physique recherche --> envoie vers les détails de la line correspondante
         view.buttonSearch.setOnClickListener {
             if (rechercherList != null) {
                 val intent = Intent(requireContext(), DetailsLineActivity::class.java)
@@ -67,6 +69,7 @@ class ListLinesAccueil : Fragment() {
             }
         }
 
+        // Si click sur le bouton recherche du clavier --> envoie vers les détails de la line correspondante
         view.rechercherList.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 if (rechercherList != null) {
@@ -83,11 +86,13 @@ class ListLinesAccueil : Fragment() {
             false
         }
 
+        // Si click sur le bouton qrCode --> affiche la caméra
         qrCode.setOnClickListener {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(intent, 100)
         }
 
+        // Configure les BDD
         stationsDao = daoSta(requireContext())
         lineDao = daoLi(requireContext())
 
@@ -97,15 +102,17 @@ class ListLinesAccueil : Fragment() {
             lines?.map {
                 listArray.add(it.name)
             }
+            // Ajoute un adapter à l'input contenant la liste des lines
             val adapterMetro = IgnoreAccentsArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_list_item_1, listArray.toTypedArray()
             )
             rechercherList.setAdapter(adapterMetro)
 
-            clearFocusAutoTextView(rechercherList)
+            clearFocusAutoTextView(rechercherList) // Si rien choisi parmi la liste --> vide l'input
         }
 
+        // En cas de click sur l'input --> affiche la liste déroulante avec les lines
         rechercherList.setOnTouchListener { v, event ->
             when (event?.action) {
                 MotionEvent.ACTION_DOWN -> rechercherList.showDropDown()
@@ -124,27 +131,30 @@ class ListLinesAccueil : Fragment() {
         linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), requireView())
     }
 
-
+    // Synchro de la liste des lines
     private fun synchroServerAllLines(view: View) {
         if (lines.isNullOrEmpty()) {
-            val service = retrofit().create(LinesService::class.java)
+            val service = retrofit().create(LinesService::class.java) // Fonction retrofit d'ActivityUtils
             runBlocking {
-                lineDao?.deleteLines()
-                val result = service.getLinesService("metros")
+                lineDao?.deleteLines() // Supprime les anciennes lines
+                val result = service.getLinesService("metros") // Obtient les lignes du type correspondant
+                var id = 1 // Pour toujours avoir le premier id à 1
                 result.result.metros.map {
 
-                    val line = Line(0, it.code, it.name, it.directions, it.id.toInt(), false)
+                    val line = Line(id, it.code, it.name, it.directions, it.id.toInt(), false)
+                    // Enlève les stations de metro inutiles
                     if (it.id != "79" && it.id != "455") {
-                        lineDao?.addLine(line)
+                        lineDao?.addLine(line)  // Ajoute la station dans la bdd
+                        id += 1
                     }
                 }
-                lines = lineDao?.getLines()
+                lines = lineDao?.getLines() // Recupère la liste des stations depuis la bdd
                 linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), view)
             }
         }
     }
 
-    // vide textView si non choisi dans la liste
+    // vide input si valeur non choisie dans la liste
     private fun clearFocusAutoTextView(autoCompleteTextView: AutoCompleteTextView) {
         autoCompleteTextView.onFocusChangeListener = OnFocusChangeListener { _, b ->
             if (!b) {
@@ -162,7 +172,7 @@ class ListLinesAccueil : Fragment() {
         }
     }
 
-
+    // Pour cacher le keyboard d'un fragment
     private fun Fragment.hideKeyboard() {
         view?.let { activity?.hideKeyboard(it) }
     }
@@ -170,7 +180,7 @@ class ListLinesAccueil : Fragment() {
 //    private fun Activity.hideKeyboard() {
 //        hideKeyboard(currentFocus ?: View(this))
 //    }
-
+    // Pour cacher le keyboard avec uniquement un context
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager =
             getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager

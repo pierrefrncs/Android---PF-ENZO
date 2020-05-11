@@ -5,12 +5,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
+// Adapter pour configurer le ViewPager des lignes (stations + etat traffic)
+
 class DetailsTabAdapter(fm: FragmentManager, data: Bundle) : FragmentPagerAdapter(fm) {
 
 
     private val fragmentList = arrayListOf<Fragment>()
     private val fragmentTitle = arrayListOf<String>()
-    private val fragmentBundle: Bundle = data
+    private val fragmentBundle: Bundle = data // Bundle permet de transférer les données du fragment principal vers les sous-fragments
 
     override fun getItem(position: Int): Fragment {
         fragmentList[position].arguments = fragmentBundle

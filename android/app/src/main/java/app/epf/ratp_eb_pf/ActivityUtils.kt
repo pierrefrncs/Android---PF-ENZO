@@ -11,26 +11,22 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+// Configure la bdd avec les stations
 fun daoSta(context: Context): StationsDao {
-    val database = Room.databaseBuilder(context, AppDatabase::class.java, "gestionStations").build()
+    val database = Room.databaseBuilder(context, AppDatabase::class.java, "defaultDatabase").build()
 
     return database.getStationsDao()
 }
 
+// Configure la bdd avec les lignes
 fun daoLi(context: Context): LineDao {
-    val database = Room.databaseBuilder(context, AppDatabase::class.java, "gestionLines").build()
+    val database = Room.databaseBuilder(context, AppDatabase::class.java, "defaultDatabase").build()
 
     return database.getLineDao()
 }
 
-//fun daoTra(context: Context): TrafficDao {
-//    val database = Room.databaseBuilder(context, AppDatabase::class.java, "gestionTraffics").build()
-//
-//    return database.getTrafficDao()
-//}
-
 /**
- * Retourne l'accès à l'API Rest
+ * Retourne l'accès à l'API Rest de la Ratp
  *
  */
 fun retrofit(): Retrofit {

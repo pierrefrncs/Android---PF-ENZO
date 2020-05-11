@@ -5,21 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import androidx.viewpager.widget.ViewPager
 import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.LineDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.ui.listeLines.LinesAdapter
-import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.fragment_favoris.view.*
 import kotlinx.android.synthetic.main.fragment_favoris_lines.view.*
 import kotlinx.coroutines.runBlocking
+
+// Sous-fragment des favoris pour les lines
 
 class FavorisLinesFragment : Fragment() {
 
@@ -39,6 +37,7 @@ class FavorisLinesFragment : Fragment() {
         linesRecyclerView = view.findViewById(R.id.savedLines_recyclerview)
         linesRecyclerView.layoutManager = LinearLayoutManager(activity)
 
+        // En cas de click sur l'image "Aucune ligne favorite", envoie vers la liste des lignes
         view.noLinesImage.setOnClickListener {
             val navController = activity?.findNavController(R.id.nav_host_fragment)
             navController?.navigate(R.id.navigation_list_lignes)
@@ -54,6 +53,7 @@ class FavorisLinesFragment : Fragment() {
             lines = lineDaoSaved?.getLines()
         }
 
+        // Si aucune ligne favorite, affiche l'image "Aucune ligne favorite", sinon cachée
         runBlocking {
             if (!lines.isNullOrEmpty()) {
                 view.layoutNoSavedLine.visibility = View.GONE
@@ -61,8 +61,9 @@ class FavorisLinesFragment : Fragment() {
                 view.layoutNoSavedLine.visibility = View.VISIBLE
             }
         }
-        linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), view)
 
+        // Ajoute l'adapter des lines (liste déroulante des lines favorites)
+        linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), view)
 
         return view
     }

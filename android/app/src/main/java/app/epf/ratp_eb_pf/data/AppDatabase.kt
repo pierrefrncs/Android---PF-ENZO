@@ -6,6 +6,8 @@ import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.model.Stations
 import app.epf.ratp_eb_pf.model.Traffic
 
+// Gestion Database
+
 @Database(entities = [Stations::class, Line::class, Traffic::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 

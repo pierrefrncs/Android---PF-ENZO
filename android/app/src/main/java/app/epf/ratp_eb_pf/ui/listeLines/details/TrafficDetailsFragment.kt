@@ -12,10 +12,9 @@ import app.epf.ratp_eb_pf.service.TrafficService
 import kotlinx.android.synthetic.main.fragment_traffic_details.view.*
 import kotlinx.coroutines.runBlocking
 
-class TrafficDetailsFragment : Fragment() {
+// Sous-fragment (de DetailsLineActivity) qui contient l'état du traffic d'une ligne
 
-//    private var trafficsDao: TrafficDao? = null
-//    private var traffics: MutableList<Traffic>? = null
+class TrafficDetailsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,30 +23,24 @@ class TrafficDetailsFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_traffic_details, container, false)
 
-   //     trafficsDao = daoTra(requireContext())
+        // Recupère les infos de la ligne du fragment/activity parent
+        val lineFromParent = arguments?.getSerializable("line") as Line
 
-        val side = arguments?.getSerializable("line") as Line
-
-        synchroServerTraffics(view, side.code)
+        synchroServerTraffics(view, lineFromParent.code)
 
         return view
     }
 
 
+    // Synchro de l'état du traffic
     private fun synchroServerTraffics(view: View, code: String) {
-        val service = retrofit().create(TrafficService::class.java)
+        val service = retrofit().create(TrafficService::class.java) // Fonction retrofit d'ActivityUtils
         runBlocking {
-            //           trafficsDao?.deleteTraffics()
             val result = service.getTrafficService("metros", code)
             val topo = result.result
 
-//                val traffic = Traffic(0, topo.line, topo.slug, topo.title, topo.message)
-            //               trafficsDao?.addTraffic(traffic)
-
             view.etatTraffic.text = topo.title
             view.messageTraffic.text = topo.message
-
-            //          traffics = trafficsDao?.getTraffics()
         }
     }
 }
