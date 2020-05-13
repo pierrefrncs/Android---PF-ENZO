@@ -8,7 +8,7 @@ import java.io.Serializable
 
 @Entity(tableName = "stations")
 data class Stations(
-    @PrimaryKey(autoGenerate = false) val id: Int,
+    @PrimaryKey(autoGenerate = false) var id: Int,
     val name: String,
     val slug: String,
     val line: String, // Pour savoir à quelle ligne appartient la station

@@ -8,7 +8,7 @@ import java.io.Serializable
 
 @Entity(tableName = "lines")
 data class Line(
-    @PrimaryKey(autoGenerate = false) val id: Int,
+    @PrimaryKey(autoGenerate = false) var id: Int,
     val code: String,
     val name: String,
     val directions: String,

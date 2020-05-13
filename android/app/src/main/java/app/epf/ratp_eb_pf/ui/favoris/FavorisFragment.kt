@@ -6,18 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import androidx.viewpager.widget.ViewPager
 import app.epf.ratp_eb_pf.R
-import app.epf.ratp_eb_pf.data.AppDatabase
-import app.epf.ratp_eb_pf.data.LineDao
-import app.epf.ratp_eb_pf.model.Line
-import app.epf.ratp_eb_pf.ui.listeLines.LinesAdapter
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.fragment_favoris.view.*
 import kotlinx.coroutines.*
 
 // Fragment global contenant les favoris
@@ -52,7 +43,7 @@ class FavorisFragment : Fragment() {
 
     private fun setupViewPager(viewPager: ViewPager) {
         val scope =
-            CoroutineScope(Dispatchers.Main + SupervisorJob()) // Pour essayer d'accélerer le tout
+            CoroutineScope(Dispatchers.Default + SupervisorJob()) // Pour essayer d'accélerer le tout
 
         //https://stackoverflow.com/a/18847195/13289762
 

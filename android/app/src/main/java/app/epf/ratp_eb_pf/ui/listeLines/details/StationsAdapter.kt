@@ -33,7 +33,11 @@ class StationsAdapter(
     private lateinit var context: Context // Context du fragment contenant l'adapter
     private var toastMessage: Toast? = null // Pour réinitialiser les messages toast quand plusieurs apparaissent en même temps
 
-    class StationsViewHolder(val stationsView: View) : RecyclerView.ViewHolder(stationsView)
+    class StationsViewHolder(val stationsView: View) : RecyclerView.ViewHolder(stationsView) {
+        fun bind(post: Stations) {
+            stationsView.name_stations.text = post.name
+        }
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StationsViewHolder {
@@ -64,10 +68,12 @@ class StationsAdapter(
 
         val station = stationsList[position] // Position de la station dans la recyclerView
 
+        holder.bind(stationsList[position])
+
         view.name_stations.text = station.name
 
-        // Trouve le nom du fragment contenant l'adapter
-        val fragmentFavoris = try {
+        // Trouve le nom du fragment contenant l'adapter dans le viewPager des favoris
+        val fragmentFavorisViewPager = try {
             // https://stackoverflow.com/a/54829516/13289762
             (context as MainActivity).supportFragmentManager.fragments.last()?.childFragmentManager?.fragments
                 ?.get(0)?.childFragmentManager?.fragments
@@ -75,9 +81,17 @@ class StationsAdapter(
         } catch (ex: Exception) {
             ""
         }
+        // Trouve le nom du fragment contenant l'adapter dans la navigation principale
+        val fragmentList = try {
+            // https://stackoverflow.com/a/54829516/13289762
+            (context as MainActivity).supportFragmentManager.fragments.last()?.childFragmentManager?.fragments
+                ?.get(0)?.javaClass?.simpleName
+        } catch (ex: Exception) {
+            ""
+        }
 
         // Si ce fragment est celui des favoris : rajoute le logo de la ligne
-        if (fragmentFavoris == "FavorisStationsFragment") {
+        if (fragmentFavorisViewPager == "FavorisStationsFragment" || fragmentList == "ListLinesAccueil") {
             view.logo_ligneStation.visibility = View.VISIBLE
 
             // Permet d'acceder au package "assets" avec les logos des lignes
@@ -159,7 +173,7 @@ class StationsAdapter(
                 }
 
                 // si le fragment parent est celui des stations favorites
-                if (fragmentFavoris == "FavorisStationsFragment") {
+                if (fragmentFavorisViewPager == "FavorisStationsFragment") {
                     stationsList.remove(station) // Supprime de la recyclerView
 
                     // Update la recyclerView
