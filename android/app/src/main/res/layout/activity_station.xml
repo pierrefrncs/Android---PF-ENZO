@@ -5,12 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+<<<<<<< Updated upstream:android/app/src/main/res/layout/activity_station.xml
     tools:context=".ui.detailStation.">
+=======
+    tools:context=".ui.detailStation.StationDetailsActivity">
+>>>>>>> Stashed changes:android/app/src/main/res/layout/activity_station_details.xml
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -23,26 +29,17 @@
             android:paddingEnd="10dp">
 
             <TextView
-                android:id="@+id/LineNameDetail"
+                android:id="@+id/StationNameDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="25sp"
                 tools:text="Test" />
 
-            <TextView
-                android:id="@+id/LineDirectionsDetail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:ellipsize="none"
-                android:scrollHorizontally="false"
-                tools:text="Test" />
-
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/logoDetailLine"
+            android:id="@+id/logoDetailStation"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_weight="1"
@@ -57,15 +54,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:tabMode="fixed"
-        android:id="@+id/tablayout_details"
+        android:id="@+id/tablayout_details_station"
         android:background="@color/colorPrimary"
         app:tabTextColor="#fff"/>
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+<<<<<<< Updated upstream:android/app/src/main/res/layout/activity_station.xml
         android:layout_below="@+id/tablayout_details"
         android:id="@+id/fragment_rechercheinterne"
+=======
+        android:layout_below="@+id/tablayout_details_station"
+        android:id="@+id/fragment_station_tablayout"
+>>>>>>> Stashed changes:android/app/src/main/res/layout/activity_station_details.xml
         android:layout_alignParentBottom="true" />
 
 

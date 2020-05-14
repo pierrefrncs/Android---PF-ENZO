@@ -91,7 +91,6 @@ class LinesAdapter(private val linesList: MutableList<Line>, private val viewFra
         } else if (!line.favoris || !favoris) {
             view.fab_favLine.setImageResource(R.drawable.ic_star_border_black_24dp)
             favoris = false
-
         }
 
 

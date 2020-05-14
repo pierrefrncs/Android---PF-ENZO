@@ -19,7 +19,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+<<<<<<< Updated upstream:android/app/src/main/res/layout/fragment_line_stations.xml
             tools:listitem="@layout/card_line_station" />
+=======
+            tools:listitem="@layout/card_stations_view" />
+>>>>>>> Stashed changes:android/app/src/main/res/layout/fragment_stations_details.xml
 
     </RelativeLayout>
 

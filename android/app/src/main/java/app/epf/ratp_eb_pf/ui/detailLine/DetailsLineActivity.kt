@@ -69,6 +69,7 @@ class DetailsLineActivity : AppCompatActivity() {
 
         scope.launch {
             val adapter =
+<<<<<<< Updated upstream
                 DetailsTabAdapter(
                     supportFragmentManager,
                     bundle
@@ -76,9 +77,14 @@ class DetailsLineActivity : AppCompatActivity() {
             adapter.addFragment(StationsDetailsFragment(), "Ligne")
             adapter.addFragment(TrafficDetailsFragment(), "Etat du trafic")
             withContext(Dispatchers.Main) {
+=======
+                DetailsTabAdapter(supportFragmentManager, bundle)
+                adapter.addFragment(StationsListFragment(), "Stations") // Ajoute sous-fragment avec la liste des stations
+                adapter.addFragment(TrafficDetailsFragment(), "Etat du trafic") // Ajoute sous-fragment pour l'état du traffic
+                withContext(Dispatchers.Main) {
+>>>>>>> Stashed changes
                 viewPager.adapter = adapter
             }
         }
-
     }
 }

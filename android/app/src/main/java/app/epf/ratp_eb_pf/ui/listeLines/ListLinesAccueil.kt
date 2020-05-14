@@ -151,8 +151,13 @@ class ListLinesAccueil : Fragment() {
                 lineDao?.deleteLines()
                 val result = service.getLinesService("metros")
                 result.result.metros.map {
+<<<<<<< Updated upstream:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLines/ListLinesAccueil.kt
 
                     val line = Line(0, it.code, it.name, it.directions, it.id.toInt(), false)
+=======
+                    val line = Line(id, it.code, it.name, it.directions, it.id.toInt(), false)
+                    // Enlève les stations de metro inutiles
+>>>>>>> Stashed changes:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLinesMain/ListLinesAccueil.kt
                     if (it.id != "79" && it.id != "455") {
                         lineDao?.addLine(line)
                     }
@@ -163,7 +168,29 @@ class ListLinesAccueil : Fragment() {
         }
     }
 
+<<<<<<< Updated upstream:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLines/ListLinesAccueil.kt
     // vide textView si non choisi dans la liste
+=======
+    // Récup valeur du QR code et lande l'activité liée
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val result =
+            IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (result != null) {
+            if (result.contents == null) {
+                Toast.makeText(activity, "Cancelled", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(activity, "Scanned: " + result.contents, Toast.LENGTH_LONG).show()
+                val intent = Intent(this@ListLinesAccueil.context, StationDetailsActivity::class.java)
+                startActivity(intent)
+
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    // vide input si valeur non choisie dans la liste
+>>>>>>> Stashed changes:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLinesMain/ListLinesAccueil.kt
     private fun clearFocusAutoTextView(autoCompleteTextView: AutoCompleteTextView) {
         autoCompleteTextView.onFocusChangeListener = OnFocusChangeListener { _, b ->
             if (!b) {
