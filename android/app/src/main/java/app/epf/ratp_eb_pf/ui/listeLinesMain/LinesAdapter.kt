@@ -31,7 +31,11 @@ class LinesAdapter(private val linesList: MutableList<Line>, private val viewFra
     private lateinit var context: Context // Context du fragment contenant l'adapter
     private var toastMessage: Toast? = null // Pour réinitialiser les messages toast quand plusieurs apparaissent en même temps
 
-    class LinesViewHolder(val linesView: View) : RecyclerView.ViewHolder(linesView)
+    class LinesViewHolder(val linesView: View) : RecyclerView.ViewHolder(linesView) {
+        fun bind(post: Line) {
+            linesView.name_line.text = post.name
+        }
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinesViewHolder {
@@ -62,7 +66,8 @@ class LinesAdapter(private val linesList: MutableList<Line>, private val viewFra
 
         val line = linesList[position] // Position de la line dans la recyclerView
 
-        view.name_line.text = line.name
+       // view.name_line.text = line.name
+        holder.bind(linesList[position])
 
         // Permet d'acceder au package "assets" avec les logos des lignes
         var ims: InputStream? = null

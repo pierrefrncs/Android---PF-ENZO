@@ -43,7 +43,7 @@ class FavorisFragment : Fragment() {
 
     private fun setupViewPager(viewPager: ViewPager) {
         val scope =
-            CoroutineScope(Dispatchers.Main + SupervisorJob()) // Pour essayer d'accélerer le tout
+            CoroutineScope(Dispatchers.Default + SupervisorJob()) // Pour essayer d'accélerer le tout
 
         //https://stackoverflow.com/a/18847195/13289762
 
