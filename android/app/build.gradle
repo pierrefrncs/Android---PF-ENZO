@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "app.epf.ratp_eb_pf"
-        minSdkVersion 22
+        minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -21,6 +21,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        customDebugType {
+            debuggable true
+
         }
     }
 
@@ -82,4 +86,8 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding-kotlin:2.1.1'
 
     implementation "androidx.recyclerview:recyclerview:1.2.0-alpha03"
+
+    implementation('com.journeyapps:zxing-android-embedded:4.1.0') { transitive = false }
+    implementation 'com.google.zxing:core:3.0.1'
+
 }

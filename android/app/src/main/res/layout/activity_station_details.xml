@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -50,13 +51,14 @@
         app:tabMode="fixed"
         android:id="@+id/tablayout_details_station"
         android:background="@color/colorPrimary"
-        app:tabTextColor="#fff"/>
+        app:tabTextColor="#fff"
+        app:tabIndicatorColor="#fff"
+        app:tabIndicatorHeight="2dp"/>
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/fragment_vp_horaires"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:layout_alignParentBottom="true" />
+        android:layout_height="wrap_content"
+        android:id="@+id/fragment_pager_horaires"
+        android:layout_marginBottom="10dp"/>
 
 </LinearLayout>

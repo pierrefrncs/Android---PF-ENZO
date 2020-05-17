@@ -34,6 +34,7 @@ class FavorisFragment : Fragment() {
         viewpager = view.findViewById(R.id.fragment_rechercheinterneFavoris)
         setupViewPager(viewpager)
         viewpager.offscreenPageLimit = 1 // Nombre de sous fragments - 1 pour améliorer la fluidité
+
         tabLayout = view.findViewById(R.id.tablayout_favoris)
         tabLayout.setupWithViewPager(viewpager)
 

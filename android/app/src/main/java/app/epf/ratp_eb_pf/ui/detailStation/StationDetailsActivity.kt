@@ -8,10 +8,12 @@ import android.view.MenuItem
 import androidx.viewpager.widget.ViewPager
 import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.data.SchedulesDao
+import app.epf.ratp_eb_pf.data.StationsDao
 import app.epf.ratp_eb_pf.model.Schedules
 import app.epf.ratp_eb_pf.model.Stations
 import app.epf.ratp_eb_pf.retrofit
 import app.epf.ratp_eb_pf.service.SchedulesService
+import app.epf.ratp_eb_pf.service.Station
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_details_line.*
 import kotlinx.android.synthetic.main.activity_station_details.*
@@ -24,6 +26,7 @@ import java.io.InputStream
 class StationDetailsActivity : AppCompatActivity() {
 
     private var station: Stations? = null
+    private var stationDao: StationsDao? = null
     private var scheduleDao: SchedulesDao? =null
     private var horaires: MutableList<Schedules>? = null
     private var bundle = Bundle()
@@ -55,13 +58,14 @@ class StationDetailsActivity : AppCompatActivity() {
         }
 
         bundle.putSerializable("station", station) // Pour que les sous-fragments connaissent les données de la ligne
-        viewpager = findViewById(R.id.fragment_vp_horaires)
-        setupViewPager(viewpager)
 
+        viewpager = findViewById(R.id.fragment_pager_horaires)
         viewpager.offscreenPageLimit = 1
+
         tabLayout = findViewById(R.id.tablayout_details_station)
         tabLayout.setupWithViewPager(viewpager)
 
+        setupViewPager(viewpager)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

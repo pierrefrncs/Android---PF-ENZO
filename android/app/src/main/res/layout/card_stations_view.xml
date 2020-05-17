@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".ui.detailLine.StationsDetailsFragment">
+    tools:context=".ui.listeLines.details.DetailsLineActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +32,5 @@
             android:tint="@color/colorAccent"
             app:backgroundTint="@color/colorAccent"
             app:fabSize="auto" />
-
-
     </LinearLayout>
 </androidx.cardview.widget.CardView>

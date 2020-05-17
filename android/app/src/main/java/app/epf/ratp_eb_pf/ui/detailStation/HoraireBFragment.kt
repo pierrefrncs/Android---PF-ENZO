@@ -24,7 +24,7 @@ class HoraireBFragment : Fragment() {
     private var stationFromParent:Stations? = null
 
     private val type = "metros"
-    private val way = "B"
+    private val way = "R"
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,

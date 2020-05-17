@@ -41,8 +41,6 @@ class HoraireAFragment: Fragment() {
 
         synchroStationData(view)
 
-
-
         return view
     }
 
