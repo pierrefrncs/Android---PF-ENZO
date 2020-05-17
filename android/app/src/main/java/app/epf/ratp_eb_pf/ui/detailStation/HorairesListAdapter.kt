@@ -35,7 +35,7 @@ class HorairesListAdapter (
         val databaseSaved = Room.databaseBuilder(context, AppDatabase::class.java, "savedDatabase")
             .build()
 
-        schedulesDaoBDD = databaseSaved.getScheduleDao()
+        schedulesDaoBDD = databaseSaved.getSchedulesDao()
 
         runBlocking {
             listHorairesBDD = schedulesDaoBDD?.getSchedules() // Récupère les horaires de la destination

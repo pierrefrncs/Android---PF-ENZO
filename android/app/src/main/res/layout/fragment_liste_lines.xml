@@ -9,7 +9,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    tools:context=".ui.listeLines.ListLinesAccueil">
+    tools:context="app.epf.ratp_eb_pf.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

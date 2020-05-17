@@ -5,11 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-<<<<<<< Updated upstream:android/app/src/main/res/layout/activity_station.xml
-    tools:context=".ui.detailStation.">
-=======
-    tools:context=".ui.detailStation.StationDetailsActivity">
->>>>>>> Stashed changes:android/app/src/main/res/layout/activity_station_details.xml
+    tools:context="app.epf.ratp_eb_pf.ui.detailStation.StationDetailsActivity">>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,14 +57,13 @@
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-<<<<<<< Updated upstream:android/app/src/main/res/layout/activity_station.xml
+
         android:layout_below="@+id/tablayout_details"
         android:id="@+id/fragment_rechercheinterne"
-=======
-        android:layout_below="@+id/tablayout_details_station"
-        android:id="@+id/fragment_station_tablayout"
->>>>>>> Stashed changes:android/app/src/main/res/layout/activity_station_details.xml
-        android:layout_alignParentBottom="true" />
+    android:layout_alignParentBottom="true" />
+
+
+
 
 
 </LinearLayout>

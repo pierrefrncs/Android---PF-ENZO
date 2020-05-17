@@ -14,24 +14,25 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 // Configure la bdd avec les stations
 fun daoSta(context: Context): StationsDao {
-    val database = Room.databaseBuilder(context, AppDatabase::class.java, "defaultDatabase").fallbackToDestructiveMigration().build()
+    val database = Room.databaseBuilder(context, AppDatabase::class.java, "defaultDatabase").build()
 
     return database.getStationsDao()
 }
 
 // Configure la bdd avec les lignes
 fun daoLi(context: Context): LineDao {
-    val database = Room.databaseBuilder(context, AppDatabase::class.java, "defaultDatabase").fallbackToDestructiveMigration().build()
+    val database = Room.databaseBuilder(context, AppDatabase::class.java, "defaultDatabase").build()
 
     return database.getLineDao()
 }
 
-fun daoSch(context: Context): SchedulesDao{
-    val database = Room.databaseBuilder(context, AppDatabase::class.java, "defaultDatabase").fallbackToDestructiveMigration().build()
 
-    return database.getScheduleDao()
+// Configure la bdd avec les lignes
+fun daoSch(context: Context): SchedulesDao {
+    val database = Room.databaseBuilder(context, AppDatabase::class.java, "defaultDatabase").build()
+
+    return database.getSchedulesDao()
 }
-
 /**
  * Retourne l'accès à l'API Rest de la Ratp
  *

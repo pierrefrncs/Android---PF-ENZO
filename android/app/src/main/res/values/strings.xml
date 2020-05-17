@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">RATP_EB_PF</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="app_name">Metro Finder</string>
+    <string name="title_liste_lignes">Liste des lignes</string>
+    <string name="title_favoris">Mes favoris</string>
     <string name="title_notifications">Notifications</string>
-    <string name="title_list">Liste</string>
+
 </resources>

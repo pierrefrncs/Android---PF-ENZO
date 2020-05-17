@@ -31,12 +31,6 @@ class StationDetailsActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
 
 
-    private val type = "metros"
-    private val code = "1"
-    private val slug = "esplanade+de+la+defense"
-    private val way = "A"
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_station_details)
@@ -61,7 +55,7 @@ class StationDetailsActivity : AppCompatActivity() {
         }
 
         bundle.putSerializable("station", station) // Pour que les sous-fragments connaissent les données de la ligne
-        viewpager = findViewById(R.id.fragment_station_tablayout)
+        viewpager = findViewById(R.id.fragment_vp_horaires)
         setupViewPager(viewpager)
 
         viewpager.offscreenPageLimit = 1
@@ -92,22 +86,5 @@ class StationDetailsActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun synchroStationData(){
-        val serviceSchedules = retrofit().create(SchedulesService::class.java)
-        runBlocking {
-            scheduleDao?.deleteSchedules()
-            val result = serviceSchedules.getScheduleService(type,code,slug,way)
-            var id = 1
-            result.result.schedules.map {
-                Log.e("TAG", "test")
-                val schedules = Schedules(id, it.message, it.destination)
-                scheduleDao?.addSchedules(schedules)
-                id += 1
-            }
-            horaires = scheduleDao?.getSchedules()
-            Log.e("TAG", horaires.toString())
-        }
-
-    }
+    
 }

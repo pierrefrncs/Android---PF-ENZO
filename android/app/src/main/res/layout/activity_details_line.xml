@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.detailLine.DetailsLineActivity">
+    tools:context="app.epf.ratp_eb_pf.ui.listeLines.details.DetailsLineActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tablayout_details"
-        android:id="@+id/fragment_rechercheinterne"
+        android:id="@+id/fragment_rechercheinterneDetails"
         android:layout_alignParentBottom="true" />
 
 

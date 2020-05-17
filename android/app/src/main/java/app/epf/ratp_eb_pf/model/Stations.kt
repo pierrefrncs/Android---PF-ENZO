@@ -1,8 +1,17 @@
 package app.epf.ratp_eb_pf.model
 
-data class Stations (val name:String, val slug:String){
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import java.io.Serializable
 
-    override fun toString(): String {
-        return "Stations(name='$name', slug='$slug')"
-    }
-}
+// Modèle d'une station. Ex : Station La Défense du metro 1
+
+@Entity(tableName = "stations")
+data class Stations(
+    @PrimaryKey(autoGenerate = false) var id: Int,
+    val name: String,
+    val slug: String,
+    val line: String, // Pour savoir à quelle ligne appartient la station
+    var favoris: Boolean,
+    val uuid: String = slug + line // Pour avoir un uuid unique
+) : Serializable

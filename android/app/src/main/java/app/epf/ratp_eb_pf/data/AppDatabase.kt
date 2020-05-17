@@ -18,5 +18,5 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getTrafficDao(): TrafficDao
 
-    abstract fun getScheduleDao(): SchedulesDao
+    abstract fun getSchedulesDao(): SchedulesDao
 }
