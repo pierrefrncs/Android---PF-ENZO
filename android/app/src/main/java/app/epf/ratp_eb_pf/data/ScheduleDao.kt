@@ -5,6 +5,8 @@ import androidx.room.Insert
 import androidx.room.Query
 import app.epf.ratp_eb_pf.model.Schedules
 
+// Dao des horaires des stations
+
 @Dao
 interface SchedulesDao {
 

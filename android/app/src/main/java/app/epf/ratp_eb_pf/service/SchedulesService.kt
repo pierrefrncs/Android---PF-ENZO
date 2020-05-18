@@ -4,6 +4,8 @@ import app.epf.ratp_eb_pf.model.Schedules
 import retrofit2.http.GET
 import retrofit2.http.Path
 
+// Basé sur le JSON des horaires d'une station et destination en particulier
+
 interface SchedulesService {
 
         @GET("schedules/{type}/{code}/{station}/{way}")

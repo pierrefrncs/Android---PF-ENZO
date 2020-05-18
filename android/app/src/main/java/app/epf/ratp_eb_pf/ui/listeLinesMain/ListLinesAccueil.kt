@@ -152,7 +152,23 @@ class ListLinesAccueil : Fragment() {
     override fun onResume() {
         super.onResume()
 
+<<<<<<< Updated upstream:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLinesMain/ListLinesAccueil.kt
         globalRecyclerView.adapter = mergeAdapter
+=======
+        if (mBundleRecyclerViewState != null) {
+            mListState = mBundleRecyclerViewState!!.getParcelable("keyR")
+            globalRecyclerView.layoutManager?.onRestoreInstanceState(mListState)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        mBundleRecyclerViewState = Bundle()
+
+        mListState = globalRecyclerView.layoutManager?.onSaveInstanceState()
+        mBundleRecyclerViewState!!.putParcelable("keyR", mListState)
+>>>>>>> Stashed changes:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLines/ListLinesAccueil.kt
     }
 
     // Synchro de la liste des lines
@@ -223,8 +239,7 @@ class ListLinesAccueil : Fragment() {
         // Définit le second adapter du mergeAdapter (ajoute pas : affiche uniquement lines)
         stations?.let { oldFilteredPostsSta.addAll(it) }
         stationsAdapter = StationsAdapter(oldFilteredPostsSta, view)
-//        mergeAdapter.addAdapter(stationsAdapter!!)
-//        globalRecyclerView.adapter = mergeAdapter
+
     }
 
     // Pour vérifier si la liste des lines contient ou non la recherche de l'input
@@ -253,6 +268,30 @@ class ListLinesAccueil : Fragment() {
         it.onComplete()
     }
 
+<<<<<<< Updated upstream:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLinesMain/ListLinesAccueil.kt
+=======
+    //récupère les datas du QR code en lance l'activité de la station renseignée
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK){
+            var result: IntentResult? = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+            if (result != null) {
+
+                runBlocking {
+                    //récupère la station dans la database avec l'uuid du QR code
+                    val station = stationsDao?.getStation(result.contents)
+                    val intent = Intent(activity, StationDetailsActivity::class.java)
+                    intent.putExtra("station",station)
+                    getActivity()?.startActivity(intent)
+                }
+            }
+
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+
+>>>>>>> Stashed changes:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLines/ListLinesAccueil.kt
     // Pour ignorer les accents dans l'input
     private fun CharSequence.unAccent(): String {
         val temp = Normalizer.normalize(this, Normalizer.Form.NFD)

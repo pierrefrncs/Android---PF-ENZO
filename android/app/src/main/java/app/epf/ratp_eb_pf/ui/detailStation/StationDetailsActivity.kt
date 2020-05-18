@@ -27,7 +27,28 @@ class StationDetailsActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // Bouton retour en haut de la page
 
+<<<<<<< Updated upstream
         // récup num de la ligne et slug de la station
+=======
+        station = intent.getSerializableExtra("station") as Stations
+
+        StationNameDetail.text = station?.name
+
+        // Permet d'accéder aux fichiers du package "assets" --> logos des lignes
+        var ims: InputStream? = null
+        try {
+            ims = assets.open("metroLines/M${station?.line}genRVB.png")
+            val d = Drawable.createFromStream(ims, null)
+            logoDetailStation.setImageDrawable(d)
+        } catch (ex: IOException) {
+            //file does not exist --> Affiche une image par défaut
+            logoDetailLine.setImageResource(R.drawable.ic_format_list_bulleted_black_24dp)
+        } finally {
+            ims?.close()
+        }
+
+        bundle.putSerializable("station", station) // Pour que les sous-fragments connaissent les données de la station
+>>>>>>> Stashed changes
 
     }
 
@@ -41,6 +62,7 @@ class StationDetailsActivity : AppCompatActivity() {
         }
     }
 
+<<<<<<< Updated upstream
     private fun synchroStationData(view: View){
         val service = retrofit().create(SchedulesService::class.java)
         runBlocking {
@@ -50,6 +72,18 @@ class StationDetailsActivity : AppCompatActivity() {
                 val id = 1
                 val schedules = Schedules(id, it.message, it.destination)
                 scheduleDao?.addSchedules(schedules)
+=======
+    private fun setupViewPager(viewPager: ViewPager){
+        val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
+
+        // A MODIFIER POUR AFFICHER LES DESTINATION ET PAS UN TITRE GÉNÉRIQUE
+        scope.launch {
+            val adapter = StationTabAdapter(supportFragmentManager, bundle)
+            adapter.addFragment(HoraireAFragment(), "Direction A")
+            adapter.addFragment(HoraireBFragment(), "Direction B")
+            withContext(Dispatchers.Main){
+                viewPager.adapter = adapter
+>>>>>>> Stashed changes
             }
         }
     }

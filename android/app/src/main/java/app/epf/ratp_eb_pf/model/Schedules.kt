@@ -4,6 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
+// objet Horaire
+
 @Entity(tableName = "schedules")
 data class Schedules(
     @PrimaryKey(autoGenerate = false) val id: Int,
