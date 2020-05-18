@@ -1,4 +1,4 @@
-package app.epf.ratp_eb_pf.ui.listeFavoris
+package app.epf.ratp_eb_pf.ui.favoris
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

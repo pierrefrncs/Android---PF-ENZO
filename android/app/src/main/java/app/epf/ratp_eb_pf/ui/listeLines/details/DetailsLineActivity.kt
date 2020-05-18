@@ -1,4 +1,4 @@
-package app.epf.ratp_eb_pf.ui.detailLine
+package app.epf.ratp_eb_pf.ui.listeLines.details
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -50,7 +50,7 @@ class DetailsLineActivity : AppCompatActivity() {
         LineDirectionsDetail.text = line?.directions
 
         bundle.putSerializable("line", line) // Pour que les sous-fragments connaissent les données de la ligne
-        viewpager = findViewById(R.id.fragment_rechercheinterneDetails)
+        viewpager = findViewById(R.id.fragment_rechercheinterne)
         setupViewPager(viewpager)
         viewpager.offscreenPageLimit = 1 // Nombre de sous-fragments - 1 pour améliorer la fluidité
         tabLayout = findViewById(R.id.tablayout_details)

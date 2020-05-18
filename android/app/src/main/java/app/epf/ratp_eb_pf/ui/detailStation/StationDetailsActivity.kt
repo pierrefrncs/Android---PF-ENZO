@@ -1,25 +1,34 @@
 package app.epf.ratp_eb_pf.ui.detailStation
 
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
+import androidx.viewpager.widget.ViewPager
 import app.epf.ratp_eb_pf.R
-import app.epf.ratp_eb_pf.data.SchedulesDao
-import app.epf.ratp_eb_pf.model.Schedules
-import app.epf.ratp_eb_pf.retrofit
-import app.epf.ratp_eb_pf.service.SchedulesService
-import kotlinx.coroutines.runBlocking
+import app.epf.ratp_eb_pf.daoLi
+import app.epf.ratp_eb_pf.data.LineDao
+import app.epf.ratp_eb_pf.model.Line
+import app.epf.ratp_eb_pf.model.Stations
+import com.google.android.material.tabs.TabLayout
+import kotlinx.android.synthetic.main.activity_details_line.*
+import kotlinx.android.synthetic.main.activity_station_details.*
+import kotlinx.coroutines.*
+import java.io.IOException
+import java.io.InputStream
 
 // Activité qui contient les détails des stations (schedule) après click sur une station
 
 class StationDetailsActivity : AppCompatActivity() {
 
-    private var scheduleDao: SchedulesDao? =null
-    private val type = "metro"
-    private val code = "1"
-    private val slug = "esplanade+de+la+defense"
-    private val way = "A"
+    private var station: Stations? = null
+    private var line: Line? = null
+    private var lineDao: LineDao? = null
+    private var listDestination: List<String>? = null
+    private var bundle = Bundle()
+    private lateinit var viewpager: ViewPager
+    private lateinit var tabLayout: TabLayout
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,10 +36,15 @@ class StationDetailsActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // Bouton retour en haut de la page
 
-<<<<<<< Updated upstream
-        // récup num de la ligne et slug de la station
-=======
         station = intent.getSerializableExtra("station") as Stations
+
+        lineDao = daoLi(this)
+        station?.line.toString()
+        runBlocking {
+            line = lineDao?.getLineSpec(station?.line?.toInt()!!)
+        }
+
+        listDestination = line?.directions?.split("/")
 
         StationNameDetail.text = station?.name
 
@@ -47,9 +61,15 @@ class StationDetailsActivity : AppCompatActivity() {
             ims?.close()
         }
 
-        bundle.putSerializable("station", station) // Pour que les sous-fragments connaissent les données de la station
->>>>>>> Stashed changes
+        bundle.putSerializable("station", station) // Pour que les sous-fragments connaissent les données de la ligne
 
+        viewpager = findViewById(R.id.fragment_pager_horaires)
+        viewpager.offscreenPageLimit = 1
+
+        tabLayout = findViewById(R.id.tablayout_details_station)
+        tabLayout.setupWithViewPager(viewpager)
+
+        setupViewPager(viewpager)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -62,29 +82,17 @@ class StationDetailsActivity : AppCompatActivity() {
         }
     }
 
-<<<<<<< Updated upstream
-    private fun synchroStationData(view: View){
-        val service = retrofit().create(SchedulesService::class.java)
-        runBlocking {
-                scheduleDao?.deleteSchedules()
-                val result = service.getScheduleService(type,code,slug,way)
-            result.result.schedule.map {
-                val id = 1
-                val schedules = Schedules(id, it.message, it.destination)
-                scheduleDao?.addSchedules(schedules)
-=======
     private fun setupViewPager(viewPager: ViewPager){
         val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-        // A MODIFIER POUR AFFICHER LES DESTINATION ET PAS UN TITRE GÉNÉRIQUE
         scope.launch {
             val adapter = StationTabAdapter(supportFragmentManager, bundle)
-            adapter.addFragment(HoraireAFragment(), "Direction A")
-            adapter.addFragment(HoraireBFragment(), "Direction B")
+            adapter.addFragment(HoraireAFragment(), listDestination?.get(0))
+            adapter.addFragment(HoraireBFragment(), listDestination?.get(1))
             withContext(Dispatchers.Main){
                 viewPager.adapter = adapter
->>>>>>> Stashed changes
             }
         }
     }
+
 }

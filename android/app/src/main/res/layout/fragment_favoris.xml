@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.listeFavoris.FavorisFragment">
+    tools:context=".ui.favoris.FavorisFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
@@ -13,7 +13,9 @@
         app:tabMode="fixed"
         android:id="@+id/tablayout_favoris"
         android:background="@color/colorPrimary"
-        app:tabTextColor="#fff"/>
+        app:tabTextColor="#fff"
+        app:tabIndicatorColor="#fff"
+        app:tabIndicatorHeight="2dp"/>
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"

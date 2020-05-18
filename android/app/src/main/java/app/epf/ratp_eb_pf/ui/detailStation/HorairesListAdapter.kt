@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.card_horaire_station.view.*
 import kotlinx.coroutines.runBlocking
 
 class HorairesListAdapter (
-    private val schedulesList: MutableList<Schedules>
+    private val schedulesList: MutableList<Schedules>,
+    private val viewFragment: View
 ) : RecyclerView.Adapter<HorairesListAdapter.SchedulesViewHolder>() {
 
     private var listHorairesBDD: MutableList<Schedules>? = null
@@ -30,7 +31,7 @@ class HorairesListAdapter (
 
         context = parent.context
 
-        // Bdd contenant les données sauvegardées
+        // Bdd contenant les données sauvegardées (favoris)
         val databaseSaved = Room.databaseBuilder(context, AppDatabase::class.java, "savedDatabase")
             .build()
 

@@ -1,33 +1,39 @@
 package app.epf.ratp_eb_pf.ui.listeLines
 
 import android.app.Activity
+import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
+import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.MergeAdapter
 import androidx.recyclerview.widget.RecyclerView
-import app.epf.ratp_eb_pf.R
-import app.epf.ratp_eb_pf.daoLi
-import app.epf.ratp_eb_pf.daoSta
+import app.epf.ratp_eb_pf.*
 import app.epf.ratp_eb_pf.data.LineDao
+import app.epf.ratp_eb_pf.data.SchedulesDao
 import app.epf.ratp_eb_pf.data.StationsDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.model.Stations
-import app.epf.ratp_eb_pf.retrofit
 import app.epf.ratp_eb_pf.service.LinesService
 import app.epf.ratp_eb_pf.service.StationsService
+import app.epf.ratp_eb_pf.ui.detailStation.StationDetailsActivity
 import app.epf.ratp_eb_pf.ui.listeLines.details.StationsAdapter
+import com.google.zxing.integration.android.IntentIntegrator
+import com.google.zxing.integration.android.IntentResult
 import com.jakewharton.rxbinding2.widget.textChanges
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -47,6 +53,7 @@ class ListLinesAccueil : Fragment() {
     private lateinit var listLinesViewModel: ListLinesViewModel
     private var stationsDao: StationsDao? = null
     private var lineDao: LineDao? = null
+    private var schedulesDao: SchedulesDao? = null
     private lateinit var globalRecyclerView: RecyclerView
     private var lines: MutableList<Line>? = null
     private var stations: MutableList<Stations>? = null
@@ -57,11 +64,15 @@ class ListLinesAccueil : Fragment() {
     private var filteredPostsSta: MutableList<Stations> = mutableListOf()
     private var oldFilteredPostsSta: MutableList<Stations> = mutableListOf()
 
-    private var mergeAdapter = MergeAdapter() // Adapter qui peut regrouper plusieurs adapters dans une même recyclerView
+    // Adapter qui peut regrouper plusieurs adapters dans une même recyclerView
+    private var mergeAdapter = MergeAdapter()
     private var linesAdapter: LinesAdapter? = null
     private var stationsAdapter: StationsAdapter? = null
 
     private val disposable = CompositeDisposable()
+
+    private var mBundleRecyclerViewState: Bundle? = null
+    private var mListState: Parcelable? = null
 
 
     override fun onCreateView(
@@ -81,17 +92,15 @@ class ListLinesAccueil : Fragment() {
 
         // Si click sur le bouton qrCode --> affiche la caméra
         qrCode.setOnClickListener {
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, 100)
+            IntentIntegrator.forSupportFragment(this@ListLinesAccueil)
+                .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
+                .setBeepEnabled(false)
+                .initiateScan()
         }
-
-        // Configure les BDD
-//        val database =
-//            Room.databaseBuilder(requireContext(), AppDatabase::class.java, "globalDatabase")
-//                .build()
 
         stationsDao = daoSta(requireContext())
         lineDao = daoLi(requireContext())
+        schedulesDao = daoSch(requireContext())
 
         runBlocking {
             lines = lineDao?.getLines()
@@ -145,16 +154,14 @@ class ListLinesAccueil : Fragment() {
                     }.addTo(disposable)
             }.addTo(disposable)
 
-
         return view
     }
 
     override fun onResume() {
         super.onResume()
 
-<<<<<<< Updated upstream:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLinesMain/ListLinesAccueil.kt
-        globalRecyclerView.adapter = mergeAdapter
-=======
+        //    globalRecyclerView.adapter = mergeAdapter
+
         if (mBundleRecyclerViewState != null) {
             mListState = mBundleRecyclerViewState!!.getParcelable("keyR")
             globalRecyclerView.layoutManager?.onRestoreInstanceState(mListState)
@@ -168,7 +175,6 @@ class ListLinesAccueil : Fragment() {
 
         mListState = globalRecyclerView.layoutManager?.onSaveInstanceState()
         mBundleRecyclerViewState!!.putParcelable("keyR", mListState)
->>>>>>> Stashed changes:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLines/ListLinesAccueil.kt
     }
 
     // Synchro de la liste des lines
@@ -239,7 +245,8 @@ class ListLinesAccueil : Fragment() {
         // Définit le second adapter du mergeAdapter (ajoute pas : affiche uniquement lines)
         stations?.let { oldFilteredPostsSta.addAll(it) }
         stationsAdapter = StationsAdapter(oldFilteredPostsSta, view)
-
+//        mergeAdapter.addAdapter(stationsAdapter!!)
+//        globalRecyclerView.adapter = mergeAdapter
     }
 
     // Pour vérifier si la liste des lines contient ou non la recherche de l'input
@@ -268,16 +275,12 @@ class ListLinesAccueil : Fragment() {
         it.onComplete()
     }
 
-<<<<<<< Updated upstream:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLinesMain/ListLinesAccueil.kt
-=======
-    //récupère les datas du QR code en lance l'activité de la station renseignée
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode == Activity.RESULT_OK){
             var result: IntentResult? = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
             if (result != null) {
 
                 runBlocking {
-                    //récupère la station dans la database avec l'uuid du QR code
                     val station = stationsDao?.getStation(result.contents)
                     val intent = Intent(activity, StationDetailsActivity::class.java)
                     intent.putExtra("station",station)
@@ -291,7 +294,6 @@ class ListLinesAccueil : Fragment() {
     }
 
 
->>>>>>> Stashed changes:android/app/src/main/java/app/epf/ratp_eb_pf/ui/listeLines/ListLinesAccueil.kt
     // Pour ignorer les accents dans l'input
     private fun CharSequence.unAccent(): String {
         val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
@@ -302,10 +304,6 @@ class ListLinesAccueil : Fragment() {
     private fun Fragment.hideKeyboard() {
         view?.let { activity?.hideKeyboard(it) }
     }
-
-    //    private fun Activity.hideKeyboard() {
-//        hideKeyboard(currentFocus ?: View(this))
-//    }
 
     // Pour cacher le keyboard avec uniquement un context
     private fun Context.hideKeyboard(view: View) {

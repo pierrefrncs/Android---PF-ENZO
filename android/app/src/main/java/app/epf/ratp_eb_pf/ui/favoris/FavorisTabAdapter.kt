@@ -1,4 +1,4 @@
-package app.epf.ratp_eb_pf.ui.listeFavoris
+package app.epf.ratp_eb_pf.ui.favoris
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

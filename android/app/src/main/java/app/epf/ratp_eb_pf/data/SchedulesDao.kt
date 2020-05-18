@@ -5,8 +5,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import app.epf.ratp_eb_pf.model.Schedules
 
-// Dao des horaires des stations
-
 @Dao
 interface SchedulesDao {
 
@@ -14,7 +12,7 @@ interface SchedulesDao {
     suspend fun getSchedules() : MutableList<Schedules>
 
     @Insert
-    suspend fun addSchedules(station: Schedules)
+    suspend fun addSchedules(schedules: Schedules)
 
     @Query("delete from schedules where uuid = :uuid")
     suspend fun deleteSchedules(uuid: String)
@@ -22,6 +20,6 @@ interface SchedulesDao {
     @Query("delete from schedules")
     suspend fun deleteSchedules()
 
-    @Query("select * from schedules where uuid = :uuid")
-    suspend fun getSchedules(uuid: String) : Schedules
+    @Query("select * from schedules where destination = :way")
+    suspend fun getSchedules(way: String) : Schedules
 }

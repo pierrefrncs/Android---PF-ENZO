@@ -1,6 +1,7 @@
-package app.epf.ratp_eb_pf.ui.detailLine
+package app.epf.ratp_eb_pf.ui.listeLines.details
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,9 @@ class StationsListFragment : Fragment() {
     private var stationsLigne = mutableListOf<Stations>()
     private lateinit var stationsRecyclerView: RecyclerView
 
+    private var mBundleRecyclerViewState: Bundle? = null
+    private var mListState: Parcelable? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,6 +41,10 @@ class StationsListFragment : Fragment() {
 
         stationsRecyclerView = view.findViewById(R.id.stations_recyclerview)
         stationsRecyclerView.layoutManager = LinearLayoutManager(activity)
+
+//        val database =
+//            Room.databaseBuilder(requireContext(), AppDatabase::class.java, "globalDatabase")
+//                .build()
 
         stationsDao = daoSta(requireContext()) // Récupère la database des stations
 
@@ -52,6 +60,20 @@ class StationsListFragment : Fragment() {
         super.onResume()
 
         stationsRecyclerView.adapter = StationsAdapter(stationsLigne, requireView())
+
+        if (mBundleRecyclerViewState != null) {
+            mListState = mBundleRecyclerViewState!!.getParcelable("keyR")
+            stationsRecyclerView.layoutManager?.onRestoreInstanceState(mListState)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        mBundleRecyclerViewState = Bundle()
+
+        mListState = stationsRecyclerView.layoutManager?.onSaveInstanceState()
+        mBundleRecyclerViewState!!.putParcelable("keyR", mListState)
     }
 
     // Synchro de la liste des stations --> Par la BDD au lieu de l'API

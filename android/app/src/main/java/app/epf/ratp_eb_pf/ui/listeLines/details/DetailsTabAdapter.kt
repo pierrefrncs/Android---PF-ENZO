@@ -1,4 +1,4 @@
-package app.epf.ratp_eb_pf.ui.detailLine
+package app.epf.ratp_eb_pf.ui.listeLines.details
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

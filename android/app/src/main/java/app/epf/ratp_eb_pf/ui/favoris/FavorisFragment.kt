@@ -1,4 +1,4 @@
-package app.epf.ratp_eb_pf.ui.listeFavoris
+package app.epf.ratp_eb_pf.ui.favoris
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -34,6 +34,7 @@ class FavorisFragment : Fragment() {
         viewpager = view.findViewById(R.id.fragment_rechercheinterneFavoris)
         setupViewPager(viewpager)
         viewpager.offscreenPageLimit = 1 // Nombre de sous fragments - 1 pour améliorer la fluidité
+
         tabLayout = view.findViewById(R.id.tablayout_favoris)
         tabLayout.setupWithViewPager(viewpager)
 

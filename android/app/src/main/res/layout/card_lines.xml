@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="6dp"
-    tools:context=".ui.listeLinesMain.ListLinesAccueil">
+    tools:context=".ui.listeLines.ListLinesAccueil">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:orientation="horizontal">
+
 
         <ImageView
             android:id="@+id/logo_line"
@@ -22,6 +23,7 @@
             android:contentDescription="Logo ligne"
             android:src="@drawable/ic_format_list_bulleted_black_24dp"
             app:fabSize="auto" />
+
 
         <TextView
             android:id="@+id/name_line"

@@ -24,4 +24,7 @@ interface LineDao {
 
     @Query("select * from lines where idRatp = :idRatp")
     suspend fun getLine(idRatp: Int) : Line
+
+    @Query("select * from lines where code = :codeL")
+    suspend fun getLineSpec(codeL: Int) : Line
 }

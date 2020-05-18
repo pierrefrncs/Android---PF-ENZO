@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.LineDao
+import app.epf.ratp_eb_pf.data.SchedulesDao
 import app.epf.ratp_eb_pf.data.StationsDao
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
@@ -25,6 +26,13 @@ fun daoLi(context: Context): LineDao {
     return database.getLineDao()
 }
 
+
+// Configure la bdd avec les lignes
+fun daoSch(context: Context): SchedulesDao {
+    val database = Room.databaseBuilder(context, AppDatabase::class.java, "defaultDatabase").build()
+
+    return database.getSchedulesDao()
+}
 /**
  * Retourne l'accès à l'API Rest de la Ratp
  *

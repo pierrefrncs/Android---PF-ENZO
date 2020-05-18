@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.detailLine.DetailsLineActivity">
+    tools:context="app.epf.ratp_eb_pf.ui.listeLines.details.DetailsLineActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,7 +49,6 @@
             android:layout_gravity="center"
             android:contentDescription="Logo ligne"
             android:src="@drawable/ic_search_black_24dp" />
-
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
@@ -59,13 +58,15 @@
         app:tabMode="fixed"
         android:id="@+id/tablayout_details"
         android:background="@color/colorPrimary"
-        app:tabTextColor="#fff"/>
+        app:tabTextColor="#fff"
+        app:tabIndicatorColor="#fff"
+        app:tabIndicatorHeight="2dp"/>
 
     <androidx.viewpager.widget.ViewPager
+        android:id="@+id/fragment_rechercheinterne"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tablayout_details"
-        android:id="@+id/fragment_rechercheinterneDetails"
         android:layout_alignParentBottom="true" />
 
 

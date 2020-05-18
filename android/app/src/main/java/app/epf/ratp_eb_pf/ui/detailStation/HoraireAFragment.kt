@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import app.epf.ratp_eb_pf.R
+import app.epf.ratp_eb_pf.daoLi
 import app.epf.ratp_eb_pf.daoSch
 import app.epf.ratp_eb_pf.data.SchedulesDao
 import app.epf.ratp_eb_pf.model.Schedules
@@ -16,7 +17,6 @@ import app.epf.ratp_eb_pf.retrofit
 import app.epf.ratp_eb_pf.service.SchedulesService
 import kotlinx.coroutines.runBlocking
 
-// Fragment pour l'affichage des horaires dans le sens A
 class HoraireAFragment: Fragment() {
 
     private var scheduleDao: SchedulesDao? =null
@@ -32,8 +32,6 @@ class HoraireAFragment: Fragment() {
                           savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_horaire_station, container, false)
-
-        // Récupère la variable contenant les informations de la station dans l'activité appelant le fragment
         stationFromParent = arguments?.getSerializable("station") as Stations
 
         scheduleDao = daoSch(requireContext())
@@ -41,13 +39,11 @@ class HoraireAFragment: Fragment() {
         horairesRecyclerView = view.findViewById(R.id.horaires_recyclerview)
         horairesRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-        // set up du recycler view
         synchroStationData(view)
 
         return view
     }
 
-    // récupérations des horaires et affichage dans le recycler view
     private fun synchroStationData(view: View) {
         val serviceSchedules = retrofit().create(SchedulesService::class.java)
         runBlocking {
@@ -61,7 +57,7 @@ class HoraireAFragment: Fragment() {
                 id += 1
             }
             horaires = scheduleDao?.getSchedules()
-            horairesRecyclerView.adapter = HorairesListAdapter(horaires ?: mutableListOf())
+            horairesRecyclerView.adapter = HorairesListAdapter(horaires ?: mutableListOf(), view)
         }
     }
 }

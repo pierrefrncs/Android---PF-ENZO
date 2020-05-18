@@ -1,15 +1,15 @@
 package app.epf.ratp_eb_pf.model
 
+
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-// objet Horaire
-
 @Entity(tableName = "schedules")
 data class Schedules(
-    @PrimaryKey(autoGenerate = false) val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int,
     val message: String,
     val destination: String,
-    val uuid: Int = id  // Pour avoir un uuid unique
+    val uuid: String = message+destination  // Pour avoir un uuid unique
 ) : Serializable
+

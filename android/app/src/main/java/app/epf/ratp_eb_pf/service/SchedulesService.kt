@@ -1,10 +1,7 @@
 package app.epf.ratp_eb_pf.service
 
-import app.epf.ratp_eb_pf.model.Schedules
 import retrofit2.http.GET
 import retrofit2.http.Path
-
-// Basé sur le JSON des horaires d'une station et destination en particulier
 
 interface SchedulesService {
 
@@ -22,17 +19,17 @@ data class GetScheduleResult (
     val metadata: MetadataSchedule
 )
 
-data class ResultSchedule (
-    val schedule: List<Schedules>
-)
-
 data class MetadataSchedule (
     val call: String,
     val date: String,
     val version: Long
 )
 
-data class Schedules(
+data class ResultSchedule (
+    val schedules: List<SchedulesData>
+)
+
+data class SchedulesData(
     val message: String,
     val destination: String
 )

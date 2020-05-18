@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="app.epf.ratp_eb_pf">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,11 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
-            android:name="app.epf.ratp_eb_pf.ui.detailStation.StationDetailsActivity"
-            android:label="Horaires station" />
-        <activity
-            android:name=".ui.LoadingActivity"
+            android:name=".SplashActivity"
             android:theme="@style/SlashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,12 +23,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name="app.epf.ratp_eb_pf.ui.detailLine.DetailsLineActivity"
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
+
+        <activity
+            android:name=".ui.listeLines.details.DetailsLineActivity"
             android:label="Détails ligne" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" />
+
+        <activity android:name=".ui.detailStation.StationDetailsActivity"
+            android:label="Détail station"/>
+
     </application>
 
 </manifest>
