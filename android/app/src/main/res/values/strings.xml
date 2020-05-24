@@ -3,5 +3,39 @@
     <string name="title_liste_lignes">Liste des lignes</string>
     <string name="title_favoris">Mes favoris</string>
     <string name="title_notifications">Notifications</string>
+    <string name="etatTraffic">Etat :</string>
+    <string name="messageTraffic">Message :</string>
+    <string name="logo_ligne">Logo ligne</string>
+    <string name="logo_application">Logo Application</string>
+    <string name="ajout_favoris">Ajout favoris</string>
+    <string name="aucune_ligne_favorite">Aucune ligne favorite</string>
+    <string name="aucune_ligne_details">Pour en ajouter, cliquez sur l\'image ci-dessous</string>
+    <string name="aucune_station_favorite">Aucune station favorite</string>
+    <string name="aucune_station_details">Pour en ajouter, cliquez sur l\'image ci-dessous</string>
+    <string name="rechercher_edit_text">Rechercher</string>
+    <string name="logo_qr_code">Logo qr code</string>
+    <string name="preferences">Préférences</string>
+
+    <string-array name="prefs_theme_entries">
+        <item>Theme du système (Défaut)</item>
+        <item>Dark Theme</item>
+        <item>Light Theme</item>
+    </string-array>
+
+    <string-array name="prefs_theme_values">
+        <item>themeSystem</item>
+        <item>themeDark</item>
+        <item>themeLight</item>
+    </string-array>
+
+    <string-array name="prefs_start_entries">
+        <item>Liste des lignes (Défaut)</item>
+        <item>Favoris</item>
+    </string-array>
+
+    <string-array name="prefs_start_values">
+        <item>listLines</item>
+        <item>favoris</item>
+    </string-array>
 
 </resources>

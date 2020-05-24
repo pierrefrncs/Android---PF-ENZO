@@ -9,7 +9,7 @@ import app.epf.ratp_eb_pf.model.Schedules
 interface SchedulesDao {
 
     @Query("select * from schedules")
-    suspend fun getSchedules() : MutableList<Schedules>
+    suspend fun getSchedules(): MutableList<Schedules>
 
     @Insert
     suspend fun addSchedules(schedules: Schedules)
@@ -21,5 +21,5 @@ interface SchedulesDao {
     suspend fun deleteSchedules()
 
     @Query("select * from schedules where destination = :way")
-    suspend fun getSchedules(way: String) : Schedules
+    suspend fun getSchedules(way: String): Schedules
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        android:defaultValue="themeSystem"
+        app:entries="@array/prefs_theme_entries"
+        app:entryValues="@array/prefs_theme_values"
+        app:icon="@drawable/ic_half_dark_light"
+        app:key="theme_display"
+        app:summary="%s"
+        app:title="Theme d'affichage de l'application" />
+
+    <ListPreference
+        android:defaultValue="listLines"
+        app:entries="@array/prefs_start_entries"
+        app:entryValues="@array/prefs_start_values"
+        app:icon="@drawable/ic_home_black_24dp"
+        app:key="start_page"
+        app:summary="%s"
+        app:title="Page d'accueil de l'application" />
+
+</PreferenceScreen>

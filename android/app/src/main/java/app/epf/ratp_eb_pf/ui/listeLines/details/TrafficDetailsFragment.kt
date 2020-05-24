@@ -1,10 +1,13 @@
 package app.epf.ratp_eb_pf.ui.listeLines.details
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.retrofit
@@ -26,7 +29,21 @@ class TrafficDetailsFragment : Fragment() {
         // Recupère les infos de la ligne du fragment/activity parent
         val lineFromParent = arguments?.getSerializable("line") as Line
 
+        val itemsSwipeToRefresh =
+            view.findViewById<SwipeRefreshLayout>(R.id.itemsswipetorefreshTraffic)
+
         synchroServerTraffics(view, lineFromParent.code)
+
+        itemsSwipeToRefresh.setProgressBackgroundColorSchemeColor(
+            ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+        )
+        itemsSwipeToRefresh.setColorSchemeColors(Color.WHITE)
+
+        // Appel l'api lors du refresh de la page
+        itemsSwipeToRefresh.setOnRefreshListener {
+            synchroServerTraffics(view, lineFromParent.code)
+            itemsSwipeToRefresh.isRefreshing = false
+        }
 
         return view
     }
@@ -34,7 +51,8 @@ class TrafficDetailsFragment : Fragment() {
 
     // Synchro de l'état du traffic
     private fun synchroServerTraffics(view: View, code: String) {
-        val service = retrofit().create(TrafficService::class.java) // Fonction retrofit d'ActivityUtils
+        val service =
+            retrofit().create(TrafficService::class.java) // Fonction retrofit d'ActivityUtils
         runBlocking {
             val result = service.getTrafficService("metros", code)
             val topo = result.result

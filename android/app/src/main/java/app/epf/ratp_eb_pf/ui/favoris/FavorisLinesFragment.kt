@@ -3,6 +3,7 @@ package app.epf.ratp_eb_pf.ui.favoris
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +24,6 @@ import kotlinx.android.synthetic.main.fragment_favoris_lines.view.*
 import kotlinx.coroutines.runBlocking
 import java.util.*
 
-
 // Sous-fragment des favoris pour les lines
 
 class FavorisLinesFragment : Fragment() {
@@ -34,6 +34,9 @@ class FavorisLinesFragment : Fragment() {
 
     private var mRecentlyDeletedItemPosition = 0
     private lateinit var mRecentlyDeletedItem: Line
+
+    private var mBundleRecyclerViewState: Bundle? = null
+    private var mListState: Parcelable? = null
 
 
     override fun onCreateView(
@@ -86,6 +89,22 @@ class FavorisLinesFragment : Fragment() {
         super.onResume()
 
         linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), requireView())
+
+        // Pour récupèrer la position de la recyclerView
+        if (mBundleRecyclerViewState != null) {
+            mListState = mBundleRecyclerViewState!!.getParcelable("keyR")
+            linesRecyclerView.layoutManager?.onRestoreInstanceState(mListState)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        mBundleRecyclerViewState = Bundle()
+
+        // Pour enregistrer la position de la recyclerView
+        mListState = linesRecyclerView.layoutManager?.onSaveInstanceState()
+        mBundleRecyclerViewState!!.putParcelable("keyR", mListState)
     }
 
     // CallBak pour drag and swipe les lignes favorites (déplacer et supprimer)
@@ -147,6 +166,9 @@ class FavorisLinesFragment : Fragment() {
                 // Supprime de la liste et notifie la recyclerView
                 lines?.removeAt(fromPosition)
                 linesRecyclerView.adapter?.notifyItemRemoved(fromPosition)
+                if (lines.isNullOrEmpty()) {
+                    view?.layoutNoSavedLine?.visibility = View.VISIBLE
+                }
                 showUndoSnackbar()
             }
 
@@ -214,6 +236,9 @@ class FavorisLinesFragment : Fragment() {
         linesRecyclerView.adapter?.notifyItemInserted(mRecentlyDeletedItemPosition)
         runBlocking {
             lineDaoSaved?.addLine(mRecentlyDeletedItem)
+        }
+        if (!lines.isNullOrEmpty()) {
+            view?.layoutNoSavedLine?.visibility = View.GONE
         }
     }
 }

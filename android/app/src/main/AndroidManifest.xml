@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".PreferencesActivity" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SlashTheme">
@@ -36,8 +36,13 @@
             android:name=".MainActivity"
             android:label="@string/app_name" />
 
-        <activity android:name=".ui.detailStation.StationDetailsActivity"
-            android:label="Détail station"/>
+        <activity
+            android:name=".ui.detailStation.StationDetailsActivity"
+            android:label="Détail station" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCZgYtzNrTJ45mkr1siQIASH81YuMG2j58" />
 
     </application>
 

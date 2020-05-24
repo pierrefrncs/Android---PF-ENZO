@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 
 // Configure la bdd avec les stations
 fun daoSta(context: Context): StationsDao {
@@ -41,7 +42,12 @@ fun retrofit(): Retrofit {
     val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
+
+    // Ajoute du temps en cas de ralentissement de l'API
     val client = OkHttpClient.Builder()
+        .connectTimeout(2, TimeUnit.MINUTES)
+        .writeTimeout(2, TimeUnit.MINUTES)
+        .readTimeout(2, TimeUnit.MINUTES)
         .addInterceptor(httpLoggingInterceptor)
         .addNetworkInterceptor(StethoInterceptor())
         .build()

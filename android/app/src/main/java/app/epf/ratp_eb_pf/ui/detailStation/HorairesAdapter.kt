@@ -13,10 +13,9 @@ import app.epf.ratp_eb_pf.model.Schedules
 import kotlinx.android.synthetic.main.card_horaire_station.view.*
 import kotlinx.coroutines.runBlocking
 
-class HorairesListAdapter (
-    private val schedulesList: MutableList<Schedules>,
-    private val viewFragment: View
-) : RecyclerView.Adapter<HorairesListAdapter.SchedulesViewHolder>() {
+class HorairesAdapter(
+    private val schedulesList: MutableList<Schedules>
+) : RecyclerView.Adapter<HorairesAdapter.SchedulesViewHolder>() {
 
     private var listHorairesBDD: MutableList<Schedules>? = null
     private var schedulesDaoBDD: SchedulesDao? = null
@@ -38,7 +37,8 @@ class HorairesListAdapter (
         schedulesDaoBDD = databaseSaved.getSchedulesDao()
 
         runBlocking {
-            listHorairesBDD = schedulesDaoBDD?.getSchedules() // Récupère les horaires de la destination
+            listHorairesBDD =
+                schedulesDaoBDD?.getSchedules() // Récupère les horaires de la destination
         }
 
         return SchedulesViewHolder(view)
@@ -46,7 +46,7 @@ class HorairesListAdapter (
 
     override fun getItemCount(): Int = schedulesList.size
 
-    override fun onBindViewHolder(holder: HorairesListAdapter.SchedulesViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: SchedulesViewHolder, position: Int) {
         val view = holder.schedulesView
         val schedules = schedulesList[position]
 

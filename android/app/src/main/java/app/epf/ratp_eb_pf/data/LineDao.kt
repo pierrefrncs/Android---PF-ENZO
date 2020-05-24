@@ -11,7 +11,7 @@ import app.epf.ratp_eb_pf.model.Line
 interface LineDao {
 
     @Query("select * from lines")
-    suspend fun getLines() : MutableList<Line>
+    suspend fun getLines(): MutableList<Line>
 
     @Insert
     suspend fun addLine(line: Line)
@@ -23,8 +23,8 @@ interface LineDao {
     suspend fun deleteLines()
 
     @Query("select * from lines where idRatp = :idRatp")
-    suspend fun getLine(idRatp: Int) : Line
+    suspend fun getLine(idRatp: Int): Line
 
     @Query("select * from lines where code = :codeL")
-    suspend fun getLineSpec(codeL: Int) : Line
+    suspend fun getLineSpec(codeL: String): Line
 }

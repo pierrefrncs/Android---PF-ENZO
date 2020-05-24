@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     android:orientation="vertical"
     tools:context=".ui.favoris.FavorisLinesFragment">
 
@@ -23,7 +23,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Aucune ligne favorite"
+            android:text="@string/aucune_ligne_favorite"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Pour en ajouter, cliquez sur l\'image ci-dessous"
+            android:text="@string/aucune_ligne_details"
             android:textSize="18sp" />
 
         <ImageView
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/noSavedLineDetail"
             android:layout_marginTop="30dp"
-            android:contentDescription="Aucune ligne favorite"
+            android:contentDescription="@string/aucune_ligne_favorite"
             android:gravity="center"
             android:src="@drawable/nosavedlines" />
 
@@ -63,7 +63,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/lines_view" />
+            tools:listitem="@layout/card_lines_view" />
 
     </RelativeLayout>
 

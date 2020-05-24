@@ -1,12 +1,16 @@
 package app.epf.ratp_eb_pf.ui.detailStation
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager.widget.ViewPager
 import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.daoSch
 import app.epf.ratp_eb_pf.data.SchedulesDao
@@ -16,19 +20,20 @@ import app.epf.ratp_eb_pf.retrofit
 import app.epf.ratp_eb_pf.service.SchedulesService
 import kotlinx.coroutines.runBlocking
 
-class HoraireBFragment : Fragment() {
+class HoraireBFragment : Fragment(), StationDetailsActivity.RefreshPage {
 
-    private var scheduleDao: SchedulesDao? =null
+    private var scheduleDao: SchedulesDao? = null
     private var horaires: MutableList<Schedules>? = null
     private lateinit var horairesRecyclerView: RecyclerView
-    private var stationFromParent:Stations? = null
+    private var stationFromParent: Stations? = null
 
     private val type = "metros"
     private val way = "R"
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_horaire_station, container, false)
         stationFromParent = arguments?.getSerializable("station") as Stations
@@ -36,19 +41,42 @@ class HoraireBFragment : Fragment() {
         scheduleDao = daoSch(requireContext())
 
         horairesRecyclerView = view.findViewById(R.id.horaires_recyclerview)
+        val itemsSwipeToRefresh = view.findViewById<SwipeRefreshLayout>(R.id.itemsswipetorefresh)
         horairesRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-        synchroStationData(view)
+        synchroStationData()
 
-        horairesRecyclerView.adapter = HorairesListAdapter(horaires ?: mutableListOf(), view)
+        horairesRecyclerView.adapter = HorairesAdapter(horaires ?: mutableListOf())
+
+        itemsSwipeToRefresh.setProgressBackgroundColorSchemeColor(
+            ContextCompat.getColor(requireContext(), R.color.colorPrimary)
+        )
+        itemsSwipeToRefresh.setColorSchemeColors(Color.WHITE)
+
+        // Actualise les 2 fragments avec le swipeToRefresh
+        itemsSwipeToRefresh.setOnRefreshListener {
+            val viewpager = activity?.findViewById<ViewPager>(R.id.fragment_pager_horaires)
+            synchroStationData()
+            val horaireAFragment =
+                viewpager?.adapter?.instantiateItem(viewpager, 0) as HoraireAFragment
+            horaireAFragment.refreshPage()
+            itemsSwipeToRefresh.isRefreshing = false
+        }
 
         return view
     }
-    private fun synchroStationData(view: View) {
+
+    private fun synchroStationData() {
         val serviceSchedules = retrofit().create(SchedulesService::class.java)
+        horaires?.clear()
         runBlocking {
             scheduleDao?.deleteSchedules()
-            val result = serviceSchedules.getScheduleService(type, stationFromParent!!.line,stationFromParent!!.slug,way)
+            val result = serviceSchedules.getScheduleService(
+                type,
+                stationFromParent!!.line,
+                stationFromParent!!.slug,
+                way
+            )
             var id = 1
             result.result.schedules.map {
 
@@ -57,8 +85,12 @@ class HoraireBFragment : Fragment() {
                 id += 1
             }
             horaires = scheduleDao?.getSchedules()
-            horairesRecyclerView.adapter = HorairesListAdapter(horaires ?: mutableListOf(), view)
+            horairesRecyclerView.adapter = HorairesAdapter(horaires ?: mutableListOf())
 
         }
+    }
+
+    override fun refreshPage() {
+        view?.let { synchroStationData() }
     }
 }

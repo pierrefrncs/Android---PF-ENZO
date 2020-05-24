@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import app.epf.ratp_eb_pf.R
 import com.google.android.material.tabs.TabLayout
@@ -27,7 +27,7 @@ class FavorisFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         favorisViewModel =
-            ViewModelProviders.of(this).get(FavorisViewModel::class.java)
+            ViewModelProvider(this).get(FavorisViewModel::class.java)
         val view = inflater.inflate(R.layout.fragment_favoris, container, false)
 
         // View pager pour l'affichage des 2 sous fragments (favoris lignes et stations)
@@ -50,8 +50,9 @@ class FavorisFragment : Fragment() {
 
         scope.launch {
             val adapter = FavorisTabAdapter(childFragmentManager, bundle)
-            adapter.addFragment(FavorisLinesFragment(), "Lignes") // Ajoute le sous-fragment lignes
-            adapter.addFragment(FavorisStationsFragment(), "Stations") // Ajoute le sous-fragment stations
+            // Ajoute les sous-fragments lignes et stations
+            adapter.addFragment(FavorisLinesFragment(), "Lignes")
+            adapter.addFragment(FavorisStationsFragment(), "Stations")
             withContext(Dispatchers.Main) {
                 viewPager.adapter = adapter
             }

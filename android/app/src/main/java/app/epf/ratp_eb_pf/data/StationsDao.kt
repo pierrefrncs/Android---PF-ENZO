@@ -1,8 +1,6 @@
 package app.epf.ratp_eb_pf.data
 
-
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import app.epf.ratp_eb_pf.model.Stations
@@ -13,7 +11,7 @@ import app.epf.ratp_eb_pf.model.Stations
 interface StationsDao {
 
     @Query("select * from stations")
-    suspend fun getStations() : MutableList<Stations>
+    suspend fun getStations(): MutableList<Stations>
 
     @Insert
     suspend fun addStation(station: Stations)
@@ -25,5 +23,5 @@ interface StationsDao {
     suspend fun deleteStations()
 
     @Query("select * from stations where uuid = :uuid")
-    suspend fun getStation(uuid: String) : Stations
+    suspend fun getStation(uuid: String): Stations
 }

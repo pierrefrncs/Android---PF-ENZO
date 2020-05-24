@@ -1,23 +1,17 @@
 package app.epf.ratp_eb_pf.ui.listeLines
 
 import android.app.Activity
-import android.app.Activity.RESULT_CANCELED
-import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.MergeAdapter
@@ -81,7 +75,7 @@ class ListLinesAccueil : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         listLinesViewModel =
-            ViewModelProviders.of(this).get(ListLinesViewModel::class.java)
+            ViewModelProvider(this).get(ListLinesViewModel::class.java)
         val view = inflater.inflate(R.layout.fragment_liste_lines, container, false)
 
         globalRecyclerView = view.findViewById(R.id.lines_recyclerview)
@@ -149,6 +143,7 @@ class ListLinesAccueil : Fragment() {
                             // Sinon l'affiche normalement et le rajoute (si inexistant)
                             oldFilteredPostsSta.addAll(filteredPostsSta)
                             stationsAdapter?.let { it1 -> diffResult.dispatchUpdatesTo(it1) }
+                            Log.d("tototo", stationsAdapter.toString())
                             mergeAdapter.addAdapter(stationsAdapter!!)
                         }
                     }.addTo(disposable)
@@ -160,8 +155,7 @@ class ListLinesAccueil : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        //    globalRecyclerView.adapter = mergeAdapter
-
+        // Pour récupèrer la position de la recyclerView
         if (mBundleRecyclerViewState != null) {
             mListState = mBundleRecyclerViewState!!.getParcelable("keyR")
             globalRecyclerView.layoutManager?.onRestoreInstanceState(mListState)
@@ -173,6 +167,7 @@ class ListLinesAccueil : Fragment() {
 
         mBundleRecyclerViewState = Bundle()
 
+        // Pour enregistrer la position de la recyclerView
         mListState = globalRecyclerView.layoutManager?.onSaveInstanceState()
         mBundleRecyclerViewState!!.putParcelable("keyR", mListState)
     }
@@ -181,7 +176,7 @@ class ListLinesAccueil : Fragment() {
     private fun synchroServerAllLines(view: View) {
 
         // si la BDD des lines et stations est vide
-        if (lines.isNullOrEmpty() || stations.isNullOrEmpty()) {
+        if (lines.isNullOrEmpty() || stations.isNullOrEmpty() || stations?.last()?.slug != "olympiades") {
             val service =
                 retrofit().create(LinesService::class.java) // Fonction retrofit d'ActivityUtils
             runBlocking {
@@ -213,17 +208,16 @@ class ListLinesAccueil : Fragment() {
     private fun synchroServerAllStations(view: View) {
 
         // si la BDD des stations est vide
-        if (stations.isNullOrEmpty()) {
+        if (stations.isNullOrEmpty() || stations?.last()?.slug != "olympiades") {
             runBlocking {
                 stationsDao?.deleteStations() // Supprime les anciennes stations
-            }
-            var id = 1 // Pour toujours avoir le premier id à 1
 
-            // Boucle sur toutes les lines
-            for (code: String in list) {
-                val service =
-                    retrofit().create(StationsService::class.java) // Fonction retrofit d'ActivityUtils
-                runBlocking {
+                var id = 1 // Pour toujours avoir le premier id à 1
+
+                // Boucle sur toutes les lines
+                for (code: String in list) {
+                    val service =
+                        retrofit().create(StationsService::class.java) // Fonction retrofit d'ActivityUtils
 
                     // Obtient les stations de la line du type correspondant
                     val result = service.getStationsService("metros", code)
@@ -235,18 +229,14 @@ class ListLinesAccueil : Fragment() {
                         id += 1
 
                     }
+                    stations =
+                        stationsDao?.getStations() // Recupère la liste des stations depuis la bdd
                 }
-            }
-            runBlocking {
-                stations =
-                    stationsDao?.getStations() // Recupère la liste des stations depuis la bdd
             }
         }
         // Définit le second adapter du mergeAdapter (ajoute pas : affiche uniquement lines)
         stations?.let { oldFilteredPostsSta.addAll(it) }
         stationsAdapter = StationsAdapter(oldFilteredPostsSta, view)
-//        mergeAdapter.addAdapter(stationsAdapter!!)
-//        globalRecyclerView.adapter = mergeAdapter
     }
 
     // Pour vérifier si la liste des lines contient ou non la recherche de l'input
@@ -276,15 +266,16 @@ class ListLinesAccueil : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(resultCode == Activity.RESULT_OK){
-            var result: IntentResult? = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            val result: IntentResult? =
+                IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
             if (result != null) {
 
                 runBlocking {
                     val station = stationsDao?.getStation(result.contents)
                     val intent = Intent(activity, StationDetailsActivity::class.java)
-                    intent.putExtra("station",station)
-                    getActivity()?.startActivity(intent)
+                    intent.putExtra("station", station)
+                    activity?.startActivity(intent)
                 }
             }
 
@@ -293,22 +284,9 @@ class ListLinesAccueil : Fragment() {
         }
     }
 
-
     // Pour ignorer les accents dans l'input
     private fun CharSequence.unAccent(): String {
         val temp = Normalizer.normalize(this, Normalizer.Form.NFD)
         return regexUnaccent.replace(temp, "")
-    }
-
-    // Pour cacher le keyboard d'un fragment
-    private fun Fragment.hideKeyboard() {
-        view?.let { activity?.hideKeyboard(it) }
-    }
-
-    // Pour cacher le keyboard avec uniquement un context
-    private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager =
-            getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

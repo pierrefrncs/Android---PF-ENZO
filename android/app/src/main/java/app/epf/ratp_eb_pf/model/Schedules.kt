@@ -10,6 +10,6 @@ data class Schedules(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val message: String,
     val destination: String,
-    val uuid: String = message+destination  // Pour avoir un uuid unique
+    val uuid: String = message + destination  // Pour avoir un uuid unique
 ) : Serializable
 

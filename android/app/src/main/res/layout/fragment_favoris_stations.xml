@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_margin="10dp"
     android:orientation="vertical"
-    tools:context=".ui.listeFavoris.FavorisStationsFragment">
+    tools:context=".ui.favoris.FavorisStationsFragment">
 
     <RelativeLayout
         android:id="@+id/layoutNoSavedStation"
@@ -23,7 +23,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Aucune station favorite"
+            android:text="@string/aucune_station_favorite"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -35,7 +35,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Pour en ajouter, cliquez sur l\'image ci-dessous"
+            android:text="@string/aucune_station_details"
             android:textSize="18sp" />
 
         <ImageView
@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/noSavedLineDetail"
             android:layout_marginTop="30dp"
-            android:contentDescription="Aucune station favorite"
+            android:contentDescription="@string/aucune_station_favorite"
             android:gravity="center"
             android:src="@drawable/nosavedlines" />
 

@@ -2,22 +2,17 @@ package app.epf.ratp_eb_pf.ui.listeLines.details
 
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.daoSta
-import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.StationsDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.model.Stations
-import app.epf.ratp_eb_pf.retrofit
-import app.epf.ratp_eb_pf.service.StationsService
 import kotlinx.coroutines.runBlocking
 
 // Sous-fragment (de DetailsLineActivity) qui contient la liste des stations d'une ligne
@@ -61,6 +56,7 @@ class StationsListFragment : Fragment() {
 
         stationsRecyclerView.adapter = StationsAdapter(stationsLigne, requireView())
 
+        // Pour récupèrer la position de la recyclerView
         if (mBundleRecyclerViewState != null) {
             mListState = mBundleRecyclerViewState!!.getParcelable("keyR")
             stationsRecyclerView.layoutManager?.onRestoreInstanceState(mListState)
@@ -72,6 +68,7 @@ class StationsListFragment : Fragment() {
 
         mBundleRecyclerViewState = Bundle()
 
+        // Pour enregistrer la position de la recyclerView
         mListState = stationsRecyclerView.layoutManager?.onSaveInstanceState()
         mBundleRecyclerViewState!!.putParcelable("keyR", mListState)
     }

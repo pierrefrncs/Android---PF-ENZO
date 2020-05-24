@@ -3,6 +3,7 @@ package app.epf.ratp_eb_pf.ui.favoris
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,9 @@ class FavorisStationsFragment : Fragment() {
 
     private var mRecentlyDeletedItemPosition = 0
     private lateinit var mRecentlyDeletedItem: Stations
+
+    private var mBundleRecyclerViewState: Bundle? = null
+    private var mListState: Parcelable? = null
 
 
     override fun onCreateView(
@@ -85,6 +89,22 @@ class FavorisStationsFragment : Fragment() {
         super.onResume()
 
         stationsRecyclerView.adapter = StationsAdapter(stations ?: mutableListOf(), requireView())
+
+        // Pour récupèrer la position de la recyclerView
+        if (mBundleRecyclerViewState != null) {
+            mListState = mBundleRecyclerViewState!!.getParcelable("keyR")
+            stationsRecyclerView.layoutManager?.onRestoreInstanceState(mListState)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        mBundleRecyclerViewState = Bundle()
+
+        // Pour enregistrer la position de la recyclerView
+        mListState = stationsRecyclerView.layoutManager?.onSaveInstanceState()
+        mBundleRecyclerViewState!!.putParcelable("keyR", mListState)
 
     }
 
@@ -147,6 +167,9 @@ class FavorisStationsFragment : Fragment() {
                 // Supprime de la liste et notifie la recyclerView
                 stations?.removeAt(fromPosition)
                 stationsRecyclerView.adapter?.notifyItemRemoved(fromPosition)
+                if (stations.isNullOrEmpty()) {
+                    view?.layoutNoSavedStation?.visibility = View.VISIBLE
+                }
                 showUndoSnackbar()
             }
 
@@ -214,6 +237,9 @@ class FavorisStationsFragment : Fragment() {
         stationsRecyclerView.adapter?.notifyItemInserted(mRecentlyDeletedItemPosition)
         runBlocking {
             stationDaoSaved?.addStation(mRecentlyDeletedItem)
+        }
+        if (!stations.isNullOrEmpty()) {
+            view?.layoutNoSavedStation?.visibility = View.GONE
         }
     }
 }
