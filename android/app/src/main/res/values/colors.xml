@@ -8,4 +8,8 @@
 
     <color name="textPrimary">#000000</color>
     <color name="textSecondary">#555555</color>
+
+    <color name="trafficOk">#2ECC71</color>
+    <color name="trafficPerturbé">#E30000</color>
+    <color name="trafficTravaux">#FF9800</color>
 </resources>

@@ -58,7 +58,7 @@ class StationDetailsActivity : AppCompatActivity() {
         val listAirports: List<Map<String, String>> =
             tsvReader.readAllWithHeader(coordonnees)
 
-        // Permet de récupérer les coordonnées de la station
+        // Permet de récupérer les coordonnées GPS de la station
         var location = LatLng(1.0, 1.0)
         run loop@{
             listAirports.map { itMap ->

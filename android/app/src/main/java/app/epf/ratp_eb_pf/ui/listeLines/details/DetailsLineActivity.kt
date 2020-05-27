@@ -3,10 +3,17 @@ package app.epf.ratp_eb_pf.ui.listeLines.details
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
 import app.epf.ratp_eb_pf.R
+import app.epf.ratp_eb_pf.daoTraf
+import app.epf.ratp_eb_pf.data.TrafficDao
 import app.epf.ratp_eb_pf.model.Line
+import app.epf.ratp_eb_pf.model.Traffic
+import app.epf.ratp_eb_pf.retrofit
+import app.epf.ratp_eb_pf.service.TrafficSpecService
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_details_line.*
 import kotlinx.coroutines.*
@@ -21,6 +28,8 @@ class DetailsLineActivity : AppCompatActivity() {
     private lateinit var viewpager: ViewPager
     private lateinit var tabLayout: TabLayout
     private var bundle = Bundle()
+    private var trafficDao: TrafficDao? = null
+    private var traffic: Traffic? = null
 
     // Fragment global contenant les details d'une ligne après click dessus
 
@@ -49,7 +58,41 @@ class DetailsLineActivity : AppCompatActivity() {
 
         LineDirectionsDetail.text = line?.directions
 
+        trafficDao = daoTraf(this)
+        val service = retrofit().create(TrafficSpecService::class.java)
+        runBlocking {
+            traffic = trafficDao?.getTraffic(line!!.code.toInt())
+            var idTraf = traffic!!.id
+            val result = service.getTrafficSpecService("metros", line!!.code)
+            traffic = Traffic(idTraf, result.result.line, result.result.slug, result.result.title, result.result.message)
+            trafficDao?.updateTraffic(traffic!!.line, traffic!!.title, traffic!!.message)  // Ajoute la station dans la bdd
+
+        }
+
+        //set traffic indicator color
+        val imageView = findViewById<ImageView>(R.id.status_traffic_detail)
+        if ( traffic!!.slug.equals("normal") ) {
+            imageView.setColorFilter(
+                ContextCompat.getColor(
+                    this,
+                    R.color.trafficOk
+                ), android.graphics.PorterDuff.Mode.SRC_IN)
+        }
+        else if( traffic!!.slug.equals("critical") ) {
+            imageView.setColorFilter(
+                ContextCompat.getColor(this, R.color.trafficPerturbé),
+                android.graphics.PorterDuff.Mode.SRC_IN
+            )
+        }
+        else {
+            imageView.setColorFilter(
+                ContextCompat.getColor(this, R.color.trafficTravaux),
+                android.graphics.PorterDuff.Mode.SRC_IN
+            )
+        }
+
         bundle.putSerializable("line", line) // Pour que les sous-fragments connaissent les données de la ligne
+        bundle.putSerializable("traffic", traffic)
         viewpager = findViewById(R.id.fragment_rechercheinterne)
         setupViewPager(viewpager)
         viewpager.offscreenPageLimit = 1 // Nombre de sous-fragments - 1 pour améliorer la fluidité
@@ -76,9 +119,9 @@ class DetailsLineActivity : AppCompatActivity() {
         scope.launch {
             val adapter =
                 DetailsTabAdapter(supportFragmentManager, bundle)
-            adapter.addFragment(StationsListFragment(), "Stations") // Ajoute sous-fragment avec la liste des stations
-            adapter.addFragment(TrafficDetailsFragment(), "Etat du trafic") // Ajoute sous-fragment pour l'état du traffic
-            withContext(Dispatchers.Main) {
+                adapter.addFragment(StationsListFragment(), "Stations") // Ajoute sous-fragment avec la liste des stations
+                adapter.addFragment(TrafficDetailsFragment(), "Etat du trafic") // Ajoute sous-fragment pour l'état du traffic
+                withContext(Dispatchers.Main) {
                 viewPager.adapter = adapter
             }
         }

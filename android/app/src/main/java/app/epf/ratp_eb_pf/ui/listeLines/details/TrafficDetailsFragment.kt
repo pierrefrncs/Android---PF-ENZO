@@ -9,15 +9,24 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.epf.ratp_eb_pf.R
+import app.epf.ratp_eb_pf.daoTraf
+import app.epf.ratp_eb_pf.data.TrafficDao
 import app.epf.ratp_eb_pf.model.Line
+import app.epf.ratp_eb_pf.model.Traffic
 import app.epf.ratp_eb_pf.retrofit
 import app.epf.ratp_eb_pf.service.TrafficService
+import app.epf.ratp_eb_pf.service.TrafficSpecService
+import kotlinx.android.synthetic.main.fragment_traffic_details.*
 import kotlinx.android.synthetic.main.fragment_traffic_details.view.*
+import kotlinx.android.synthetic.main.fragment_traffic_details.view.etatTraffic
 import kotlinx.coroutines.runBlocking
 
 // Sous-fragment (de DetailsLineActivity) qui contient l'état du traffic d'une ligne
 
 class TrafficDetailsFragment : Fragment() {
+
+    private var trafficFromParent: Traffic? = null
+    private var lineFromParent: Line? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,38 +36,21 @@ class TrafficDetailsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_traffic_details, container, false)
 
         // Recupère les infos de la ligne du fragment/activity parent
-        val lineFromParent = arguments?.getSerializable("line") as Line
+        lineFromParent = arguments?.getSerializable("line") as Line
+        trafficFromParent = arguments?.getSerializable("traffic") as Traffic
 
-        val itemsSwipeToRefresh =
-            view.findViewById<SwipeRefreshLayout>(R.id.itemsswipetorefreshTraffic)
 
-        synchroServerTraffics(view, lineFromParent.code)
+        val itemsSwipeToRefresh = view.findViewById<SwipeRefreshLayout>(R.id.itemsswipetorefreshTraffic)
+
+        view.etatTraffic.text = trafficFromParent?.title
+        view.messageTraffic.text = trafficFromParent?.message
 
         itemsSwipeToRefresh.setProgressBackgroundColorSchemeColor(
             ContextCompat.getColor(requireContext(), R.color.colorPrimary)
         )
         itemsSwipeToRefresh.setColorSchemeColors(Color.WHITE)
 
-        // Appel l'api lors du refresh de la page
-        itemsSwipeToRefresh.setOnRefreshListener {
-            synchroServerTraffics(view, lineFromParent.code)
-            itemsSwipeToRefresh.isRefreshing = false
-        }
 
         return view
-    }
-
-
-    // Synchro de l'état du traffic
-    private fun synchroServerTraffics(view: View, code: String) {
-        val service =
-            retrofit().create(TrafficService::class.java) // Fonction retrofit d'ActivityUtils
-        runBlocking {
-            val result = service.getTrafficService("metros", code)
-            val topo = result.result
-
-            view.etatTraffic.text = topo.title
-            view.messageTraffic.text = topo.message
-        }
     }
 }

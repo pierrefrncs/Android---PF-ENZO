@@ -15,9 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import app.epf.ratp_eb_pf.R
+import app.epf.ratp_eb_pf.daoTraf
 import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.LineDao
+import app.epf.ratp_eb_pf.data.TrafficDao
 import app.epf.ratp_eb_pf.model.Line
+import app.epf.ratp_eb_pf.model.Traffic
 import app.epf.ratp_eb_pf.ui.listeLines.LinesAdapter
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_favoris_lines.view.*
@@ -28,6 +31,8 @@ import java.util.*
 
 class FavorisLinesFragment : Fragment() {
 
+    private var traffic: MutableList<Traffic>? = null
+    private var trafficDao: TrafficDao?= null
     private var lineDaoSaved: LineDao? = null
     private lateinit var linesRecyclerView: RecyclerView
     private var lines: MutableList<Line>? = null
@@ -61,9 +66,13 @@ class FavorisLinesFragment : Fragment() {
                 .build()
 
         lineDaoSaved = database.getLineDao()
+        trafficDao = daoTraf(requireContext())
+
 
         runBlocking {
             lines = lineDaoSaved?.getLines()
+            traffic = trafficDao?.getTraffic()
+
         }
 
         // Si aucune ligne favorite, affiche l'image "Aucune ligne favorite", sinon cachée
@@ -76,7 +85,7 @@ class FavorisLinesFragment : Fragment() {
         }
 
         // Ajoute l'adapter des lines (liste déroulante des lines favorites)
-        linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), view)
+        linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(),traffic!!, view)
 
         // Attache à la recyclerView
         val itemTouchHelper = ItemTouchHelper(simpleCallback())
@@ -88,7 +97,7 @@ class FavorisLinesFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), requireView())
+        linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), traffic!!, requireView())
 
         // Pour récupèrer la position de la recyclerView
         if (mBundleRecyclerViewState != null) {

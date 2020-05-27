@@ -20,10 +20,10 @@ import app.epf.ratp_eb_pf.*
 import app.epf.ratp_eb_pf.data.LineDao
 import app.epf.ratp_eb_pf.data.SchedulesDao
 import app.epf.ratp_eb_pf.data.StationsDao
+import app.epf.ratp_eb_pf.data.TrafficDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.model.Stations
-import app.epf.ratp_eb_pf.service.LinesService
-import app.epf.ratp_eb_pf.service.StationsService
+import app.epf.ratp_eb_pf.model.Traffic
 import app.epf.ratp_eb_pf.ui.detailStation.StationDetailsActivity
 import app.epf.ratp_eb_pf.ui.listeLines.details.StationsAdapter
 import com.google.zxing.integration.android.IntentIntegrator
@@ -42,6 +42,8 @@ import java.util.concurrent.TimeUnit
 
 class ListLinesAccueil : Fragment() {
 
+    private var traffic: MutableList<Traffic>? = null
+    private var trafficDao: TrafficDao?= null
     private val regexUnaccent = "\\p{InCombiningDiacriticalMarks}+".toRegex()
 
     private lateinit var listLinesViewModel: ListLinesViewModel
@@ -51,7 +53,6 @@ class ListLinesAccueil : Fragment() {
     private lateinit var globalRecyclerView: RecyclerView
     private var lines: MutableList<Line>? = null
     private var stations: MutableList<Stations>? = null
-    private var list: MutableList<String> = mutableListOf()
 
     private val filteredPostsLi: MutableList<Line> = mutableListOf()
     private val oldFilteredPostsLi: MutableList<Line> = mutableListOf()
@@ -95,10 +96,12 @@ class ListLinesAccueil : Fragment() {
         stationsDao = daoSta(requireContext())
         lineDao = daoLi(requireContext())
         schedulesDao = daoSch(requireContext())
+        trafficDao = daoTraf(requireContext())
 
         runBlocking {
             lines = lineDao?.getLines()
             stations = stationsDao?.getStations()
+            traffic = trafficDao?.getTraffic()
         }
 
         synchroServerAllLines(view)
@@ -174,66 +177,23 @@ class ListLinesAccueil : Fragment() {
 
     // Synchro de la liste des lines
     private fun synchroServerAllLines(view: View) {
-
-        // si la BDD des lines et stations est vide
-        if (lines.isNullOrEmpty() || stations.isNullOrEmpty() || stations?.last()?.slug != "olympiades") {
-            val service =
-                retrofit().create(LinesService::class.java) // Fonction retrofit d'ActivityUtils
-            runBlocking {
-                lineDao?.deleteLines() // Supprime les anciennes lines
-                val result =
-                    service.getLinesService("metros") // Obtient les lines du type correspondant
-                var id = 1 // Pour toujours avoir le premier id à 1
-                result.result.metros.map {
-
-                    val line = Line(id, it.code, it.name, it.directions, it.id.toInt(), false)
-                    // Enlève les lines de metro inutiles
-                    if (it.id != "79" && it.id != "455") {
-                        list.add(it.code)
-                        lineDao?.addLine(line)  // Ajoute la station dans la bdd
-                        id += 1
-                    }
-                }
-                lines = lineDao?.getLines() // Recupère la liste des lines depuis la bdd
-            }
+        runBlocking {
+            lines = lineDao?.getLines() // Recupère la liste des lines depuis la bdd
         }
+
         // Définit le premier adapter du mergeAdapter et ajoute à la recyclerView
         lines?.let { oldFilteredPostsLi.addAll(it) }
-        linesAdapter = LinesAdapter(oldFilteredPostsLi, view)
+        linesAdapter = LinesAdapter(oldFilteredPostsLi, traffic!!, view)
         mergeAdapter.addAdapter(linesAdapter!!)
         globalRecyclerView.adapter = mergeAdapter
     }
 
     // Synchro de la liste des lines
     private fun synchroServerAllStations(view: View) {
+        /*runBlocking {
+            stations = stationsDao?.getStations() // Recupère la liste des stations depuis la bdd
+        }*/
 
-        // si la BDD des stations est vide
-        if (stations.isNullOrEmpty() || stations?.last()?.slug != "olympiades") {
-            runBlocking {
-                stationsDao?.deleteStations() // Supprime les anciennes stations
-
-                var id = 1 // Pour toujours avoir le premier id à 1
-
-                // Boucle sur toutes les lines
-                for (code: String in list) {
-                    val service =
-                        retrofit().create(StationsService::class.java) // Fonction retrofit d'ActivityUtils
-
-                    // Obtient les stations de la line du type correspondant
-                    val result = service.getStationsService("metros", code)
-
-                    result.result.stations.map {
-
-                        val station = Stations(id, it.name, it.slug, code, false)
-                        stationsDao?.addStation(station)  // Ajoute la station dans la bdd
-                        id += 1
-
-                    }
-                    stations =
-                        stationsDao?.getStations() // Recupère la liste des stations depuis la bdd
-                }
-            }
-        }
         // Définit le second adapter du mergeAdapter (ajoute pas : affiche uniquement lines)
         stations?.let { oldFilteredPostsSta.addAll(it) }
         stationsAdapter = StationsAdapter(oldFilteredPostsSta, view)

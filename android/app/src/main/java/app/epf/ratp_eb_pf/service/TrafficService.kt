@@ -7,12 +7,12 @@ import retrofit2.http.Path
 
 interface TrafficService {
 
-    @GET("traffic/{type}/{code}")
+    @GET("traffic/{type}")
     suspend fun getTrafficService(
-        @Path("type") type: String, // Type de ligne. Ex :metro
-        @Path("code") code: String // Code de la ligne. Ex: 1 pour metro 1
+        @Path("type") type: String // Type de ligne. Ex :metro
+
     ): GetTrafficResult
-}
+}//,@Path("code") code: String // Code de la ligne. Ex: 1 pour metro 1
 
 data class GetTrafficResult(
     val result: ResultTraffic,
@@ -26,6 +26,10 @@ data class MetadataTraffic(
 )
 
 data class ResultTraffic(
+    val metros: List<Traffic>
+)
+
+data class Traffic(
     val line: String,
     val slug: String,
     val title: String,

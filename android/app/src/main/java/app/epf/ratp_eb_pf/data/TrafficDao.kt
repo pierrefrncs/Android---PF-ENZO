@@ -12,7 +12,7 @@ import app.epf.ratp_eb_pf.model.Traffic
 interface TrafficDao {
 
     @Query("select * from traffic")
-    suspend fun getTraffics(): MutableList<Traffic>
+    suspend fun getTraffic(): MutableList<Traffic>
 
     @Insert
     suspend fun addTraffic(traffic: Traffic)
@@ -23,6 +23,9 @@ interface TrafficDao {
     @Query("delete from traffic")
     suspend fun deleteTraffics()
 
-    @Query("select * from traffic where id = :idTraffic")
-    suspend fun getTraffic(idTraffic: Int): Traffic
+    @Query("select * from traffic where line = :codeLine")
+    suspend fun getTraffic(codeLine: Int): Traffic
+
+    @Query("update traffic set title = :title, message = :message where line = :codeLine")
+    suspend fun updateTraffic(codeLine: String, title: String, message: String)
 }

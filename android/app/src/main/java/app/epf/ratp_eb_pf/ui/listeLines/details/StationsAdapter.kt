@@ -113,6 +113,7 @@ class StationsAdapter(
         // En cas de click sur la cardview d'une station --> affiche activité correspondante (détails de la station)
         view.setOnClickListener { itView ->
             val intent = Intent(itView.context, StationDetailsActivity::class.java)
+
             intent.putExtra("station", station)
             itView.context.startActivity(intent)
         }
