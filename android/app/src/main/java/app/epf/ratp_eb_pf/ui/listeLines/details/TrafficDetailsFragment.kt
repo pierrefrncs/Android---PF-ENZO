@@ -9,17 +9,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import app.epf.ratp_eb_pf.R
-import app.epf.ratp_eb_pf.daoTraf
-import app.epf.ratp_eb_pf.data.TrafficDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.model.Traffic
-import app.epf.ratp_eb_pf.retrofit
-import app.epf.ratp_eb_pf.service.TrafficService
-import app.epf.ratp_eb_pf.service.TrafficSpecService
-import kotlinx.android.synthetic.main.fragment_traffic_details.*
 import kotlinx.android.synthetic.main.fragment_traffic_details.view.*
-import kotlinx.android.synthetic.main.fragment_traffic_details.view.etatTraffic
-import kotlinx.coroutines.runBlocking
 
 // Sous-fragment (de DetailsLineActivity) qui contient l'état du traffic d'une ligne
 
@@ -40,7 +32,8 @@ class TrafficDetailsFragment : Fragment() {
         trafficFromParent = arguments?.getSerializable("traffic") as Traffic
 
 
-        val itemsSwipeToRefresh = view.findViewById<SwipeRefreshLayout>(R.id.itemsswipetorefreshTraffic)
+        val itemsSwipeToRefresh =
+            view.findViewById<SwipeRefreshLayout>(R.id.itemsswipetorefreshTraffic)
 
         view.etatTraffic.text = trafficFromParent?.title
         view.messageTraffic.text = trafficFromParent?.message

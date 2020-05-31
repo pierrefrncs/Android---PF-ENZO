@@ -43,7 +43,7 @@ import java.util.concurrent.TimeUnit
 class ListLinesAccueil : Fragment() {
 
     private var traffic: MutableList<Traffic>? = null
-    private var trafficDao: TrafficDao?= null
+    private var trafficDao: TrafficDao? = null
     private val regexUnaccent = "\\p{InCombiningDiacriticalMarks}+".toRegex()
 
     private lateinit var listLinesViewModel: ListLinesViewModel

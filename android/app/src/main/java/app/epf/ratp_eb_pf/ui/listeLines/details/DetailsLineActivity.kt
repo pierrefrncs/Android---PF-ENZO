@@ -39,7 +39,8 @@ class DetailsLineActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true) // Bouton retour en haut de la page
 
-        line = intent.getSerializableExtra("line") as Line // recupère la ligne sur lequel l'user a cliqué
+        line =
+            intent.getSerializableExtra("line") as Line // recupère la ligne sur lequel l'user a cliqué
 
         LineNameDetail.text = line?.name
 
@@ -64,34 +65,45 @@ class DetailsLineActivity : AppCompatActivity() {
             traffic = trafficDao?.getTraffic(line!!.code.toInt())
             var idTraf = traffic!!.id
             val result = service.getTrafficSpecService("metros", line!!.code)
-            traffic = Traffic(idTraf, result.result.line, result.result.slug, result.result.title, result.result.message)
-            trafficDao?.updateTraffic(traffic!!.line, traffic!!.title, traffic!!.message)  // Ajoute la station dans la bdd
+            traffic = Traffic(
+                idTraf,
+                result.result.line,
+                result.result.slug,
+                result.result.title,
+                result.result.message
+            )
+            trafficDao?.updateTraffic(
+                traffic!!.line,
+                traffic!!.title,
+                traffic!!.message
+            )  // Ajoute la station dans la bdd
 
         }
 
         //set traffic indicator color
-        val imageView = findViewById<ImageView>(R.id.status_traffic_detail)
-        if ( traffic!!.slug.equals("normal") ) {
-            imageView.setColorFilter(
+        if (traffic!!.slug.equals("normal")) {
+            status_traffic_detail.setColorFilter(
                 ContextCompat.getColor(
                     this,
                     R.color.trafficOk
-                ), android.graphics.PorterDuff.Mode.SRC_IN)
-        }
-        else if( traffic!!.slug.equals("critical") ) {
-            imageView.setColorFilter(
+                ), android.graphics.PorterDuff.Mode.SRC_IN
+            )
+        } else if (traffic!!.slug.equals("critical")) {
+            status_traffic_detail.setColorFilter(
                 ContextCompat.getColor(this, R.color.trafficPerturbé),
                 android.graphics.PorterDuff.Mode.SRC_IN
             )
-        }
-        else {
-            imageView.setColorFilter(
+        } else {
+            status_traffic_detail.setColorFilter(
                 ContextCompat.getColor(this, R.color.trafficTravaux),
                 android.graphics.PorterDuff.Mode.SRC_IN
             )
         }
 
-        bundle.putSerializable("line", line) // Pour que les sous-fragments connaissent les données de la ligne
+        bundle.putSerializable(
+            "line",
+            line
+        ) // Pour que les sous-fragments connaissent les données de la ligne
         bundle.putSerializable("traffic", traffic)
         viewpager = findViewById(R.id.fragment_rechercheinterne)
         setupViewPager(viewpager)
@@ -112,16 +124,23 @@ class DetailsLineActivity : AppCompatActivity() {
 
     // Setup ViewPager avec les sous-fragments
     private fun setupViewPager(viewPager: ViewPager) {
-        val scope = CoroutineScope(Dispatchers.Main + SupervisorJob()) // Pour essayer d'améliorer la réactivité
+        val scope =
+            CoroutineScope(Dispatchers.Main + SupervisorJob()) // Pour essayer d'améliorer la réactivité
 
         //https://stackoverflow.com/a/18847195/13289762
 
         scope.launch {
             val adapter =
                 DetailsTabAdapter(supportFragmentManager, bundle)
-                adapter.addFragment(StationsListFragment(), "Stations") // Ajoute sous-fragment avec la liste des stations
-                adapter.addFragment(TrafficDetailsFragment(), "Etat du trafic") // Ajoute sous-fragment pour l'état du traffic
-                withContext(Dispatchers.Main) {
+            adapter.addFragment(
+                StationsListFragment(),
+                "Stations"
+            ) // Ajoute sous-fragment avec la liste des stations
+            adapter.addFragment(
+                TrafficDetailsFragment(),
+                "Etat du trafic"
+            ) // Ajoute sous-fragment pour l'état du traffic
+            withContext(Dispatchers.Main) {
                 viewPager.adapter = adapter
             }
         }

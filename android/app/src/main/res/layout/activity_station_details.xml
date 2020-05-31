@@ -29,7 +29,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                tools:text="Test" />
+                tools:text="Test"
+                android:textColor="@color/textPrimary"/>
 
         </LinearLayout>
 
@@ -40,7 +41,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:contentDescription="@string/logo_ligne"
-            android:src="@drawable/ic_search_black_24dp" />
+            android:src="@drawable/ic_search_black_24dp"
+            android:elevation="3dp"/>
 
     </LinearLayout>
 
@@ -58,7 +60,8 @@
         app:tabIndicatorColor="#fff"
         app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
-        app:tabTextColor="#fff" />
+        app:tabTextColor="#fff"
+        android:elevation="2dp"/>
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/fragment_pager_horaires"

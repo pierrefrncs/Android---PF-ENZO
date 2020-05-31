@@ -7,12 +7,14 @@ import androidx.fragment.app.FragmentPagerAdapter
 
 // Adapter pour configurer le ViewPager des favoris
 
-class FavorisTabAdapter(fm: FragmentManager, data: Bundle) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class FavorisTabAdapter(fm: FragmentManager, data: Bundle) :
+    FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
 
     private val fragmentList = arrayListOf<Fragment>()
     private val fragmentTitle = arrayListOf<String>()
-    private val fragmentBundle: Bundle = data // Bundle permet de transférer les données du fragment principal vers les sous-fragments
+    private val fragmentBundle: Bundle =
+        data // Bundle permet de transférer les données du fragment principal vers les sous-fragments
 
     override fun getItem(position: Int): Fragment {
         fragmentList[position].arguments = fragmentBundle

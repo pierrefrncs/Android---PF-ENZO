@@ -31,7 +31,8 @@ class StationsAdapter(
     private var listStationsBdd: MutableList<Stations>? = null
     private var stationDaoSaved: StationsDao? = null
     private lateinit var context: Context // Context du fragment contenant l'adapter
-    private var toastMessage: Toast? = null // Pour réinitialiser les messages toast quand plusieurs apparaissent en même temps
+    private var toastMessage: Toast? =
+        null // Pour réinitialiser les messages toast quand plusieurs apparaissent en même temps
 
     class StationsViewHolder(val stationsView: View) : RecyclerView.ViewHolder(stationsView) {
         fun bind(post: Stations) {
@@ -107,7 +108,6 @@ class StationsAdapter(
             } finally {
                 ims?.close()
             }
-
         }
 
         // En cas de click sur la cardview d'une station --> affiche activité correspondante (détails de la station)
@@ -130,7 +130,7 @@ class StationsAdapter(
         if (station.favoris || favoris) {
             view.fab_favStation.setImageResource(R.drawable.ic_star_black_24dp)
             favoris = true
-        // Sinon étoile vide
+            // Sinon étoile vide
         } else if (!station.favoris || !favoris) {
             view.fab_favStation.setImageResource(R.drawable.ic_star_border_black_24dp)
             favoris = false

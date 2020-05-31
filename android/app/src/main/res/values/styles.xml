@@ -6,9 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:windowBackground">@color/colorBackgroundDark</item>
         <item name="colorOnPrimary">@color/textSecondary</item>
-<!--        <item name="android:textColor">#FFF</item>-->
+        <!--        <item name="android:textColor">#FFF</item>-->
+        <item name="actionBarStyle">@style/MyActionBar</item>
     </style>
 
     <style name="SlashTheme" parent="Theme.MaterialComponents.NoActionBar">
@@ -16,6 +17,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="MyActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="background"> @color/menuColor </item>
+        <item name="android:elevation">4dp</item>
     </style>
 
 </resources>

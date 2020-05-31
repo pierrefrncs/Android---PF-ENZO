@@ -20,8 +20,6 @@ import app.epf.ratp_eb_pf.data.TrafficDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.model.Traffic
 import app.epf.ratp_eb_pf.ui.listeLines.details.DetailsLineActivity
-import com.devs.vectorchildfinder.VectorChildFinder
-import com.devs.vectorchildfinder.VectorDrawableCompat
 import kotlinx.android.synthetic.main.card_lines_view.view.*
 import kotlinx.android.synthetic.main.fragment_favoris_lines.view.*
 import kotlinx.coroutines.runBlocking
@@ -31,9 +29,11 @@ import java.io.InputStream
 
 // Adapter des lines (pour ajout dans recyclerView)
 
-class LinesAdapter(private val linesList: MutableList<Line>,
-                   private val trafficList: MutableList<Traffic>,
-                   private val viewFragment: View) :  // Pour récuperer la view du fragment contenant l'adapter
+class LinesAdapter(
+    private val linesList: MutableList<Line>,
+    private val trafficList: MutableList<Traffic>,
+    private val viewFragment: View
+) :  // Pour récuperer la view du fragment contenant l'adapter
     RecyclerView.Adapter<LinesAdapter.LinesViewHolder>() {
 
     private var listLinesBdd: MutableList<Line>? = null
@@ -43,13 +43,15 @@ class LinesAdapter(private val linesList: MutableList<Line>,
     private var listTrafficBdd: MutableList<Traffic>? = null
 
     private lateinit var context: Context // Context du fragment contenant l'adapter
-    private var toastMessage: Toast? = null // Pour réinitialiser les messages toast quand plusieurs apparaissent en même temps
+    private var toastMessage: Toast? =
+        null // Pour réinitialiser les messages toast quand plusieurs apparaissent en même temps
 
     class LinesViewHolder(val linesView: View) : RecyclerView.ViewHolder(linesView) {
         fun bind(post: Line) {
             linesView.name_line.text = post.name
         }
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LinesViewHolder {
         val layoutInflater: LayoutInflater = LayoutInflater.from(parent.context)
         val view: View = layoutInflater.inflate(R.layout.card_lines_view, parent, false)
@@ -96,26 +98,25 @@ class LinesAdapter(private val linesList: MutableList<Line>,
 
         // set les couleurs des pastilles d'indication du traffic
         val imageView = view.findViewById<ImageView>(R.id.status_traffic_main)
-        if ( traffic.slug.equals("normal") ) {
+        if (traffic.slug.equals("normal")) {
             imageView.setColorFilter(
                 ContextCompat.getColor(
                     context,
                     R.color.trafficOk
-                ), android.graphics.PorterDuff.Mode.SRC_IN)
-            }
-        else if( traffic.slug.equals("critical") ) {
+                ), android.graphics.PorterDuff.Mode.SRC_IN
+            )
+        } else if (traffic.slug.equals("critical")) {
             imageView.setColorFilter(
                 ContextCompat.getColor(context, R.color.trafficPerturbé),
                 android.graphics.PorterDuff.Mode.SRC_IN
             )
-        }
-        else {
+        } else {
             imageView.setColorFilter(
                 ContextCompat.getColor(context, R.color.trafficTravaux),
                 android.graphics.PorterDuff.Mode.SRC_IN
             )
-
         }
+
         // En cas de click sur la cardview d'une line --> affiche activité correspondante (détails de la line)
         view.setOnClickListener { itView ->
             val intent = Intent(itView.context, DetailsLineActivity::class.java)
@@ -135,13 +136,10 @@ class LinesAdapter(private val linesList: MutableList<Line>,
             view.fab_favLine.setImageResource(R.drawable.ic_star_black_24dp)
             favoris = true
             // Sinon étoile vide
-        }
-        else if (!line.favoris || !favoris) {
+        } else if (!line.favoris || !favoris) {
             view.fab_favLine.setImageResource(R.drawable.ic_star_border_black_24dp)
             favoris = false
-
         }
-
 
 
         // En cas de clique sur le bouton favoris
@@ -175,8 +173,7 @@ class LinesAdapter(private val linesList: MutableList<Line>,
                 toastMessage?.show()
 
                 // Si déjà dans les favoris
-            }
-            else if (favoris) {
+            } else if (favoris) {
 
                 // Supprime des favoris
                 runBlocking {
@@ -223,7 +220,6 @@ class LinesAdapter(private val linesList: MutableList<Line>,
             runBlocking {
                 listLinesBdd = lineDaoSaved?.getLines()
             }
-
 
 
         }

@@ -4,7 +4,17 @@
     <color name="colorPrimaryDark">#839192</color>
     <color name="colorAccent">#CCCC5A</color>
     <color name="ic_launcher_background">#303841</color>
-    <color name="colorBackground">#303841</color>
+
+    <color name="colorBackgroundDark">#272E35</color>
+    <color name="colorBackgroundLight">#303841</color>
+
+    <color name="menuColor">#303841</color>
+
+    <color name="favorisStar">#2ECC71</color>
+
+    <color name="NotSelected">#CCCCCC</color>
+    <color name="Selected">#2ECC71</color>
+
 
     <color name="textPrimary">#FFFFFF</color>
     <color name="textSecondary">#CCCCCC</color>

@@ -32,7 +32,7 @@ import java.util.*
 class FavorisLinesFragment : Fragment() {
 
     private var traffic: MutableList<Traffic>? = null
-    private var trafficDao: TrafficDao?= null
+    private var trafficDao: TrafficDao? = null
     private var lineDaoSaved: LineDao? = null
     private lateinit var linesRecyclerView: RecyclerView
     private var lines: MutableList<Line>? = null
@@ -85,7 +85,7 @@ class FavorisLinesFragment : Fragment() {
         }
 
         // Ajoute l'adapter des lines (liste déroulante des lines favorites)
-        linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(),traffic!!, view)
+        linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), traffic!!, view)
 
         // Attache à la recyclerView
         val itemTouchHelper = ItemTouchHelper(simpleCallback())
@@ -126,12 +126,14 @@ class FavorisLinesFragment : Fragment() {
             ItemTouchHelper.LEFT
         ) {
 
-            private val deleteIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete_white_24dp)
+            private val deleteIcon =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete_white_24dp)
             private val intrinsicWidth = deleteIcon?.intrinsicWidth!!
             private val intrinsicHeight = deleteIcon?.intrinsicHeight!!
             private val background = ColorDrawable()
             private val backgroundColor = Color.parseColor("#f44336")
-            private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
+            private val clearPaint =
+                Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
             // Pour déplacer un favoris
             override fun onMove(
@@ -197,14 +199,33 @@ class FavorisLinesFragment : Fragment() {
                 val isCanceled = dX == 0f && !isCurrentlyActive
 
                 if (isCanceled) {
-                    clearCanvas(c, itemView.right + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
-                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    clearCanvas(
+                        c,
+                        itemView.right + dX,
+                        itemView.top.toFloat(),
+                        itemView.right.toFloat(),
+                        itemView.bottom.toFloat()
+                    )
+                    super.onChildDraw(
+                        c,
+                        recyclerView,
+                        viewHolder,
+                        dX,
+                        dY,
+                        actionState,
+                        isCurrentlyActive
+                    )
                     return
                 }
 
                 // Draw the red delete background
                 background.color = backgroundColor
-                background.setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
+                background.setBounds(
+                    itemView.right + dX.toInt(),
+                    itemView.top,
+                    itemView.right,
+                    itemView.bottom
+                )
                 background.draw(c)
 
                 // Calculate position of delete icon
@@ -215,13 +236,32 @@ class FavorisLinesFragment : Fragment() {
                 val deleteIconBottom = deleteIconTop + intrinsicHeight
 
                 // Draw the delete icon
-                deleteIcon?.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
+                deleteIcon?.setBounds(
+                    deleteIconLeft,
+                    deleteIconTop,
+                    deleteIconRight,
+                    deleteIconBottom
+                )
                 deleteIcon?.draw(c)
 
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                super.onChildDraw(
+                    c,
+                    recyclerView,
+                    viewHolder,
+                    dX,
+                    dY,
+                    actionState,
+                    isCurrentlyActive
+                )
             }
 
-            private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {
+            private fun clearCanvas(
+                c: Canvas?,
+                left: Float,
+                top: Float,
+                right: Float,
+                bottom: Float
+            ) {
                 c?.drawRect(left, top, right, bottom, clearPaint)
             }
         }

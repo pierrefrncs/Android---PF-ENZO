@@ -11,8 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="55dp"
-        android:orientation="horizontal">
-
+        android:orientation="horizontal"
+        android:elevation="3dp"
+        android:background="@color/colorBackgroundLight">
 
         <TextView
             android:id="@+id/horaire_direction"
@@ -38,7 +39,6 @@
             android:gravity="end|center_vertical"
             android:textSize="18sp"
             tools:text="Train à l'approche" />
-
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

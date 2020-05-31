@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
 import app.epf.ratp_eb_pf.data.LineDao
 import app.epf.ratp_eb_pf.data.StationsDao
 import app.epf.ratp_eb_pf.data.TrafficDao
@@ -39,12 +38,9 @@ class SplashActivity : AppCompatActivity() {
             private val context: Context = contextSplash
             private var stationsDao: StationsDao? = null
             private var stations: MutableList<Stations>? = null
-
             private var lineDao: LineDao? = null
             private var lines: MutableList<Line>? = null
-
             private var trafficDao: TrafficDao? = null
-
             private var list: MutableList<String> = mutableListOf()
 
             override fun doInBackground(vararg params: Void?): Void? {
