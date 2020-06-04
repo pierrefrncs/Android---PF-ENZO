@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_list_lignes, R.id.navigation_favoris, R.id.navigation_notifications
+                R.id.navigation_list_lignes, R.id.navigation_favoris, R.id.navigation_map
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -101,7 +101,6 @@ class MainActivity : AppCompatActivity() {
             getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_activity_menu, menu)

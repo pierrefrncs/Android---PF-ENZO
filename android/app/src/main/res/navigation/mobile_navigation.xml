@@ -18,9 +18,9 @@
         tools:layout="@layout/fragment_favoris" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="app.epf.ratp_eb_pf.ui.notifications.NotificationsFragment"
+        android:id="@+id/navigation_map"
+        android:name="app.epf.ratp_eb_pf.ui.map.MapFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_map" />
 
 </navigation>

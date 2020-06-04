@@ -48,8 +48,13 @@ class SplashActivity : AppCompatActivity() {
                 lineDao = daoLi(context)
                 trafficDao = daoTraf(context)
 
+                runBlocking {
+                    stations = stationsDao?.getStations()
+                    lines = lineDao?.getLines()
+                }
+
                 // si la BDD des lines et stations est vide
-                if (lines.isNullOrEmpty() || stations.isNullOrEmpty() || stations?.last()?.slug != "olympiades") {
+                if (lines.isNullOrEmpty()) {
                     val service =
                         retrofit().create(LinesService::class.java) // Fonction retrofit d'ActivityUtils
                     runBlocking {
@@ -71,7 +76,7 @@ class SplashActivity : AppCompatActivity() {
                     }
                 }
 
-                if (stations.isNullOrEmpty() || stations?.last()?.slug != "olympiades") {
+                if (stations?.last()?.slug != "olympiades") {
                     runBlocking {
                         stationsDao?.deleteStations() // Supprime les anciennes stations
 
@@ -110,7 +115,6 @@ class SplashActivity : AppCompatActivity() {
                         id += 1
                     }
                 }
-
                 return null
             }
 

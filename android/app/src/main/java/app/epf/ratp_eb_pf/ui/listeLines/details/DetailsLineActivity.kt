@@ -62,7 +62,7 @@ class DetailsLineActivity : AppCompatActivity() {
         trafficDao = daoTraf(this)
         val service = retrofit().create(TrafficSpecService::class.java)
         runBlocking {
-            traffic = trafficDao?.getTraffic(line!!.code.toInt())
+            traffic = trafficDao?.getTraffic(line!!.code)
             var idTraf = traffic!!.id
             val result = service.getTrafficSpecService("metros", line!!.code)
             traffic = Traffic(

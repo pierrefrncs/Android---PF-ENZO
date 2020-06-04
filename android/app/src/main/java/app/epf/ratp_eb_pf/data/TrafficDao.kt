@@ -24,7 +24,7 @@ interface TrafficDao {
     suspend fun deleteTraffics()
 
     @Query("select * from traffic where line = :codeLine")
-    suspend fun getTraffic(codeLine: Int): Traffic
+    suspend fun getTraffic(codeLine: String): Traffic
 
     @Query("update traffic set title = :title, message = :message where line = :codeLine")
     suspend fun updateTraffic(codeLine: String, title: String, message: String)

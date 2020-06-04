@@ -31,18 +31,8 @@ class TrafficDetailsFragment : Fragment() {
         lineFromParent = arguments?.getSerializable("line") as Line
         trafficFromParent = arguments?.getSerializable("traffic") as Traffic
 
-
-        val itemsSwipeToRefresh =
-            view.findViewById<SwipeRefreshLayout>(R.id.itemsswipetorefreshTraffic)
-
         view.etatTraffic.text = trafficFromParent?.title
         view.messageTraffic.text = trafficFromParent?.message
-
-        itemsSwipeToRefresh.setProgressBackgroundColorSchemeColor(
-            ContextCompat.getColor(requireContext(), R.color.colorPrimary)
-        )
-        itemsSwipeToRefresh.setColorSchemeColors(Color.WHITE)
-
 
         return view
     }
