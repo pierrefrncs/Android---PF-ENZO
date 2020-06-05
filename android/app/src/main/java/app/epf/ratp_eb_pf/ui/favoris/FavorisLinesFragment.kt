@@ -97,8 +97,6 @@ class FavorisLinesFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        linesRecyclerView.adapter = LinesAdapter(lines ?: mutableListOf(), traffic!!, requireView())
-
         // Pour récupèrer la position de la recyclerView
         if (mBundleRecyclerViewState != null) {
             mListState = mBundleRecyclerViewState!!.getParcelable("keyR")

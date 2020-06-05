@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
@@ -34,6 +35,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_liste_lines.*
 import kotlinx.coroutines.runBlocking
 import java.text.Normalizer
 import java.util.concurrent.TimeUnit
@@ -88,6 +90,7 @@ class ListLinesAccueil : Fragment() {
         // Si click sur le bouton qrCode --> affiche la caméra
         qrCode.setOnClickListener {
             IntentIntegrator.forSupportFragment(this@ListLinesAccueil)
+                .addExtra("PROMPT_MESSAGE", "Encadrez un QR code avec le viseur pour le balayer")
                 .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE)
                 .setBeepEnabled(false)
                 .initiateScan()
@@ -230,12 +233,20 @@ class ListLinesAccueil : Fragment() {
             val result: IntentResult? =
                 IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
             if (result != null) {
-
                 runBlocking {
                     val station = stationsDao?.getStation(result.contents)
-                    val intent = Intent(activity, StationDetailsActivity::class.java)
-                    intent.putExtra("station", station)
-                    activity?.startActivity(intent)
+                    if (station != null) {
+                        val intent = Intent(activity, StationDetailsActivity::class.java)
+                        intent.putExtra("station", station)
+                        activity?.startActivity(intent)
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Le QR code est invalide",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        qr_code.performClick()
+                    }
                 }
             }
 

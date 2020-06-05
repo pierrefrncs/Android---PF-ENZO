@@ -1,17 +1,9 @@
 package app.epf.ratp_eb_pf
 
 import android.content.Context
-import android.os.AsyncTask
 import androidx.room.Room
 import app.epf.ratp_eb_pf.data.*
-import app.epf.ratp_eb_pf.model.Line
-import app.epf.ratp_eb_pf.model.Stations
-import app.epf.ratp_eb_pf.model.Traffic
-import app.epf.ratp_eb_pf.service.LinesService
-import app.epf.ratp_eb_pf.service.StationsService
-import app.epf.ratp_eb_pf.service.TrafficService
 import com.facebook.stetho.okhttp3.StethoInterceptor
-import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

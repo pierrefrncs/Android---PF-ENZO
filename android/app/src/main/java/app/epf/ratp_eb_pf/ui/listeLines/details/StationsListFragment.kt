@@ -54,8 +54,6 @@ class StationsListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        stationsRecyclerView.adapter = StationsAdapter(stationsLigne, requireView())
-
         // Pour récupèrer la position de la recyclerView
         if (mBundleRecyclerViewState != null) {
             mListState = mBundleRecyclerViewState!!.getParcelable("keyR")
@@ -75,26 +73,19 @@ class StationsListFragment : Fragment() {
 
     // Synchro de la liste des stations --> Par la BDD au lieu de l'API
     private fun synchroServerStations(view: View, code: String) {
-
-//        val service = retrofit().create(StationsService::class.java) // Fonction retrofit d'ActivityUtils
-//        runBlocking {
-//            stationsDao?.deleteStations() // Supprime les anciennes stations
-//            val result = service.getStationsService("metros", code) // Obtient les stations de la ligne correspondante
-//            var id = 1 // Pour toujours avoir le premier id à 1
-//            result.result.stations.map {
-//                val station = Stations(id, it.name, it.slug, code, false)
-//                stationsDao?.addStation(station) // Ajoute la station dans la bdd
-//                id += 1
-//            }
-//            stations = stationsDao?.getStations() // Recupère la liste des stations depuis la bdd
-//            stationsRecyclerView.adapter = StationsAdapter(stations ?: mutableListOf(), view)
-//        }
         runBlocking {
             stations = stationsDao?.getStations()
             // Obtient les stations de la ligne spécifiée uniquement
-            stations?.map {
-                if (it.line == code) {
-                    stationsLigne.add(it)
+            run loop@{
+                var top = ""
+                stations?.map {
+                    if (it.line == code) {
+                        stationsLigne.add(it)
+                        top = it.line
+                    }
+                    if (top == code && it.line != code) {
+                        return@loop
+                    }
                 }
             }
             stationsRecyclerView.adapter = StationsAdapter(stationsLigne, view)

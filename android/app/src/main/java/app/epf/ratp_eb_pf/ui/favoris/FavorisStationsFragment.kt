@@ -88,8 +88,6 @@ class FavorisStationsFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        stationsRecyclerView.adapter = StationsAdapter(stations ?: mutableListOf(), requireView())
-
         // Pour récupèrer la position de la recyclerView
         if (mBundleRecyclerViewState != null) {
             mListState = mBundleRecyclerViewState!!.getParcelable("keyR")

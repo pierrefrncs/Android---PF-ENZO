@@ -15,20 +15,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:orientation="horizontal"
         android:background="@color/colorBackgroundLight"
-        android:elevation="4dp">
+        android:elevation="4dp"
+        android:orientation="horizontal"
+        android:paddingVertical="5dp">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layoutRechercherList"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:layout_width="match_parent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
+            android:layout_marginStart="18dp"
             android:layout_weight="6"
             android:hint="@string/rechercher_edit_text"
-            app:endIconMode="clear_text"
             app:boxBackgroundColor="@color/colorBackgroundLight"
+            app:boxBackgroundMode="none"
+            app:boxStrokeColor="@null"
+            app:endIconMode="clear_text"
+            app:hintEnabled="false"
             app:startIconContentDescription="Icone search"
             app:startIconDrawable="@drawable/ic_search_black_24dp">
 
@@ -36,9 +40,9 @@
                 android:id="@+id/rechercherList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
                 android:clickable="true"
                 android:focusable="true"
+                android:hint="Rechercher"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,12 +53,11 @@
             android:layout_gravity="center"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_weight="1"
+            android:background="@color/colorBackgroundLight"
             android:contentDescription="@string/logo_qr_code"
             android:src="@drawable/ic_qr_code"
-            app:fabSize="auto"
-            android:background="@color/colorBackgroundLight"
-            android:tint="@color/textPrimary"/>
+            android:tint="@color/textPrimary"
+            app:fabSize="auto" />
 
     </LinearLayout>
 
@@ -70,7 +73,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/card_lines_view" />
 
     </RelativeLayout>
 </LinearLayout>

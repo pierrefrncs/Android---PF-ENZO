@@ -2,7 +2,6 @@
     <string name="app_name">Metro Finder</string>
     <string name="title_liste_lignes">Liste des lignes</string>
     <string name="title_favoris">Mes favoris</string>
-    <string name="title_notifications">Notifications</string>
     <string name="etatTraffic">Etat :</string>
     <string name="messageTraffic">Message :</string>
     <string name="logo_ligne">Logo ligne</string>

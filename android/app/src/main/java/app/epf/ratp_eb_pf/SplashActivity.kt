@@ -15,7 +15,10 @@ import app.epf.ratp_eb_pf.service.LinesService
 import app.epf.ratp_eb_pf.service.StationsService
 import app.epf.ratp_eb_pf.service.TrafficService
 import kotlinx.coroutines.runBlocking
+import java.io.IOException
+import java.io.OutputStreamWriter
 import java.lang.ref.WeakReference
+import java.util.*
 
 // Splash activity s'affichant au démarrage de l'application
 
@@ -25,7 +28,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        var load = UpdateAsync(this)
+        val load = UpdateAsync(this)
         load.execute()
     }
 
@@ -53,8 +56,11 @@ class SplashActivity : AppCompatActivity() {
                     lines = lineDao?.getLines()
                 }
 
+
+//                stations?.let { writeToFile(it, context) }
+
                 // si la BDD des lines et stations est vide
-                if (lines.isNullOrEmpty()) {
+                if (lines.isNullOrEmpty() || stations.isNullOrEmpty() || stations?.last()?.slug != "olympiades") {
                     val service =
                         retrofit().create(LinesService::class.java) // Fonction retrofit d'ActivityUtils
                     runBlocking {
@@ -76,7 +82,7 @@ class SplashActivity : AppCompatActivity() {
                     }
                 }
 
-                if (stations?.last()?.slug != "olympiades") {
+                if (stations.isNullOrEmpty() || stations?.last()?.slug != "olympiades") {
                     runBlocking {
                         stationsDao?.deleteStations() // Supprime les anciennes stations
 
@@ -110,7 +116,10 @@ class SplashActivity : AppCompatActivity() {
                     val result = service.getTrafficService("metros")
 
                     result.result.metros.map {
-                        val traffic = Traffic(id, it.line, it.slug, it.title, it.message)
+                        val traffic = Traffic(
+                            id,
+                            it.line.toLowerCase(Locale.ROOT), it.slug, it.title, it.message
+                        )
                         trafficDao?.addTraffic(traffic)  // Ajoute la traffic dans la bdd
                         id += 1
                     }
@@ -125,5 +134,35 @@ class SplashActivity : AppCompatActivity() {
                 act?.finish()
             }
         }
+
+        private fun writeToFile(data: MutableList<Stations>, context: Context) {
+
+            val fileWriter =
+                OutputStreamWriter(context.openFileOutput("qr_codes.csv", Context.MODE_PRIVATE))
+
+            try {
+                for (customer in data) {
+                    fileWriter.append(customer.uuid)
+                    fileWriter.append(',')
+                    fileWriter.append(customer.name + " " + customer.line)
+                    fileWriter.append('\n')
+                }
+
+                println("Write CSV successfully!")
+            } catch (e: Exception) {
+                println("Writing CSV error!")
+                e.printStackTrace()
+            } finally {
+                try {
+                    fileWriter.flush()
+                    fileWriter.close()
+                } catch (e: IOException) {
+                    println("Flushing/closing error!")
+                    e.printStackTrace()
+                }
+            }
+        }
     }
+
+
 }

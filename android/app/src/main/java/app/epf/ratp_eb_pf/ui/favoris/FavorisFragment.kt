@@ -51,8 +51,8 @@ class FavorisFragment : Fragment() {
         scope.launch {
             val adapter = FavorisTabAdapter(childFragmentManager, bundle)
             // Ajoute les sous-fragments lignes et stations
-            adapter.addFragment(FavorisLinesFragment(), "Lignes")
             adapter.addFragment(FavorisStationsFragment(), "Stations")
+            adapter.addFragment(FavorisLinesFragment(), "Lignes")
             withContext(Dispatchers.Main) {
                 viewPager.adapter = adapter
             }

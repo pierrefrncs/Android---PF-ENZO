@@ -20,7 +20,7 @@
     <fragment
         android:id="@+id/navigation_map"
         android:name="app.epf.ratp_eb_pf.ui.map.MapFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_map"
         tools:layout="@layout/fragment_map" />
 
 </navigation>

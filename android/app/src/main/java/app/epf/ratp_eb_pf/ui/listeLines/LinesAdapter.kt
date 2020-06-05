@@ -19,6 +19,7 @@ import app.epf.ratp_eb_pf.data.LineDao
 import app.epf.ratp_eb_pf.data.TrafficDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.model.Traffic
+import app.epf.ratp_eb_pf.ui.favoris.FavorisFragment
 import app.epf.ratp_eb_pf.ui.listeLines.details.DetailsLineActivity
 import kotlinx.android.synthetic.main.card_lines_view.view.*
 import kotlinx.android.synthetic.main.fragment_favoris_lines.view.*
@@ -39,6 +40,9 @@ class LinesAdapter(
     private var listLinesBdd: MutableList<Line>? = null
     private var lineDaoSaved: LineDao? = null
 
+    private var fragmentName: String = ""
+    private val favorisFragmentName = FavorisFragment().javaClass.simpleName
+
     private var trafficDao: TrafficDao? = null
     private var listTrafficBdd: MutableList<Traffic>? = null
 
@@ -57,6 +61,14 @@ class LinesAdapter(
         val view: View = layoutInflater.inflate(R.layout.card_lines_view, parent, false)
 
         context = parent.context
+
+        // Trouve le nom du fragment contenant l'adapter
+        fragmentName = try {
+            // https://stackoverflow.com/a/54829516/13289762
+            (context as MainActivity).supportFragmentManager.fragments[0].childFragmentManager.fragments[0].javaClass.simpleName
+        } catch (ex: Exception) {
+            ""
+        }
 
         // Bdd contenant les données sauvegardées (favoris)
         val databaseSaved = Room.databaseBuilder(context, AppDatabase::class.java, "savedDatabase")
@@ -180,18 +192,8 @@ class LinesAdapter(
                     lineDaoSaved?.deleteLine(line.idRatp)
                 }
 
-                // Trouve le nom du fragment contenant l'adapter
-                val fragmentFavoris = try {
-                    // https://stackoverflow.com/a/54829516/13289762
-                    (context as MainActivity).supportFragmentManager.fragments.last()?.childFragmentManager?.fragments
-                        ?.get(0)?.childFragmentManager?.fragments
-                        ?.get(0)?.javaClass?.simpleName
-                } catch (ex: Exception) {
-                    ""
-                }
-
                 // si le fragment parent est celui des lines favorites
-                if (fragmentFavoris == "FavorisLinesFragment") {
+                if (fragmentName == favorisFragmentName) {
                     linesList.remove(line) // Supprime de la recyclerView
 
                     // Update la recyclerView

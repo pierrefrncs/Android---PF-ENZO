@@ -30,6 +30,7 @@
                 android:textSize="30sp"
                 android:textStyle="bold"
                 tools:text="Test"
+                android:hyphenationFrequency="normal"
                 android:textColor="@color/textPrimary"/>
 
         </LinearLayout>

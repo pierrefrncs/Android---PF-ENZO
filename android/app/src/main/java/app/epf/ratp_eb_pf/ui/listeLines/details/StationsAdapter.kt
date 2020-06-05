@@ -15,6 +15,8 @@ import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.StationsDao
 import app.epf.ratp_eb_pf.model.Stations
 import app.epf.ratp_eb_pf.ui.detailStation.StationDetailsActivity
+import app.epf.ratp_eb_pf.ui.favoris.FavorisFragment
+import app.epf.ratp_eb_pf.ui.listeLines.ListLinesAccueil
 import kotlinx.android.synthetic.main.card_stations_view.view.*
 import kotlinx.android.synthetic.main.fragment_favoris_stations.view.*
 import kotlinx.coroutines.runBlocking
@@ -29,6 +31,9 @@ class StationsAdapter(
 ) : RecyclerView.Adapter<StationsAdapter.StationsViewHolder>() {
 
     private var listStationsBdd: MutableList<Stations>? = null
+    private var fragmentName: String = ""
+    private val favorisFragmentName = FavorisFragment().javaClass.simpleName
+    private val accueilFragmentName = ListLinesAccueil().javaClass.simpleName
     private var stationDaoSaved: StationsDao? = null
     private lateinit var context: Context // Context du fragment contenant l'adapter
     private var toastMessage: Toast? =
@@ -46,6 +51,14 @@ class StationsAdapter(
         val view: View = layoutInflater.inflate(R.layout.card_stations_view, parent, false)
 
         context = parent.context
+
+        // Trouve le nom du fragment contenant l'adapter dans la navigation principale
+        fragmentName = try {
+            // https://stackoverflow.com/a/54829516/13289762
+            (context as MainActivity).supportFragmentManager.fragments[0].childFragmentManager.fragments[0].javaClass.simpleName
+        } catch (ex: Exception) {
+            ""
+        }
 
         // Bdd contenant les données sauvegardées (favoris)
         val databaseSaved = Room.databaseBuilder(context, AppDatabase::class.java, "savedDatabase")
@@ -73,27 +86,8 @@ class StationsAdapter(
 
         view.name_stations.text = station.name
 
-        // Trouve le nom du fragment contenant l'adapter dans le viewPager des favoris
-        val fragmentFavorisViewPager = try {
-            // https://stackoverflow.com/a/54829516/13289762
-            (context as MainActivity).supportFragmentManager.fragments.last()?.childFragmentManager?.fragments
-                ?.get(0)?.childFragmentManager?.fragments
-                ?.get(1)?.javaClass?.simpleName
-        } catch (ex: Exception) {
-            ""
-        }
-
-        // Trouve le nom du fragment contenant l'adapter dans la navigation principale
-        val fragmentList = try {
-            // https://stackoverflow.com/a/54829516/13289762
-            (context as MainActivity).supportFragmentManager.fragments.last()?.childFragmentManager?.fragments
-                ?.get(0)?.javaClass?.simpleName
-        } catch (ex: Exception) {
-            ""
-        }
-
         // Si ce fragment est celui des favoris : rajoute le logo de la ligne
-        if (fragmentFavorisViewPager == "FavorisStationsFragment" || fragmentList == "ListLinesAccueil") {
+        if (fragmentName == favorisFragmentName || fragmentName == accueilFragmentName) {
             view.logo_ligneStation.visibility = View.VISIBLE
 
             // Permet d'acceder au package "assets" avec les logos des lignes
@@ -175,7 +169,7 @@ class StationsAdapter(
                 }
 
                 // si le fragment parent est celui des stations favorites
-                if (fragmentFavorisViewPager == "FavorisStationsFragment") {
+                if (fragmentName == favorisFragmentName) {
                     stationsList.remove(station) // Supprime de la recyclerView
 
                     // Update la recyclerView

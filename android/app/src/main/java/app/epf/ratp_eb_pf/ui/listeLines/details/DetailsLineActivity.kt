@@ -3,7 +3,6 @@ package app.epf.ratp_eb_pf.ui.listeLines.details
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager.widget.ViewPager
@@ -63,7 +62,7 @@ class DetailsLineActivity : AppCompatActivity() {
         val service = retrofit().create(TrafficSpecService::class.java)
         runBlocking {
             traffic = trafficDao?.getTraffic(line!!.code)
-            var idTraf = traffic!!.id
+            val idTraf = traffic!!.id
             val result = service.getTrafficSpecService("metros", line!!.code)
             traffic = Traffic(
                 idTraf,
