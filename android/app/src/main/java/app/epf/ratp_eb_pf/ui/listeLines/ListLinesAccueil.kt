@@ -98,7 +98,6 @@ class ListLinesAccueil : Fragment() {
 
         stationsDao = daoSta(requireContext())
         lineDao = daoLi(requireContext())
-        schedulesDao = daoSch(requireContext())
         trafficDao = daoTraf(requireContext())
 
         runBlocking {

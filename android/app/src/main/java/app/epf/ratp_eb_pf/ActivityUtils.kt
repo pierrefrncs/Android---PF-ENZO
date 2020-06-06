@@ -24,15 +24,7 @@ fun daoLi(context: Context): LineDao {
     return database.getLineDao()
 }
 
-
-// Configure la bdd avec les lignes
-fun daoSch(context: Context): SchedulesDao {
-    val database = Room.databaseBuilder(context, AppDatabase::class.java, "defaultDatabase").build()
-
-    return database.getSchedulesDao()
-}
-
-// Configure la bdd avec les lignes
+// Configure la bdd avec les traffics
 fun daoTraf(context: Context): TrafficDao {
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "defaultDatabase").build()
 

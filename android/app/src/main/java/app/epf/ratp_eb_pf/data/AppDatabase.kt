@@ -9,7 +9,7 @@ import app.epf.ratp_eb_pf.model.Traffic
 
 // Gestion Database
 
-@Database(entities = [Stations::class, Line::class, Traffic::class, Schedules::class], version = 1)
+@Database(entities = [Stations::class, Line::class, Traffic::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getStationsDao(): StationsDao
@@ -17,6 +17,4 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getLineDao(): LineDao
 
     abstract fun getTrafficDao(): TrafficDao
-
-    abstract fun getSchedulesDao(): SchedulesDao
 }
