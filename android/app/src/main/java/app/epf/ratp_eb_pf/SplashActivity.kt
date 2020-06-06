@@ -15,8 +15,6 @@ import app.epf.ratp_eb_pf.service.LinesService
 import app.epf.ratp_eb_pf.service.StationsService
 import app.epf.ratp_eb_pf.service.TrafficService
 import kotlinx.coroutines.runBlocking
-import java.io.IOException
-import java.io.OutputStreamWriter
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -33,7 +31,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     companion object {
-        class UpdateAsync internal constructor(contextSplash: SplashActivity) :
+        private class UpdateAsync internal constructor(contextSplash: SplashActivity) :
             AsyncTask<Void, Void, Void>() {
 
             private val activityReference: WeakReference<SplashActivity> =
@@ -56,8 +54,6 @@ class SplashActivity : AppCompatActivity() {
                     lines = lineDao?.getLines()
                 }
 
-
-//                stations?.let { writeToFile(it, context) }
 
                 // si la BDD des lines et stations est vide
                 if (lines.isNullOrEmpty() || stations.isNullOrEmpty() || stations?.last()?.slug != "olympiades") {
@@ -134,35 +130,6 @@ class SplashActivity : AppCompatActivity() {
                 act?.finish()
             }
         }
-
-        private fun writeToFile(data: MutableList<Stations>, context: Context) {
-
-            val fileWriter =
-                OutputStreamWriter(context.openFileOutput("qr_codes.csv", Context.MODE_PRIVATE))
-
-            try {
-                for (customer in data) {
-                    fileWriter.append(customer.uuid)
-                    fileWriter.append(',')
-                    fileWriter.append(customer.name + " " + customer.line)
-                    fileWriter.append('\n')
-                }
-
-                println("Write CSV successfully!")
-            } catch (e: Exception) {
-                println("Writing CSV error!")
-                e.printStackTrace()
-            } finally {
-                try {
-                    fileWriter.flush()
-                    fileWriter.close()
-                } catch (e: IOException) {
-                    println("Flushing/closing error!")
-                    e.printStackTrace()
-                }
-            }
-        }
     }
-
 
 }

@@ -15,6 +15,9 @@
     <string name="logo_qr_code">Logo qr code</string>
     <string name="preferences">Préférences</string>
     <string name="title_map">Carte</string>
+    <string name="aucun_resultat_recherche">Aucun résultat</string>
+    <string name="rechercher_lignes_stations">Rechercher lignes / stations</string>
+    <string name="etat_traffic_couleur">Etat Traffic</string>
 
     <string-array name="prefs_theme_entries">
         <item>Theme du système (Défaut)</item>

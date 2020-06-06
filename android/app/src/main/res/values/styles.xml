@@ -20,7 +20,7 @@
     </style>
 
     <style name="MyActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="background"> @color/menuColor </item>
+        <item name="background">@color/menuColor</item>
         <item name="android:elevation">4dp</item>
     </style>
 

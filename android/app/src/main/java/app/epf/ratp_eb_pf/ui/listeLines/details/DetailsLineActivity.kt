@@ -80,23 +80,27 @@ class DetailsLineActivity : AppCompatActivity() {
         }
 
         //set traffic indicator color
-        if (traffic!!.slug.equals("normal")) {
-            status_traffic_detail.setColorFilter(
-                ContextCompat.getColor(
-                    this,
-                    R.color.trafficOk
-                ), android.graphics.PorterDuff.Mode.SRC_IN
-            )
-        } else if (traffic!!.slug.equals("critical")) {
-            status_traffic_detail.setColorFilter(
-                ContextCompat.getColor(this, R.color.trafficPerturbé),
-                android.graphics.PorterDuff.Mode.SRC_IN
-            )
-        } else {
-            status_traffic_detail.setColorFilter(
-                ContextCompat.getColor(this, R.color.trafficTravaux),
-                android.graphics.PorterDuff.Mode.SRC_IN
-            )
+        when (traffic!!.slug) {
+            "normal" -> {
+                status_traffic_detail.setColorFilter(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.trafficOk
+                    ), android.graphics.PorterDuff.Mode.SRC_IN
+                )
+            }
+            "critical" -> {
+                status_traffic_detail.setColorFilter(
+                    ContextCompat.getColor(this, R.color.trafficPerturbé),
+                    android.graphics.PorterDuff.Mode.SRC_IN
+                )
+            }
+            else -> {
+                status_traffic_detail.setColorFilter(
+                    ContextCompat.getColor(this, R.color.trafficTravaux),
+                    android.graphics.PorterDuff.Mode.SRC_IN
+                )
+            }
         }
 
         bundle.putSerializable(

@@ -1,6 +1,5 @@
 package app.epf.ratp_eb_pf.ui.listeLines
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -16,7 +15,6 @@ import app.epf.ratp_eb_pf.MainActivity
 import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.data.AppDatabase
 import app.epf.ratp_eb_pf.data.LineDao
-import app.epf.ratp_eb_pf.data.TrafficDao
 import app.epf.ratp_eb_pf.model.Line
 import app.epf.ratp_eb_pf.model.Traffic
 import app.epf.ratp_eb_pf.ui.favoris.FavorisFragment
@@ -42,9 +40,6 @@ class LinesAdapter(
 
     private var fragmentName: String = ""
     private val favorisFragmentName = FavorisFragment().javaClass.simpleName
-
-    private var trafficDao: TrafficDao? = null
-    private var listTrafficBdd: MutableList<Traffic>? = null
 
     private lateinit var context: Context // Context du fragment contenant l'adapter
     private var toastMessage: Toast? =
@@ -85,7 +80,7 @@ class LinesAdapter(
 
     override fun getItemCount(): Int = linesList.size // Taille de l'adapter
 
-    @SuppressLint("ResourceAsColor")
+
     override fun onBindViewHolder(holder: LinesViewHolder, position: Int) {
         val view = holder.linesView
         var favoris = false
@@ -110,23 +105,27 @@ class LinesAdapter(
 
         // set les couleurs des pastilles d'indication du traffic
         val imageView = view.findViewById<ImageView>(R.id.status_traffic_main)
-        if (traffic.slug.equals("normal")) {
-            imageView.setColorFilter(
-                ContextCompat.getColor(
-                    context,
-                    R.color.trafficOk
-                ), android.graphics.PorterDuff.Mode.SRC_IN
-            )
-        } else if (traffic.slug.equals("critical")) {
-            imageView.setColorFilter(
-                ContextCompat.getColor(context, R.color.trafficPerturbé),
-                android.graphics.PorterDuff.Mode.SRC_IN
-            )
-        } else {
-            imageView.setColorFilter(
-                ContextCompat.getColor(context, R.color.trafficTravaux),
-                android.graphics.PorterDuff.Mode.SRC_IN
-            )
+        when (traffic.slug) {
+            "normal" -> {
+                imageView.setColorFilter(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.trafficOk
+                    ), android.graphics.PorterDuff.Mode.SRC_IN
+                )
+            }
+            "critical" -> {
+                imageView.setColorFilter(
+                    ContextCompat.getColor(context, R.color.trafficPerturbé),
+                    android.graphics.PorterDuff.Mode.SRC_IN
+                )
+            }
+            else -> {
+                imageView.setColorFilter(
+                    ContextCompat.getColor(context, R.color.trafficTravaux),
+                    android.graphics.PorterDuff.Mode.SRC_IN
+                )
+            }
         }
 
         // En cas de click sur la cardview d'une line --> affiche activité correspondante (détails de la line)

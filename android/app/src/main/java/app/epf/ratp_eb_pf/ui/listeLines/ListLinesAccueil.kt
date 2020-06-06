@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +35,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_liste_lines.*
+import kotlinx.android.synthetic.main.fragment_liste_lines.view.*
 import kotlinx.coroutines.runBlocking
 import java.text.Normalizer
 import java.util.concurrent.TimeUnit
@@ -125,6 +125,11 @@ class ListLinesAccueil : Fragment() {
                         oldFilteredPostsLi.clear()
                         oldFilteredPostsLi.addAll(filteredPostsLi)
                         linesAdapter?.let { it1 -> diffResult.dispatchUpdatesTo(it1) }
+                        if (filteredPostsLi.isNullOrEmpty() && filteredPostsSta.isNullOrEmpty()) {
+                            view.layoutNoFoundLine.visibility = View.VISIBLE
+                        } else {
+                            view.layoutNoFoundLine.visibility = View.GONE
+                        }
                     }.addTo(disposable)
             }.addTo(disposable)
 
@@ -142,6 +147,11 @@ class ListLinesAccueil : Fragment() {
                         )
                         val test = oldFilteredPostsSta.size
                         oldFilteredPostsSta.clear()
+                        if (filteredPostsLi.isNullOrEmpty() && filteredPostsSta.isNullOrEmpty()) {
+                            view.layoutNoFoundLine.visibility = View.VISIBLE
+                        } else {
+                            view.layoutNoFoundLine.visibility = View.GONE
+                        }
                         // Si la taille de la liste filtrée est la même que celle de base --> n'affiche pas (donc supprime) l'adapter des stations
                         if (stations?.size == test || stations?.size == filteredPostsSta.size) {
                             stationsAdapter?.let { it1 -> mergeAdapter.removeAdapter(it1) }
@@ -149,7 +159,6 @@ class ListLinesAccueil : Fragment() {
                             // Sinon l'affiche normalement et le rajoute (si inexistant)
                             oldFilteredPostsSta.addAll(filteredPostsSta)
                             stationsAdapter?.let { it1 -> diffResult.dispatchUpdatesTo(it1) }
-                            Log.d("tototo", stationsAdapter.toString())
                             mergeAdapter.addAdapter(stationsAdapter!!)
                         }
                     }.addTo(disposable)

@@ -21,4 +21,6 @@
     <color name="trafficOk">#2ECC71</color>
     <color name="trafficPerturbé">#E30000</color>
     <color name="trafficTravaux">#FF9800</color>
+
+    <color name="iconColor">#de000000</color>
 </resources>
