@@ -1,5 +1,6 @@
 package app.epf.ratp_eb_pf.ui.favoris
 
+import android.content.SharedPreferences
 import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -43,6 +45,7 @@ class FavorisLinesFragment : Fragment() {
     private var mBundleRecyclerViewState: Bundle? = null
     private var mListState: Parcelable? = null
 
+    private lateinit var prefs: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,6 +54,8 @@ class FavorisLinesFragment : Fragment() {
     ): View? {
 
         val view = inflater.inflate(R.layout.fragment_favoris_lines, container, false)
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         linesRecyclerView = view.findViewById(R.id.savedLines_recyclerview)
         linesRecyclerView.layoutManager = LinearLayoutManager(activity)
@@ -179,6 +184,15 @@ class FavorisLinesFragment : Fragment() {
                     view?.layoutNoSavedLine?.visibility = View.VISIBLE
                 }
                 showUndoSnackbar()
+            }
+
+            override fun getSwipeDirs(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder
+            ): Int {
+                return if (!prefs.getBoolean("swipe_favoris", true)) {
+                    0
+                } else super.getSwipeDirs(recyclerView, viewHolder)
             }
 
             // Pour avoir la barre rouge + poubelle en supprimant un favoris

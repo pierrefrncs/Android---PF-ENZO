@@ -16,9 +16,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.MergeAdapter
 import androidx.recyclerview.widget.RecyclerView
-import app.epf.ratp_eb_pf.*
+import app.epf.ratp_eb_pf.R
+import app.epf.ratp_eb_pf.daoLi
+import app.epf.ratp_eb_pf.daoSta
+import app.epf.ratp_eb_pf.daoTraf
 import app.epf.ratp_eb_pf.data.LineDao
-import app.epf.ratp_eb_pf.data.SchedulesDao
 import app.epf.ratp_eb_pf.data.StationsDao
 import app.epf.ratp_eb_pf.data.TrafficDao
 import app.epf.ratp_eb_pf.model.Line
@@ -51,7 +53,6 @@ class ListLinesAccueil : Fragment() {
     private lateinit var listLinesViewModel: ListLinesViewModel
     private var stationsDao: StationsDao? = null
     private var lineDao: LineDao? = null
-    private var schedulesDao: SchedulesDao? = null
     private lateinit var globalRecyclerView: RecyclerView
     private var lines: MutableList<Line>? = null
     private var stations: MutableList<Stations>? = null

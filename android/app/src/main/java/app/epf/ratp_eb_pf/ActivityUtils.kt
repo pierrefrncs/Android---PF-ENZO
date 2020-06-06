@@ -2,7 +2,10 @@ package app.epf.ratp_eb_pf
 
 import android.content.Context
 import androidx.room.Room
-import app.epf.ratp_eb_pf.data.*
+import app.epf.ratp_eb_pf.data.AppDatabase
+import app.epf.ratp_eb_pf.data.LineDao
+import app.epf.ratp_eb_pf.data.StationsDao
+import app.epf.ratp_eb_pf.data.TrafficDao
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

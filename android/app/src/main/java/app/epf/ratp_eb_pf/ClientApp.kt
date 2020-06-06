@@ -10,6 +10,6 @@ class ClientApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Stetho.initializeWithDefaults(this)
-   //     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode())
+        //     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode())
     }
 }

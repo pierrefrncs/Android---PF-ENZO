@@ -20,9 +20,9 @@
     <string name="etat_traffic_couleur">Etat Traffic</string>
 
     <string-array name="prefs_theme_entries">
-        <item>Theme du système (Défaut)</item>
-        <item>Dark Theme</item>
-        <item>Light Theme</item>
+        <item>Thème du système (Défaut)</item>
+        <item>Sombre</item>
+        <item>Clair</item>
     </string-array>
 
     <string-array name="prefs_theme_values">

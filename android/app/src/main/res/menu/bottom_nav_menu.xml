@@ -4,19 +4,19 @@
     <item
         android:id="@+id/navigation_list_lignes"
         android:icon="@drawable/ic_format_list_bulleted_black_24dp"
-        android:title="@string/title_liste_lignes"
-        android:iconTint="@color/NotSelected"/>
+        android:iconTint="@color/NotSelected"
+        android:title="@string/title_liste_lignes" />
 
     <item
         android:id="@+id/navigation_favoris"
         android:icon="@drawable/ic_star_border_black_24dp"
-        android:title="@string/title_favoris"
-        android:iconTint="@color/NotSelected"/>
+        android:iconTint="@color/NotSelected"
+        android:title="@string/title_favoris" />
 
     <item
         android:id="@+id/navigation_map"
         android:icon="@drawable/ic_map_black_24dp"
-        android:title="@string/title_map"
-        android:iconTint="@color/NotSelected"/>
+        android:iconTint="@color/NotSelected"
+        android:title="@string/title_map" />
 
 </menu>

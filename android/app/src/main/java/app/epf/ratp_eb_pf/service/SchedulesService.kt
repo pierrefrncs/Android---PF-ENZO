@@ -30,6 +30,6 @@ data class ResultSchedule(
 )
 
 data class SchedulesData(
-    val message: String,
+    var message: String,
     val destination: String
 )

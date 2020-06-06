@@ -27,11 +27,11 @@
                 android:id="@+id/StationNameDetail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hyphenationFrequency="normal"
+                android:textColor="@color/textPrimary"
                 android:textSize="30sp"
                 android:textStyle="bold"
-                tools:text="Test"
-                android:hyphenationFrequency="normal"
-                android:textColor="@color/textPrimary"/>
+                tools:text="Chateau de Vincennes" />
 
         </LinearLayout>
 
@@ -42,8 +42,8 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:contentDescription="@string/logo_ligne"
-            android:src="@drawable/ic_search_black_24dp"
-            android:elevation="3dp"/>
+            android:elevation="3dp"
+            android:src="@drawable/ic_search_black_24dp" />
 
     </LinearLayout>
 
@@ -58,11 +58,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        android:elevation="2dp"
         app:tabIndicatorColor="#fff"
         app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
-        app:tabTextColor="#fff"
-        android:elevation="2dp"/>
+        app:tabTextColor="#fff" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/fragment_pager_horaires"

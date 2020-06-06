@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -50,9 +51,11 @@ class HoraireAFragment : Fragment(), StationDetailsActivity.RefreshPage {
         itemsSwipeToRefresh.setOnRefreshListener {
             val viewpager = activity?.findViewById<ViewPager>(R.id.fragment_pager_horaires)
             synchroStationDataA()
-            val horaireBFragment =
-                viewpager?.adapter?.instantiateItem(viewpager, 1) as HoraireBFragment
-            horaireBFragment.refreshPage()
+            if (viewpager?.size == 2) {
+                val horaireBFragment =
+                    viewpager.adapter?.instantiateItem(viewpager, 1) as HoraireBFragment
+                horaireBFragment.refreshPage()
+            }
             itemsSwipeToRefresh.isRefreshing = false
         }
 
@@ -71,6 +74,11 @@ class HoraireAFragment : Fragment(), StationDetailsActivity.RefreshPage {
             )
             var id = 1
             result.result.schedules.map {
+                if (it.message == "Train a l'approche") {
+                    it.message = "Train à l'approche"
+                } else if (it.message == "Train a quai") {
+                    it.message = "Train à quai"
+                }
                 val schedules = Schedules(id, it.message, it.destination)
                 horaires.add(schedules)
                 id += 1

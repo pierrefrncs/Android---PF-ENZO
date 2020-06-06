@@ -9,7 +9,7 @@
         app:icon="@drawable/ic_half_dark_light"
         app:key="theme_display"
         app:summary="%s"
-        app:title="Theme d'affichage de l'application" />
+        app:title="Thème d'affichage de l'application" />
 
     <ListPreference
         android:defaultValue="listLines"
@@ -19,5 +19,13 @@
         app:key="start_page"
         app:summary="%s"
         app:title="Page d'accueil de l'application" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:summaryOff="Swipe sur les lignes et stations favorites désactivé"
+        android:summaryOn="Swipe sur les lignes et stations favorites activé"
+        app:icon="@drawable/ic_baseline_swap_horiz_24"
+        app:key="swipe_favoris"
+        app:title="Swipe des favoris" />
 
 </PreferenceScreen>
