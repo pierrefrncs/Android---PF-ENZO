@@ -14,8 +14,8 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/itemsswipetorefresh"
         android:layout_width="wrap_content"
-        android:layout_height="0px"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:layout_marginVertical="2dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/horaires_recyclerview"

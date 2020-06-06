@@ -35,6 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="none"
+                android:hyphenationFrequency="normal"
                 android:scrollHorizontally="false"
                 android:textSize="18sp"
                 tools:text="La Défense / Chateau de Vincennes" />
@@ -47,9 +48,9 @@
             android:layout_height="30dp"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:contentDescription="@string/etat_traffic_couleur"
             android:src="@drawable/ic_circle_green_24dp"
-            android:tint="@color/trafficOk"
-            android:contentDescription="@string/etat_traffic_couleur" />
+            android:tint="@color/trafficOk" />
 
         <ImageView
             android:id="@+id/logoDetailLine"
@@ -58,8 +59,8 @@
             android:layout_gravity="center"
             android:layout_weight="3"
             android:contentDescription="@string/logo_ligne"
-            android:src="@drawable/ic_search_black_24dp"
             android:elevation="4dp"
+            android:src="@drawable/ic_search_black_24dp"
             android:translationZ="4dp" />
     </LinearLayout>
 
@@ -69,11 +70,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/colorPrimary"
+        android:elevation="6dp"
         app:tabIndicatorColor="#fff"
         app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
-        app:tabTextColor="#fff"
-        android:elevation="6dp" />
+        app:tabTextColor="#fff" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/fragment_rechercheinterne"
