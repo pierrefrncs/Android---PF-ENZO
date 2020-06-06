@@ -131,6 +131,14 @@ class LinesAdapter(
         // En cas de click sur la cardview d'une line --> affiche activité correspondante (détails de la line)
         view.setOnClickListener { itView ->
             val intent = Intent(itView.context, DetailsLineActivity::class.java)
+            intent.putExtra("clickLocation", "stations")
+            intent.putExtra("line", line)
+            itView.context.startActivity(intent)
+        }
+
+        imageView.setOnClickListener { itView ->
+            val intent = Intent(itView.context, DetailsLineActivity::class.java)
+            intent.putExtra("clickLocation", "traffic")
             intent.putExtra("line", line)
             itView.context.startActivity(intent)
         }

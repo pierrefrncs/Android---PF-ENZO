@@ -2,6 +2,7 @@ package app.epf.ratp_eb_pf.ui.listeLines.details
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -24,6 +25,7 @@ import java.io.InputStream
 class DetailsLineActivity : AppCompatActivity() {
 
     private var line: Line? = null
+    private var clickLocation: String? = null
     private lateinit var viewpager: ViewPager
     private lateinit var tabLayout: TabLayout
     private var bundle = Bundle()
@@ -40,6 +42,8 @@ class DetailsLineActivity : AppCompatActivity() {
 
         line =
             intent.getSerializableExtra("line") as Line // recupère la ligne sur lequel l'user a cliqué
+
+        clickLocation = intent.getStringExtra("clickLocation")
 
         LineNameDetail.text = line?.name
 
@@ -111,6 +115,11 @@ class DetailsLineActivity : AppCompatActivity() {
         viewpager = findViewById(R.id.fragment_rechercheinterne)
         setupViewPager(viewpager)
         viewpager.offscreenPageLimit = 1 // Nombre de sous-fragments - 1 pour améliorer la fluidité
+        if (clickLocation == "traffic") {
+            Handler().postDelayed({
+                viewpager.setCurrentItem(1, false)
+            }, 1)
+        }
         tabLayout = findViewById(R.id.tablayout_details)
         tabLayout.setupWithViewPager(viewpager)
     }
