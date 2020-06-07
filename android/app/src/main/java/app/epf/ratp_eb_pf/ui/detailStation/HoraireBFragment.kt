@@ -19,6 +19,8 @@ import app.epf.ratp_eb_pf.retrofit
 import app.epf.ratp_eb_pf.service.SchedulesService
 import kotlinx.coroutines.runBlocking
 
+// Fragment affichant les horaires d'une station dans le sens retour
+
 class HoraireBFragment : Fragment(), StationDetailsActivity.RefreshPage {
 
     private var horaires: MutableList<Schedules> = mutableListOf()
@@ -51,6 +53,7 @@ class HoraireBFragment : Fragment(), StationDetailsActivity.RefreshPage {
         itemsSwipeToRefresh.setOnRefreshListener {
             val viewpager = activity?.findViewById<ViewPager>(R.id.fragment_pager_horaires)
             synchroStationDataB()
+            // Si la station n'est pas un terminus
             if (viewpager?.size == 2) {
                 val horaireAFragment =
                     viewpager.adapter?.instantiateItem(viewpager, 0) as HoraireAFragment
@@ -62,6 +65,7 @@ class HoraireBFragment : Fragment(), StationDetailsActivity.RefreshPage {
         return view
     }
 
+    // Récupère les prochains métros de la station grâce à l'API
     private fun synchroStationDataB() {
         val serviceSchedules = retrofit().create(SchedulesService::class.java)
         horaires.clear()
@@ -74,10 +78,16 @@ class HoraireBFragment : Fragment(), StationDetailsActivity.RefreshPage {
             )
             var id = 1
             result.result.schedules.map {
-                if (it.message == "Train a l'approche") {
-                    it.message = "Train à l'approche"
-                } else if (it.message == "Train a quai") {
-                    it.message = "Train à quai"
+                when (it.message) {
+                    "Train a l'approche" -> {
+                        it.message = "Train à l'approche"
+                    }
+                    "Train a quai" -> {
+                        it.message = "Train à quai"
+                    }
+                    "Train retarde" -> {
+                        it.message = "Train retardé"
+                    }
                 }
                 val schedules = Schedules(id, it.message, it.destination)
                 horaires.add(schedules)
@@ -87,6 +97,7 @@ class HoraireBFragment : Fragment(), StationDetailsActivity.RefreshPage {
         }
     }
 
+    // Refresh page depuis l'autre fragment
     override fun refreshPage() {
         view?.let { synchroStationDataB() }
     }

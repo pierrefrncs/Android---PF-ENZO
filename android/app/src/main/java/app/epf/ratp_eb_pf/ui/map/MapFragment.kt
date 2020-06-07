@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import app.epf.ratp_eb_pf.R
 
+// Frament contenant la carte des transports parisiens
+
 class MapFragment : Fragment() {
 
     private lateinit var mapViewModel: MapViewModel

@@ -138,6 +138,7 @@ class LinesAdapter(
             itView.context.startActivity(intent)
         }
 
+        // En cas de click sur l'indicateur d'état de traffic d'une line --> affiche fragment correspondante (etat du traffic)
         imageView.setOnClickListener { itView ->
             val intent = Intent(itView.context, DetailsLineActivity::class.java)
             intent.putExtra("clickLocation", "traffic")

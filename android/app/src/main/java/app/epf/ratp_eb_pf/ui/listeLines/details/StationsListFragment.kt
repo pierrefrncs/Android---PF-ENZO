@@ -37,10 +37,6 @@ class StationsListFragment : Fragment() {
         stationsRecyclerView = view.findViewById(R.id.stations_recyclerview)
         stationsRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-//        val database =
-//            Room.databaseBuilder(requireContext(), AppDatabase::class.java, "globalDatabase")
-//                .build()
-
         stationsDao = daoSta(requireContext()) // Récupère la database des stations
 
         // Recupère les infos de la ligne du fragment/activity parent

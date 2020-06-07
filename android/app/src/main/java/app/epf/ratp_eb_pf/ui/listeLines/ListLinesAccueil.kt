@@ -237,6 +237,7 @@ class ListLinesAccueil : Fragment() {
         it.onComplete()
     }
 
+    // Action du QR code pour renvoyer vers la bonne station
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             val result: IntentResult? =

@@ -3,6 +3,8 @@ package app.epf.ratp_eb_pf.service
 import retrofit2.http.GET
 import retrofit2.http.Path
 
+// Basé sur le JSON des horaires d'une station dans un sens en particulier
+
 interface SchedulesService {
 
     @GET("schedules/{type}/{code}/{station}/{way}")
@@ -10,7 +12,7 @@ interface SchedulesService {
         @Path("type") type: String,
         @Path("code") code: String,
         @Path("station") station: String,
-        @Path("way") way: String
+        @Path("way") way: String // Direction
     ): GetScheduleResult
 }
 

@@ -18,7 +18,7 @@ import kotlinx.coroutines.runBlocking
 import java.lang.ref.WeakReference
 import java.util.*
 
-// Splash activity s'affichant au démarrage de l'application
+// Splash activity s'affichant au démarrage de l'application et permettant de précharger des données
 
 class SplashActivity : AppCompatActivity() {
 
@@ -31,6 +31,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     companion object {
+        // Pour charger les données et passer à la MainActivity quand c'est terminé
         private class UpdateAsync internal constructor(contextSplash: SplashActivity) :
             AsyncTask<Void, Void, Void>() {
 
@@ -44,6 +45,7 @@ class SplashActivity : AppCompatActivity() {
             private var trafficDao: TrafficDao? = null
             private var list: MutableList<String> = mutableListOf()
 
+            // Charge en background
             override fun doInBackground(vararg params: Void?): Void? {
                 stationsDao = daoSta(context)
                 lineDao = daoLi(context)
@@ -100,7 +102,7 @@ class SplashActivity : AppCompatActivity() {
                     }
                 }
 
-                //update l'état du traffic
+                // Update l'état du traffic
                 runBlocking {
                     trafficDao?.deleteTraffics()
 
@@ -123,6 +125,7 @@ class SplashActivity : AppCompatActivity() {
                 return null
             }
 
+            // Une fois que toutes les données sont chargées, redirige vers MainActivity
             override fun onPostExecute(result: Void?) {
                 val act = activityReference.get()
                 val intent = Intent(context, MainActivity::class.java)

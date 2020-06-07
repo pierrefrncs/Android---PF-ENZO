@@ -9,14 +9,13 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 
 
-//const val PREFS_NAME = "theme_prefs"
 const val KEY_THEME = "prefs.theme"
-
-//const val THEME_UNDEFINED = -1
 const val THEME_LIGHT = 0
 const val THEME_DARK = 1
 const val THEME_SYSTEM = 2
 const val THEME_BATTERY = 3
+
+// Activity contenant le fragment des préférences
 
 class PreferencesActivity : AppCompatActivity(),
     SharedPreferences.OnSharedPreferenceChangeListener {

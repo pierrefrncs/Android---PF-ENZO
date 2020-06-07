@@ -62,6 +62,7 @@ class DetailsLineActivity : AppCompatActivity() {
 
         LineDirectionsDetail.text = line?.directions
 
+        // Appel API du traffic de la ligne
         trafficDao = daoTraf(this)
         val service = retrofit().create(TrafficSpecService::class.java)
         runBlocking {
@@ -107,14 +108,13 @@ class DetailsLineActivity : AppCompatActivity() {
             }
         }
 
-        bundle.putSerializable(
-            "line",
-            line
-        ) // Pour que les sous-fragments connaissent les données de la ligne
+        // Pour que les sous-fragments connaissent les données de la ligne
+        bundle.putSerializable("line", line)
         bundle.putSerializable("traffic", traffic)
         viewpager = findViewById(R.id.fragment_rechercheinterne)
         setupViewPager(viewpager)
         viewpager.offscreenPageLimit = 1 // Nombre de sous-fragments - 1 pour améliorer la fluidité
+        // Pour rediriger ves le détail du traffic en cas de clique sur l'indicateur
         if (clickLocation == "traffic") {
             Handler().postDelayed({
                 viewpager.setCurrentItem(1, false)
@@ -144,14 +144,10 @@ class DetailsLineActivity : AppCompatActivity() {
         scope.launch {
             val adapter =
                 DetailsTabAdapter(supportFragmentManager, bundle)
-            adapter.addFragment(
-                StationsListFragment(),
-                "Stations"
-            ) // Ajoute sous-fragment avec la liste des stations
-            adapter.addFragment(
-                TrafficDetailsFragment(),
-                "Etat du trafic"
-            ) // Ajoute sous-fragment pour l'état du traffic
+            // Ajoute sous-fragment avec la liste des stations
+            adapter.addFragment(StationsListFragment(), "Stations")
+            // Ajoute sous-fragment pour l'état du traffic
+            adapter.addFragment(TrafficDetailsFragment(), "Etat du trafic")
             withContext(Dispatchers.Main) {
                 viewPager.adapter = adapter
             }

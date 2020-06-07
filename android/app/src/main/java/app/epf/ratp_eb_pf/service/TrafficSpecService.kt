@@ -12,7 +12,7 @@ interface TrafficSpecService {
         @Path("type") type: String, // Type de ligne. Ex :metro
         @Path("code") code: String // Code de la ligne. Ex: 1 pour metro 1
     ): GetTrafficSpecResult
-}//
+}
 
 data class GetTrafficSpecResult(
     val result: SpecTraffic,

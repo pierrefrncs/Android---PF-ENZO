@@ -186,6 +186,7 @@ class FavorisLinesFragment : Fragment() {
                 showUndoSnackbar()
             }
 
+            // Désactive le swipe pour supprimer si le paramètre associé est désactivé
             override fun getSwipeDirs(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder

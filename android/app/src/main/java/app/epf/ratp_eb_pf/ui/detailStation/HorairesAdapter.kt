@@ -8,6 +8,8 @@ import app.epf.ratp_eb_pf.R
 import app.epf.ratp_eb_pf.model.Schedules
 import kotlinx.android.synthetic.main.card_horaire_station.view.*
 
+// Adapter des horaires (pour ajout dans recyclerview)
+
 class HorairesAdapter(
     private val schedulesList: MutableList<Schedules>
 ) : RecyclerView.Adapter<HorairesAdapter.SchedulesViewHolder>() {

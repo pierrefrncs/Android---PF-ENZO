@@ -3,7 +3,7 @@ package app.epf.ratp_eb_pf.service
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-// Basé sur le JSON du traffic d'une ligne en particulier
+// Basé sur le JSON du traffic de toutes les lignes d'un type en particulier
 
 interface TrafficService {
 
@@ -12,7 +12,7 @@ interface TrafficService {
         @Path("type") type: String // Type de ligne. Ex :metro
 
     ): GetTrafficResult
-}//,@Path("code") code: String // Code de la ligne. Ex: 1 pour metro 1
+}
 
 data class GetTrafficResult(
     val result: ResultTraffic,

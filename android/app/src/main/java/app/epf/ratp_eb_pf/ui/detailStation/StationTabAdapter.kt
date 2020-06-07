@@ -7,8 +7,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 
 // Adapter pour configurer le ViewPager des favoris
 
-class StationTabAdapter(fm: FragmentManager, data: Bundle) :
-    FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class StationTabAdapter(fm: FragmentManager, data: Bundle) : FragmentPagerAdapter(fm) {
 
 
     private val fragmentList = arrayListOf<Fragment>()
