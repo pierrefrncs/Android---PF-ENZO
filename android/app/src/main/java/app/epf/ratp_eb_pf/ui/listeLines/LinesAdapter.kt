@@ -85,7 +85,6 @@ class LinesAdapter(
         val view = holder.linesView
         var favoris = false
         val line = linesList[position] // Position de la line dans la recyclerView
-        val traffic = trafficList[position]
 
         // view.name_line.text = line.name
         holder.bind(linesList[position])
@@ -105,28 +104,31 @@ class LinesAdapter(
 
         // set les couleurs des pastilles d'indication du traffic
         val imageView = view.findViewById<ImageView>(R.id.status_traffic_main)
-        when (traffic.slug) {
-            "normal" -> {
-                imageView.setColorFilter(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.trafficOk
-                    ), android.graphics.PorterDuff.Mode.SRC_IN
-                )
-            }
-            "critical" -> {
-                imageView.setColorFilter(
-                    ContextCompat.getColor(context, R.color.trafficPerturbé),
-                    android.graphics.PorterDuff.Mode.SRC_IN
-                )
-            }
-            else -> {
-                imageView.setColorFilter(
-                    ContextCompat.getColor(context, R.color.trafficTravaux),
-                    android.graphics.PorterDuff.Mode.SRC_IN
-                )
+        trafficList.map {
+            if (line.code == it.line) {
+                when (it.slug) {
+                    "normal" -> {
+                        imageView.setColorFilter(
+                            ContextCompat.getColor(context, R.color.trafficOk),
+                            android.graphics.PorterDuff.Mode.SRC_IN
+                        )
+                    }
+                    "critical" -> {
+                        imageView.setColorFilter(
+                            ContextCompat.getColor(context, R.color.trafficPerturbé),
+                            android.graphics.PorterDuff.Mode.SRC_IN
+                        )
+                    }
+                    else -> {
+                        imageView.setColorFilter(
+                            ContextCompat.getColor(context, R.color.trafficTravaux),
+                            android.graphics.PorterDuff.Mode.SRC_IN
+                        )
+                    }
+                }
             }
         }
+
 
         // En cas de click sur la cardview d'une line --> affiche activité correspondante (détails de la line)
         view.setOnClickListener { itView ->
